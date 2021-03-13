@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/xiaoming-48x48.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiaoming-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiaoming-16x16.ico">
+  <link rel="mask-icon" href="/images/xiaoming-48x48.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"seanlee97.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="从网上看了很多PCA的讲解，大多数都是从空间几何上阐述PCA的原理，但大多都不好理解。 本文主要从最原始的特征值特征向量的角度出发去理解PCA的原理。 在读文本前，应该预备的知识：  特征值特征向量 协方差  特征值特征向量定义 设 \(A\) 是 \(n\) 阶方阵，若存在数 \(\lambda\) 和非零向量 \(x\) 使得 \(A \cdot x &#x3D; \lambda x\) (\(x\ne">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从特征值特征向量去理解PCA">
+<meta property="og:url" content="https://seanlee97.github.io/2018/03/29/%E4%BB%8E%E7%89%B9%E5%BE%81%E5%80%BC%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E5%8E%BB%E7%90%86%E8%A7%A3PCA/index.html">
+<meta property="og:site_name" content="明天探索者">
+<meta property="og:description" content="从网上看了很多PCA的讲解，大多数都是从空间几何上阐述PCA的原理，但大多都不好理解。 本文主要从最原始的特征值特征向量的角度出发去理解PCA的原理。 在读文本前，应该预备的知识：  特征值特征向量 协方差  特征值特征向量定义 设 \(A\) 是 \(n\) 阶方阵，若存在数 \(\lambda\) 和非零向量 \(x\) 使得 \(A \cdot x &#x3D; \lambda x\) (\(x\ne">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-29T06:08:19.000Z">
+<meta property="article:modified_time" content="2021-03-07T10:05:36.801Z">
+<meta property="article:author" content="Sean Lee">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://seanlee97.github.io/2018/03/29/%E4%BB%8E%E7%89%B9%E5%BE%81%E5%80%BC%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E5%8E%BB%E7%90%86%E8%A7%A3PCA/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>从特征值特征向量去理解PCA | 明天探索者</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">明天探索者</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">特征值特征向量定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pca"><span class="nav-number">2.</span> <span class="nav-text">PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">特征值特征向量的意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E6%80%A7%E8%B4%A8"><span class="nav-number">2.2.</span> <span class="nav-text">特征值特征向量性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pca%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-number">2.3.</span> <span class="nav-text">PCA的意义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python%E5%AE%9E%E7%8E%B0pca"><span class="nav-number">3.</span> <span class="nav-text">python实现PCA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">4.</span> <span class="nav-text">补充</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#refrence"><span class="nav-number">5.</span> <span class="nav-text">Refrence</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sean Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Sean Lee</p>
+  <div class="site-description" itemprop="description">一枚小小的程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/03/29/%E4%BB%8E%E7%89%B9%E5%BE%81%E5%80%BC%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E5%8E%BB%E7%90%86%E8%A7%A3PCA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从特征值特征向量去理解PCA
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-03-29 14:08:19" itemprop="dateCreated datePublished" datetime="2018-03-29T14:08:19+08:00">2018-03-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>从网上看了很多PCA的讲解，大多数都是从空间几何上阐述PCA的原理，但大多都不好理解。 本文主要从最原始的特征值特征向量的角度出发去理解PCA的原理。</p>
+<p>在读文本前，应该预备的知识：</p>
+<ol type="1">
+<li>特征值特征向量</li>
+<li>协方差</li>
+</ol>
+<h2 id="特征值特征向量定义">特征值特征向量定义</h2>
+<p>设 <span class="math inline">\(A\)</span> 是 <span class="math inline">\(n\)</span> 阶方阵，若存在数 <span class="math inline">\(\lambda\)</span> 和非零向量 <span class="math inline">\(x\)</span> 使得 <span class="math inline">\(A \cdot x = \lambda x\)</span> (<span class="math inline">\(x\neq0\)</span>) 则称 <span class="math inline">\(\lambda\)</span> 是 <span class="math inline">\(A\)</span> 的一个特征值， <span class="math inline">\(x\)</span> 为 <span class="math inline">\(A\)</span> 对应于特征值 <span class="math inline">\(\lambda\)</span> 的特征向量</p>
+<p>由定义可得到：</p>
+<p><span class="math display">\[A \cdot x = \lambda x \Rightarrow  （A - \lambda E）x = 0\]</span></p>
+<p>而 <span class="math inline">\(x \neq 0\)</span> 故有 <span class="math inline">\(|A - \lambda E|\)</span> = 0</p>
+<p>以一道例题来帮助理解：</p>
+<p><strong>题目：</strong>求矩阵 <span class="math inline">\(A = \bigl(\begin{smallmatrix} -2 &amp; 1 &amp; 1 \\ 0 &amp; 2 &amp; 0 \\ -4 &amp; 1 &amp; 3 \end{smallmatrix}\bigr)\)</span> 的特征值和特征向量，并求可逆矩阵 <span class="math inline">\(P\)</span> ， 使得 <span class="math inline">\(P^{-1}AP\)</span> 为对角矩阵.</p>
+<p><strong>解：</strong></p>
+<p><span class="math display">\[\left | A-\lambda E \right | = \begin{vmatrix}
+-2-\lambda &amp; 1 &amp; 1 \\\\
+0 &amp; 2-\lambda  &amp; 0 \\\\ 
+-4 &amp; 1 &amp; 3-\lambda
+\end{vmatrix} = -(\lambda - 2)^{2}(\lambda + 1)\]</span></p>
+<p>得到特征值 <span class="math inline">\(\lambda = -1,2\)</span></p>
+<p>1. 当<span class="math inline">\(\lambda = -1\)</span> ,解线性方程组 <span class="math inline">\((A+E)x = 0\)</span> 得到</p>
+<p><span class="math display">\[| A + E | = \bigl(\begin{smallmatrix}
+-1 &amp; 1 &amp; 1 \\\\
+0 &amp; 3 &amp; 0 \\\\
+-4 &amp; 1 &amp; 4
+\end{smallmatrix}\bigr) \rightarrow \bigl(\begin{smallmatrix}
+1 &amp; 0 &amp; -1 \\\\ 
+0 &amp; 1 &amp; 0 \\\\ 
+0 &amp; 0 &amp; 0
+\end{smallmatrix}\bigr) \rightarrow 
+\left\{\begin{matrix}
+x_{1} - x_{3} = 0\\\\ 
+x_{2} = 0
+\end{matrix}\right. \rightarrow p_{1} = \bigl(\begin{smallmatrix}
+1\\\\ 
+0\\\\ 
+1
+\end{smallmatrix}\bigr)\]</span></p>
+<p>2. 当 <span class="math inline">\(\lambda =2\)</span> 解线性方程组 <span class="math inline">\((A - 2E)x = 0\)</span> 得</p>
+<p><span class="math display">\[\left | A-2E \right | = \bigl(\begin{smallmatrix}
+-4 &amp; 1 &amp; 1 \\\\ 
+0 &amp; 0 &amp; 0 \\\\ 
+-4 &amp; 1 &amp; 1
+\end{smallmatrix}\bigr) \rightarrow \bigl(\begin{smallmatrix}
+-4 &amp; 1 &amp; 1 \\\\ 
+0 &amp; 0 &amp; 0 \\\\ 
+0 &amp; 0 &amp; 0
+\end{smallmatrix}\bigr)\]</span></p>
+<p><span class="math display">\[-4x_{1} + x_{2} + x_{3} = 0 \rightarrow p_{2} = \bigl(\begin{smallmatrix}
+0\\\\ 
+1\\\\ 
+-1
+\end{smallmatrix}\bigr)\ p_{3} = \bigl(\begin{smallmatrix}
+1 \\\\ 
+0 \\\\ 
+4
+\end{smallmatrix}\bigr)\]</span></p>
+<p>3. <span class="math inline">\(p_{1}, p_{2}, p_{3}\)</span> 为基础解系,设 <span class="math inline">\(P = (p_{1}, p_{2}, p_{3})\)</span> 即</p>
+<p><span class="math display">\[P = (p_{1}, p_{2}, p_{3}) = \bigl(\begin{smallmatrix}
+1 &amp; 0 &amp; 1 \\\\ 
+0 &amp; 1 &amp; 0 \\\\ 
+1 &amp; -1 &amp; 4
+\end{smallmatrix}\bigr)\]</span></p>
+<p>则</p>
+<p><span class="math display">\[P^{-1} A P = \bigl(\begin{smallmatrix}
+-1 &amp;  &amp; \\\\ 
+ &amp; 2 &amp; \\\\ 
+ &amp;  &amp; 2
+\end{smallmatrix}\bigr)\]</span></p>
+<h2 id="pca">PCA</h2>
+<h3 id="特征值特征向量的意义">特征值特征向量的意义</h3>
+<p><strong>Q：</strong> 一个矩阵和一个向量相乘的意义是什么？为什么可以等同于一个常数和一个向量相乘？</p>
+<p><strong>A：</strong> 一个矩阵和一个向量相乘的意义在于对该向量做旋转或伸缩变换，旋转改变了方向、伸缩改变了大小。之间的变换规律是：一个矩阵和该矩阵的<strong>非特征向量</strong>相乘是对该向量的旋转变换，而与<strong>特征向量</strong>相乘是对该向量的伸缩变换，也就是说一个矩阵和该矩阵的特征向量相乘与一个实数和特征向量相乘的联系就是该向量发生了伸缩变换。因此特征向量的作用得以明晰，它的作用就是在一个矩阵 <span class="math inline">\(A\)</span> 的变换下做伸缩变换，伸缩多少呢？由 <span class="math inline">\(A \cdot x = \lambda x\)</span> 易知伸缩了 <span class="math inline">\(\lambda\)</span> 倍，即伸缩了<code>特征值</code>倍</p>
+<h3 id="特征值特征向量性质">特征值特征向量性质</h3>
+<ol type="1">
+<li><p>对于<span class="math inline">\(A \cdot x = \lambda x\)</span> ，若所有特征值各不相同则对应的所有特征向量线性无关，此时 <span class="math inline">\(A\)</span> 可被对角化为 <span class="math display">\[ A = U \Lambda U^{-1}\]</span> 其中 <span class="math inline">\(U = [u_{1}, u_{2}, ..., u_{n}]\)</span> 是特征向量组成的矩阵，对角矩阵 <span class="math inline">\(\Lambda = Diag(\lambda _1, \lambda _2, ..., \lambda _n)\)</span></p></li>
+<li><p>在(1)条件下，若矩阵 <span class="math inline">\(A\)</span> 是<strong>对称矩阵</strong>则其相应的所有特征向量正交, 此时有<span class="math inline">\(UU^{T} = U^{T}U = E\)</span>,有 <span class="math display">\[A = U \Lambda U^{T} 
+\\\\= [u_1, u_2, ..., u_n][\lambda _1, \lambda _2, ..., \lambda _n][{u_1}^{T}, {u_2}^{T}, ..., {u_n}^{T}]^{T}
+\\\\= \sum_{i=1}^{n} \lambda _i u_i {u_i}^{T}\]</span> 对于 <span class="math inline">\(A = \sum_{i=1}^{n} \lambda _i u_i {u_i}^{T}\)</span> 是否应该有所思考呢？假如我们已经对对角矩阵中 <span class="math inline">\(\lambda\)</span> 进行了逆序排序，如果 <span class="math inline">\(n\)</span> 很大且 <span class="math inline">\(\lambda\)</span> 只有前m (m &lt; n) 个值较大，后面的都很小，显然如果我们只取前m个那么对整体的影响应该也不是很大。所以这里已经凸显了<code>降维</code>的思想了</p></li>
+</ol>
+<h3 id="pca的意义">PCA的意义</h3>
+<p>给定一个矩阵 <span class="math inline">\(x \in R^{m \times n}\)</span>, 例如：</p>
+<p><span class="math display">\[x = \begin{bmatrix}
+a_1 &amp; a_2 &amp; ... &amp; a_n\\\\ 
+b_1 &amp; b_2 &amp; ... &amp; b_n
+\end{bmatrix}\]</span></p>
+<p>选择k&lt;m个正交基进行降维的同时又尽量保留原始的信息。即使得 <span class="math inline">\(x\)</span> 变换到这组正交基后<strong>使得行向量（特征）之间的协方差为0，而每个行向量的方差尽可能大</strong>，也就是通过正交变化将一组可能存在相关性的变量转为一组线性不相关的变量，通俗地说就是<code>去相关性</code> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">为什么要“去相关性”呢？</span><br><span class="line">举个例子，有一个长方形长和宽为x, y且有x+y&#x3D;A，求长和宽为何值时长方形有最大面积。</span><br><span class="line">很显然由于x, y是相关的，你会用x来代替y，即y &#x3D; A-x。</span><br><span class="line">设长方形面积为W, 则有 W &#x3D; -x^2 + Ax，接下来可根据二次函数的特点来求解最大面积。</span><br><span class="line">由例子可知，我们可以去掉y,因为x、y是相关的，用x可以表示y，这样的话使得求解更方便</span><br></pre></td></tr></table></figure> 对于协方差矩阵有</p>
+<p><span class="math display">\[C_x = \frac{1}{n} xx^{T} = \begin{bmatrix}
+\frac{1}{n} \sum_{i=1}^{n}a_i^{2} &amp; \frac{1}{n} \sum_{i=1}^{n}a_i b_i\\\\ 
+\frac{1}{n} \sum_{i=1}^{n}a_i b_i &amp; \frac{1}{n} \sum_{i=1}^{n}b_i^{2} 
+\end{bmatrix}\]</span></p>
+<p>(注意：<span class="math inline">\(x\)</span> 已经进行了去中心化处理，即 <span class="math inline">\(x \leftarrow x - \mu\)</span> )</p>
+<p>可知协方差矩阵的主对角线是特征的方差，而副对角线是特征间的协方差，可知协方差矩阵是<strong>对称矩阵</strong>，又因为PCA的目标是使得协方差尽可能小最好为0，方差尽可能大，<strong>也就是相当于使得协方差矩阵上对角线的值尽可能大而副对角线上的值尽可能小。是不是觉得对角矩阵 <span class="math inline">\(\Lambda = [\lambda _1, \lambda _2, ..., \lambda _n]\)</span> 很符合这样的矩阵呢？</strong></p>
+<p>按照这个思路，我们假设变换矩阵为 <span class="math inline">\(Y = Qx\)</span>，则</p>
+<p><span class="math display">\[C_Y = \frac{1}{n} YY^{T} = \frac{1}{n} Qxx^{T}Q^{T} = QC_xQ^{T}\]</span></p>
+<p>如何使得 <span class="math inline">\(C_Y\)</span> 是一个对角矩阵呢？</p>
+<p>我们求解原矩阵<span class="math inline">\(x\)</span>的协方差矩阵 <span class="math inline">\(C_{x}\)</span> 的特征向量矩阵，有</p>
+<p><span class="math display">\[C_{x} = U\Lambda U^{T} \Rightarrow \Lambda = U^{T}C_xU\]</span></p>
+<p>如果使得 <span class="math inline">\(Q = U^{T}\)</span> 那么 <span class="math inline">\(C_{Y} = U^{T}C_{x}U = \Lambda\)</span> 不就满足 <span class="math inline">\(C_{Y}\)</span> 是对角矩阵了吗？</p>
+<p>也就是说我们用<strong>原矩阵 <span class="math inline">\(x\)</span> 的协方差矩阵 <span class="math inline">\(C_{X}\)</span> 的特征向量矩阵来使得 <span class="math inline">\(C_{Y}\)</span> 是对角矩阵</strong>。</p>
+<p>到这里，你应该大致明白了PCA的大概原理了。接下来举一个例子来实现整个过程。</p>
+<p>设 <span class="math inline">\(x = \begin{bmatrix} -1 &amp; -1 &amp; 0 &amp; 2 &amp; 0\\\\ -2 &amp; 0 &amp; 0 &amp; 1 &amp; 1 \end{bmatrix}\)</span>，用PCA将 <span class="math inline">\(x\)</span> 降至1维。</p>
+<p>解：</p>
+<p><span class="math display">\[C_x = \frac{1}{n} xx^{T} = \begin{bmatrix}
+\frac{1}{n} \sum_{i=1}^{n}a_i^{2} &amp; \frac{1}{n} \sum_{i=1}^{n}a_i b_i\\\\ 
+\frac{1}{n} \sum_{i=1}^{n}a_i b_i &amp; \frac{1}{n} \sum_{i=1}^{n}b_i^{2} 
+\end{bmatrix} = \begin{bmatrix}
+\frac{6}{5} &amp; \frac{4}{5}\\\\ 
+\frac{4}{5} &amp; \frac{6}{5}
+\end{bmatrix}\]</span></p>
+<p>求得协方差矩阵 <span class="math inline">\(C_{x}\)</span> 的特征值为 <span class="math inline">\(\lambda _{1} = 2, \lambda _{2} = \frac{2}{5}\)</span>，对特征值进行降序排序得到对应的特征向量分别为 <span class="math display">\[\begin{bmatrix}
+\frac{\sqrt{2}}{2}\\\\ 
+\frac{-\sqrt{2}}{2}
+\end{bmatrix},
+\begin{bmatrix}
+\frac{\sqrt{2}}{2}\\\\ 
+\frac{\sqrt{2}}{2}
+\end{bmatrix}\]</span></p>
+<p>所以</p>
+<p><span class="math display">\[U = \begin{bmatrix}
+\frac{\sqrt{2}}{2} &amp; \frac{\sqrt{2}}{2}\\\\ 
+\frac{-\sqrt{2}}{2} &amp; \frac{\sqrt{2}}{2}
+\end{bmatrix}
+\\\\
+Q = U^{T} = U = \begin{bmatrix}
+\frac{\sqrt{2}}{2} &amp; \frac{-\sqrt{2}}{2}\\\\ 
+\frac{\sqrt{2}}{2} &amp; \frac{\sqrt{2}}{2}
+\end{bmatrix}\]</span></p>
+<p>可验证有 <span class="math display">\[\Lambda  = U^{T}C_{x} U\]</span></p>
+<p>由于降至一维且 <span class="math inline">\(\lambda _{1} &gt; \lambda _{2}\)</span> 故选择 <span class="math inline">\(\lambda _{1}\)</span> 对应的维度,即</p>
+<p><span class="math display">\[x{}&#39; = \begin{bmatrix}
+\frac{\sqrt{2}}{2} &amp; \frac{-\sqrt{2}}{2}
+\end{bmatrix} x =  \begin{bmatrix}
+\frac{-3\sqrt{2}}{2} &amp; \frac{-\sqrt{2}}{2} &amp; 0 &amp; \frac{3\sqrt{2}}{2} &amp; \frac{-\sqrt{2}}{2}
+\end{bmatrix}\]</span></p>
+<p><span class="math inline">\(x{}&#39;\)</span> 即为降维后所得</p>
+<h2 id="python实现pca">python实现PCA</h2>
+<p>有了上面的知识，现在我们可以开始coding了 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># !/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PCA</span>(<span class="params">x, n_components=<span class="number">2</span></span>):</span></span><br><span class="line">    <span class="comment"># 1. 对每个特征（每一行）进行去中心化，即每个数据减去均值</span></span><br><span class="line">    mean_val = np.mean(x, axis=<span class="number">0</span>)</span><br><span class="line">    mean_x = x - mean_val</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 求mean_x协方差方阵</span></span><br><span class="line">    C_x = np.cov(mean_x, rowvar=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 求C_x特征值和特征向量</span></span><br><span class="line">    eig_vals, eig_vects = np.linalg.eig(np.mat(C_x))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4. 对协方差矩阵的特征值从大到小排序</span></span><br><span class="line">    sorted_idx = np.argsort(-eig_vals)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5. 降维</span></span><br><span class="line">    topn_index = sorted_idx[:n_components]</span><br><span class="line">    topn_vects = eig_vects[topn_index, :]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 6. 投影到低维空间</span></span><br><span class="line">    pca_x = topn_vects * x  </span><br><span class="line">    <span class="keyword">return</span> pca_x</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    x = np.mat([[-<span class="number">1</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>], </span><br><span class="line">                [-<span class="number">2</span>,  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    x_ = PCA(x, n_components=<span class="number">1</span>)</span><br><span class="line">    print(x_)</span><br></pre></td></tr></table></figure></p>
+<h2 id="补充">补充</h2>
+<p>上述的求解过程是针对方阵的，如果是非方阵可以用SVD去求解，关于SVD这里不详细介绍，后面会有专文介绍。</p>
+<p>SVD可将矩阵（不一定是方阵）分解为三个矩阵</p>
+<p><span class="math display">\[A_{m \times n} = U_{m\times m} \Sigma_{m\times n}V^{T}_{n\times n} \approx U_{m\times k} \Sigma_{k\times k}V^{T}_{k\times n}\]</span></p>
+<p><span class="math inline">\(U,V^{T}\)</span> 称为酉矩阵， <span class="math inline">\(\Sigma\)</span> 称为奇异矩阵，对于 <span class="math inline">\(k\times k\)</span> 的奇异矩阵 <span class="math inline">\(\Sigma\)</span> 它的主对角线为零，对应的值称为奇异值，非主对角线上的值均为0 (是不是和上面的对角矩阵很像)，同理求解PCA时需要用到奇异矩阵 <span class="math inline">\(\Sigma\)</span></p>
+<h2 id="refrence">Refrence</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/sunshine_in_moon/article/details/51513880">sunshine_in_moon`s blog</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/24/%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88/" rel="prev" title="排列组合">
+                  <i class="fa fa-chevron-left"></i> 排列组合
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/04/01/%E4%B8%80%E6%96%87%E8%AF%BB%E6%87%82NLP%E7%B3%BB%E5%88%97-%E9%99%84%E4%BB%A3%E7%A0%81/" rel="next" title="一文读懂NLP系列_附代码">
+                  一文读懂NLP系列_附代码 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">156k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:22</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+    </div>
+</body>
+</html>

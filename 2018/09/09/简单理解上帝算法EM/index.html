@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/xiaoming-48x48.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiaoming-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiaoming-16x16.ico">
+  <link rel="mask-icon" href="/images/xiaoming-48x48.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"seanlee97.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="EM(Expectation Maximization, 期望最大)算法也称“上帝算法”，能称为“上帝”可见它有多牛掰。 EM的原理很简单但真正理解起来是挺痛苦的一件事，本文以凡人视角尝试理解上帝本意。 知识储备 KL距离 KL距离又称相对熵(relative entropy)，用来衡量空间上两个概率分布 \(P(x)\)，\(Q(x)\) 的相对差距的测度（通俗的说就是两个概率分布的距离） \[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单理解&quot;上帝算法&quot;EM">
+<meta property="og:url" content="https://seanlee97.github.io/2018/09/09/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E4%B8%8A%E5%B8%9D%E7%AE%97%E6%B3%95EM/index.html">
+<meta property="og:site_name" content="明天探索者">
+<meta property="og:description" content="EM(Expectation Maximization, 期望最大)算法也称“上帝算法”，能称为“上帝”可见它有多牛掰。 EM的原理很简单但真正理解起来是挺痛苦的一件事，本文以凡人视角尝试理解上帝本意。 知识储备 KL距离 KL距离又称相对熵(relative entropy)，用来衡量空间上两个概率分布 \(P(x)\)，\(Q(x)\) 的相对差距的测度（通俗的说就是两个概率分布的距离） \[">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://seanlee97.github.io/images/posts/em/jensen.jpg">
+<meta property="og:image" content="https://seanlee97.github.io/images/posts/em/aotufunc.png">
+<meta property="og:image" content="https://seanlee97.github.io/images/posts/em/gmm.png">
+<meta property="article:published_time" content="2018-09-09T12:00:07.000Z">
+<meta property="article:modified_time" content="2021-03-07T10:05:36.808Z">
+<meta property="article:author" content="Sean Lee">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://seanlee97.github.io/images/posts/em/jensen.jpg">
+
+
+<link rel="canonical" href="https://seanlee97.github.io/2018/09/09/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E4%B8%8A%E5%B8%9D%E7%AE%97%E6%B3%95EM/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>简单理解"上帝算法"EM | 明天探索者</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">明天探索者</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E5%82%A8%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">知识储备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kl%E8%B7%9D%E7%A6%BB"><span class="nav-number">1.1.</span> <span class="nav-text">KL距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.</span> <span class="nav-text">极大似然估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.</span> <span class="nav-text">隐变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jensen-%E4%B8%8D%E7%AD%89%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">Jensen 不等式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%B9%E5%87%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.1.</span> <span class="nav-text">凹凸函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#em%E7%AE%97%E6%B3%95%E7%9A%84%E6%8E%A8%E5%AF%BC"><span class="nav-number">2.</span> <span class="nav-text">EM算法的推导</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#e%E6%AD%A5"><span class="nav-number">2.1.</span> <span class="nav-text">E步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#m%E6%AD%A5"><span class="nav-number">2.2.</span> <span class="nav-text">M步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%BC%E8%BF%B0"><span class="nav-number">2.3.</span> <span class="nav-text">综述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gmmgaussian-mixed-model-%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B%E4%B8%8Eem"><span class="nav-number">3.</span> <span class="nav-text">GMM(Gaussian Mixed Model) 高斯混合模型与EM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%BB%8F%E5%85%B8%E7%9A%84%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">3.1.</span> <span class="nav-text">一个经典的高斯混合模型的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E7%9A%84%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="nav-number">3.2.</span> <span class="nav-text">高斯分布的极大似然估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gmm"><span class="nav-number">3.3.</span> <span class="nav-text">GMM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#e%E6%AD%A5-1"><span class="nav-number">3.3.1.</span> <span class="nav-text">E步</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#refrence"><span class="nav-number">4.</span> <span class="nav-text">Refrence</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sean Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Sean Lee</p>
+  <div class="site-description" itemprop="description">一枚小小的程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/09/09/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E4%B8%8A%E5%B8%9D%E7%AE%97%E6%B3%95EM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          简单理解"上帝算法"EM
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-09 20:00:07" itemprop="dateCreated datePublished" datetime="2018-09-09T20:00:07+08:00">2018-09-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>EM(Expectation Maximization, 期望最大)算法也称“上帝算法”，能称为“上帝”可见它有多牛掰。</p>
+<p>EM的原理很简单但真正理解起来是挺痛苦的一件事，本文以凡人视角尝试理解上帝本意。</p>
+<h2 id="知识储备">知识储备</h2>
+<h3 id="kl距离">KL距离</h3>
+<p>KL距离又称相对熵(relative entropy)，用来衡量空间上两个概率分布 <span class="math inline">\(P(x)\)</span>，<span class="math inline">\(Q(x)\)</span> 的相对差距的测度（通俗的说就是两个概率分布的距离）</p>
+<p><span class="math display">\[\begin{align*}
+D_{KL}(P||Q) &amp; = \sum_{i} P(i)log\ \frac{P(i)}{Q(i)} \\
+&amp; = \sum_{i} P(i) log\ P(i) - \sum_{i} P(i) log\  Q(i) \\
+&amp; = E_{P}(log\ P(i)) - E_{P}(log\ Q(i))
+\end{align*} \tag{1}\]</span></p>
+<p><span class="math inline">\((1)\)</span> 式便于理解"距离"的概念，因为A, B两点的距离我们一般表示为 <span class="math inline">\(|A-B|\)</span> ，当 <span class="math inline">\(P\)</span> 和 <span class="math inline">\(Q\)</span> 是同概率分布时KL距离为0</p>
+<h3 id="极大似然估计">极大似然估计</h3>
+<p>极大似然估计，是用来估计一个概率模型的参数的一种方法，它一般求解似然函数</p>
+<p><span class="math display">\[L(\theta | x_{1}...x_{m}) = f_{\theta}(x_{1}...x_{m})\]</span></p>
+<p>取最大值时的参数 <span class="math inline">\(\widehat{\theta}\)</span></p>
+<p><span class="math display">\[\widehat{\theta} = \underset{\theta}{argmax} L(\theta | x_{1}...x_{m})\]</span></p>
+<h3 id="隐变量">隐变量</h3>
+<p>在统计学中，隐变量或潜变量指的是不可观测的随机变量,隐变量可以通过使用数学模型依据观测得的数据被推断出来。</p>
+<p>通俗的说隐变量是存在的但是你无法看到。举个例子吧，分类和聚类看起来是差不多的，都是把一堆相似的东西分到一起，但是分类（显式）提供了类别信息，而聚类没有（显式）提供类别信息，聚类之所以能把一堆相似的东西分到一起可以认为它内部定义了一个“隐藏”的类别信息，可以认为是隐变量</p>
+<p>（上述解释系本人捏造的，不一定正确）</p>
+<h3 id="jensen-不等式">Jensen 不等式</h3>
+<p><img src="/images/posts/em/jensen.jpg" /></p>
+<p>如果 <span class="math inline">\(f\)</span> 是凸函数(如上图)， <span class="math inline">\(x\)</span> 是随机变量有</p>
+<p><span class="math display">\[E(f(x)) \geq f(E(x)) \tag{2}\]</span></p>
+<p>凹函数则相反</p>
+<p><span class="math display">\[E(f(x)) \leq f(E(x))\]</span></p>
+<p><strong>当 <span class="math inline">\(x\)</span> 是常量时上式取等</strong>，即上图<span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>两点重合时取等</p>
+<p>Jensen不等式在下述EM算法的推导中很重要</p>
+<h4 id="凹凸函数">凹凸函数</h4>
+<p>可能受中文<code>凹凸</code>字型的影响会对<code>凹凸</code>函数有歧义，凸函数可理解为<code>下凸</code>，凹函数可理解为<code>上凸</code></p>
+<p><img src="/images/posts/em/aotufunc.png" /></p>
+<h2 id="em算法的推导">EM算法的推导</h2>
+<p>EM算法主要分两个求解步骤，称为E步和M步</p>
+<h3 id="e步">E步</h3>
+<p>假设有训练集</p>
+<p><span class="math display">\[{x^{1}, ...., x^{m}}\]</span></p>
+<p>包含 <span class="math inline">\(m\)</span> 个独立样本，我们希望从中找到该组数据的模型 <span class="math inline">\(p(x, z)\)</span> 的参数</p>
+<p>在这里我们先以<strong>极大似然</strong>的思想去建立目标函数，取对数似然函数</p>
+<p><span class="math display">\[L(\theta) = \sum_{i=1}^{m} log\ p(x; \theta) \tag{3}\]</span></p>
+<p>我们给 <span class="math inline">\((3)\)</span> 式加入隐变量 <span class="math inline">\(z\)</span> , 对于联合分布 <span class="math inline">\(p(x, z; \theta)\)</span> 有 <span class="math inline">\(\sum_{z}\ p(x, z; \theta) = p(x; \theta)\)</span>, 故有</p>
+<p><span class="math display">\[
+\begin{align*}
+L(\theta) &amp; = \sum_{i=1}^{m} log\ p(x; \theta) \\
+&amp; = \sum_{i=1}^{m} log\ \sum_{z} p(x, z; \theta)
+\end{align*} \tag{4}
+\]</span></p>
+<p><span class="math inline">\(z\)</span> 是随机的隐变量，直接找到参数的估计是很困难的，我们要做的是建立 <span class="math inline">\(L(\theta)\)</span> 的下界，然后<strong>求该下界的最大值，重复求解直至收敛到局部最大值</strong></p>
+<p>因为假设了样本是独立的，故整体的概率有</p>
+<p><span class="math display">\[P = \prod_{i} p(x^{(i)}; \theta) = \prod_{i} \sum_{z^{(i)}}  p(x^{(i)}, z^{(i)}; \theta)\]</span></p>
+<p>为了方便推导，一般两边取对数，故有</p>
+<p><span class="math display">\[\begin{align*}
+log\ P &amp; = \sum_{i} log\ p(x^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} p(x^{(i)}, z^{(i)}; \theta)
+\end{align*} \tag{5}\]</span></p>
+<p>现在我们假设 <span class="math inline">\(Q_{i}\)</span> 是 <span class="math inline">\(z\)</span> 的某一分布，<span class="math inline">\(Q_{i} \geqslant 0\)</span>， <span class="math inline">\(\sum_{i} Q_{i} = 1\)</span>，此时 <span class="math inline">\((5)\)</span> 有</p>
+<p><span class="math display">\[\begin{align*}
+log\ P &amp; = \sum_{i} log\ p(x^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} p(x^{(i)}, z^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} Q_{i}(z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})}
+\end{align*} \tag{6}\]</span></p>
+<p>对于 <span class="math inline">\((6)\)</span> 有</p>
+<p><span class="math display">\[\sum_{i} log\  \sum_{z^{(i)}} Q_{i}(z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} = \sum_{i} log(E_{Q_{i}} (\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})}) ) \tag{7}\]</span></p>
+<p>因为<code>log(x)</code>是凹函数，根据<strong>Jensen不等式</strong>，对于<span class="math inline">\((7)\)</span> 有</p>
+<p><span class="math display">\[\begin{align*}
+\sum_{i} log(E_{Q_{i}} ( \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})}) )
+\geq \sum_{i} E_{Q_{i}}(log( \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})}) )
+=\sum_{i} \sum_{z^{(i)}} Q_{i}(z^{(i)}) log\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} 
+\end{align*} \tag{8}\]</span></p>
+<p>因此由<span class="math inline">\((8)\)</span>可得</p>
+<p><span class="math display">\[\begin{align*}
+log\ P &amp; = \sum_{i} log\ p(x^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} p(x^{(i)}, z^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} Q_{i}(z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} \\
+&amp; \geq \sum_{i} \sum_{z^{(i)}} Q_{i}(z^{(i)}) log\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} 
+\end{align*} \tag{9}\]</span></p>
+<p>因为之前已经说了我们要求最大下界，回到Jensen不等式 <span class="math inline">\((2)\)</span> 当x为常量时才能取等号，也就是对于 <span class="math inline">\((8)\)</span> 当</p>
+<p><span class="math display">\[\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} = c \tag{10}\]</span></p>
+<p><span class="math inline">\(c\)</span> 为常数时才能取等，从<strong>KL距离</strong>解释就是当<span class="math inline">\(p\)</span> 和 <span class="math inline">\(Q\)</span> 的KL距离为0时才能取等，也就是说 <span class="math inline">\(p\)</span> 和 <span class="math inline">\(Q\)</span> 是同分布的，而由 <span class="math inline">\((10)\)</span>可知 <strong><span class="math inline">\(p\)</span> 和 <span class="math inline">\(Q\)</span> 是线性关系</strong>，故属于同分布, 对<span class="math inline">\(p\)</span>归一化有</p>
+<p><span class="math display">\[\frac{p(x^{(i)}, z^{(i)}; \theta)}{\sum_{z} p(x^{(i)}, z; \theta)} = 1 \tag{11}\]</span></p>
+<p>此时刚好满足 <span class="math inline">\(\sum_{z} Q_{i}(z^{(i)}) = 1\)</span>，因此我们可以用 <span class="math inline">\(p\)</span> 来表示 <span class="math inline">\(Q\)</span></p>
+<p><span class="math display">\[\begin{align*}
+Q_{i}(z^{(i)}) &amp; = \frac{p(x^{(i)}, z^{(i)}; \theta)}{\sum_{z} p(x^{(i)}, z; \theta)} \\
+&amp; = \frac{p(x^{(i)}, z^{(i)}; \theta)}{p(x^{(i)}; \theta)} \\
+&amp; = p(z^{(i)} | x^{(i)}; \theta)
+\end{align*} \tag{12}\]</span></p>
+<p>由<span class="math inline">\((12)\)</span>可知，<span class="math inline">\(Q_{i}(z^{(i)})\)</span> 的估计就是给定 <span class="math inline">\(x^{(i)}\)</span> 下 <span class="math inline">\(z^{(i)}\)</span> 发生的条件分布，此时可以使得 <span class="math inline">\((9)\)</span> 式取等</p>
+<p>因此<strong>E步可以认为是固定参数 <span class="math inline">\(\theta\)</span> 最大化 <span class="math inline">\(Q_{i}(z^{(i)})\)</span></strong></p>
+<h3 id="m步">M步</h3>
+<p><strong>M步的思想是固定住 <span class="math inline">\(Q_{i}(z^{(i)})\)</span> 最大化 <span class="math inline">\(\theta\)</span></strong>，即</p>
+<p><span class="math display">\[\theta := \underset{\theta}{argmax} \sum_{i} \sum_{z^{(i)}} Q_{i}(z^{(i)}) log\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} \tag{13}\]</span></p>
+<p>至于M步如何求解就是EM算法计算的难点所在，此文不做详细讨论</p>
+<h3 id="综述">综述</h3>
+<p>由上可知EM算法，就是通过E步和M步来循环更新 <span class="math inline">\(\theta\)</span> 和 <span class="math inline">\(Q\)</span> 使得极值推向设定的收敛值</p>
+<h2 id="gmmgaussian-mixed-model-高斯混合模型与em">GMM(Gaussian Mixed Model) 高斯混合模型与EM</h2>
+<p>高斯混合模型是指多个高斯分布的混合 <img src="/images/posts/em/gmm.png" /></p>
+<h3 id="一个经典的高斯混合模型的例子">一个经典的高斯混合模型的例子</h3>
+<p>随机挑选10000个志愿者，然后测量他们的身高，若样本中存在男性和女性，且他们的身高分别服从 <span class="math inline">\(N(\mu_{1}, \sigma_{1})\)</span> 和 <span class="math inline">\(N(\mu_{2}, \sigma_{2})\)</span> 的分布，在性别未知的情况下试估计参数 <span class="math inline">\(\mu_{1}\)</span>、<span class="math inline">\(\sigma_{1}\)</span>、<span class="math inline">\(\mu_{2}\)</span>、<span class="math inline">\(\sigma_{2}\)</span></p>
+<p>由于性别未知，用常规的方法是无法求得男女身高对应的高斯分布的，一般用EM算法求解</p>
+<p>在将EM算法求解GMM前，先要知道高斯分布的极大似然估计</p>
+<h3 id="高斯分布的极大似然估计">高斯分布的极大似然估计</h3>
+<p>假定给定一组样本 <span class="math inline">\(x_{1}, x_{2}, ..., x_{n}\)</span> ，已知他们来自于高斯分布 <span class="math inline">\(N(\mu, \sigma)\)</span> ，试估计参数 <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma\)</span></p>
+<p>对数似然估计有</p>
+<p><span class="math display">\[\begin{align*}
+L(x) &amp; = \sum_{i} log \frac{1}{\sqrt{2\pi} \sigma} e^{-\frac{(x_{i}-\mu)^{2}}{2\sigma^{2}}} \\
+&amp; = (\sum_{i} log \frac{1}{\sqrt{2\pi} \sigma}) + (\sum_{i} -\frac{(x_{i}-\mu)^{2}}{2\sigma^{2}}) \\
+&amp; = -\frac{n}{2} log\ 2\pi \sigma^{2} - \frac{1}{2\sigma^{2}} \sum_{i}(x_{i} - \mu)^{2}
+\end{align*} \tag{14}\]</span></p>
+<p>对 <span class="math inline">\(L(x)\)</span> 求偏导有</p>
+<p><span class="math display">\[\frac{\partial L(x)}{\partial \mu} \Rightarrow \mu = \frac{1}{n} \sum_{i} x_{i} \tag{15}\]</span></p>
+<p><span class="math display">\[\frac{\partial L(x)}{\partial \sigma^{2}} \Rightarrow \sigma^{2} = \frac{1}{n}\sum_{i} (x_{i}-\mu)^{2} \tag{16}\]</span></p>
+<p>可知极大似然估计使用了样本均值和样本伪方差（样本方差的分母是 <span class="math inline">\(n-1\)</span>, 这里是 <span class="math inline">\(n\)</span>）来估计参数</p>
+<h3 id="gmm">GMM</h3>
+<p>随机变量 <span class="math inline">\(X\)</span> 是由k个高斯分布混合而成，取各个高斯分布的概率为 <span class="math inline">\(\pi_{1}, \pi_{2}, ..., \pi_{k}\)</span> 第 <span class="math inline">\(i\)</span> 个高斯分布的均值为 <span class="math inline">\(\mu_{i}\)</span> ，方差为 <span class="math inline">\(\Sigma_{i}\)</span> 。若观测到随机变量的一系列样本 <span class="math inline">\(x_{1}, x_{2}, ..., x_{n}\)</span> ,试估计参数 <span class="math inline">\(\underset{\pi}{\rightarrow} (\pi_{1}, \pi_{2}, ..., \pi_{k})\)</span> 、<span class="math inline">\(\underset{\mu}{\rightarrow} (\mu_{1}, \mu_{2}, ..., \mu_{k})\)</span> 和 <span class="math inline">\(\underset{\Sigma}{\rightarrow} (\Sigma_{1}, \Sigma_{2}, ..., \Sigma_{k})\)</span></p>
+<p>对上述问题先建立对数似然函数</p>
+<p><span class="math display">\[L_{\pi, \mu, \Sigma} (x) = \sum_{i=1}^{n}log(\sum_{k=1}^{K} \pi_{k} N(x_{i} | \mu_{k}, \Sigma_{k})) \tag{17}\]</span></p>
+<p>由于在对数函数里有加和一般是不以直接求偏导的，故采用EM算法取估计参数</p>
+<h4 id="e步-1">E步</h4>
+<p>E步主要估计数据来自哪个组份(E步假设待估计参数是固定的)：对于每个样本 <span class="math inline">\(x_{i}\)</span> 它由<strong>第k个组份生成的概率</strong>为：</p>
+<p><span class="math display">\[\gamma(i, k) = \frac{\pi_{k} N(x_{i}|\mu_{k}, \Sigma_{k})}{\sum_{j=1}^{k} \pi_{j}N(X_{i} | \mu_{j}, \Sigma_{j})} \tag{18}\]</span></p>
+<p>#### M步 对于所有样本点，对于组份k而言，可看做生成了 { <span class="math inline">\(\gamma(i, k)x_{i} | i=1, 2, ..., N\)</span> } 这些点，组分k是一个标准的高斯分布，由 <span class="math inline">\((15), (16)\)</span> 可得</p>
+<p><span class="math display">\[\left\{\begin{matrix}
+N_{k} = \sum_{i=1}^{n}\gamma (i, k) \\ 
+\mu_{k} = \frac{1}{N_{k}} \sum_{i=1}^{n}\gamma (i, k) x_{i} \\ 
+\Sigma_{k} = \frac{1}{N_{k}} \sum_{i=1}^{n}\gamma (i, k)(x_{i} - \mu_{i})^{2} \\ 
+\pi_{k} = \frac{N_{k}}{n} = \frac{1}{n} \sum_{i}^{n}\gamma (i, k)
+\end{matrix}\right. \tag{19}\]</span></p>
+<h2 id="refrence">Refrence</h2>
+<p>[0] https://zh.wikipedia.org/wiki/%E9%9A%90%E5%8F%98%E9%87%8F</p>
+<p>[1] 李航 《统计学习方法》</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+              <a href="/tags/ML/" rel="tag"># ML</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/09/01/SVD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8ALSA%E7%9A%84%E6%B1%82%E8%A7%A3/" rel="prev" title="SVD的原理及LSA的求解">
+                  <i class="fa fa-chevron-left"></i> SVD的原理及LSA的求解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/01/%E5%B8%B8%E7%94%A8%E7%9A%84%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/" rel="next" title="常用的梯度下降优化算法">
+                  常用的梯度下降优化算法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">156k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:22</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+    </div>
+</body>
+</html>

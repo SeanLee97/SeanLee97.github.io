@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/xiaoming-48x48.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiaoming-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiaoming-16x16.ico">
+  <link rel="mask-icon" href="/images/xiaoming-48x48.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"seanlee97.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="大家都说python中的元类(metaclass)在真实场景中99%的几率都用不到，但是最大熵理论告诉我们，面对未知风险，我们不能报侥幸心理，我们应该平权看待所有潜在风险，不应该放过任何一处潜在风险。 So，本文主要讲讲python的元类，为了不枯燥无味，本文以一个初级ORM框架例子来讲解。 什么是ORM Object Relational Mapping 即 对象-关系映射，在关系型数据库中就是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谈谈python中的元类以及实现一个简单的ORM框架">
+<meta property="og:url" content="https://seanlee97.github.io/2018/08/23/%E8%B0%88%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%85%83%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84ORM%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="明天探索者">
+<meta property="og:description" content="大家都说python中的元类(metaclass)在真实场景中99%的几率都用不到，但是最大熵理论告诉我们，面对未知风险，我们不能报侥幸心理，我们应该平权看待所有潜在风险，不应该放过任何一处潜在风险。 So，本文主要讲讲python的元类，为了不枯燥无味，本文以一个初级ORM框架例子来讲解。 什么是ORM Object Relational Mapping 即 对象-关系映射，在关系型数据库中就是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-08-22T16:15:27.000Z">
+<meta property="article:modified_time" content="2021-03-07T10:05:36.809Z">
+<meta property="article:author" content="Sean Lee">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://seanlee97.github.io/2018/08/23/%E8%B0%88%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%85%83%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84ORM%E6%A1%86%E6%9E%B6/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>谈谈python中的元类以及实现一个简单的ORM框架 | 明天探索者</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">明天探索者</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AForm"><span class="nav-number">1.</span> <span class="nav-text">什么是ORM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">什么是元类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#object%E7%B1%BB"><span class="nav-number">2.1.</span> <span class="nav-text">1. object类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2. 基本数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%83%E7%B1%BB%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">元类的作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">type类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E7%94%9F%E4%BA%A7%E7%B1%BB"><span class="nav-number">3.1.</span> <span class="nav-text">直接生产类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E7%B1%BB%E5%B1%9E%E6%80%A7"><span class="nav-number">3.2.</span> <span class="nav-text">修改类属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python%E4%B8%AD%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="nav-number">4.</span> <span class="nav-text">python中类的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%83%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="nav-number">5.</span> <span class="nav-text">自定义元类的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E6%89%93%E9%80%A0orm"><span class="nav-number">6.</span> <span class="nav-text">开始打造ORM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8F%8F%E8%BF%B0%E5%99%A8%E5%AE%9A%E4%B9%89%E5%AD%97%E6%AE%B5%E5%B1%9E%E6%80%A7"><span class="nav-number">6.1.</span> <span class="nav-text">1. 使用描述器定义字段属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%85%83%E7%B1%BB"><span class="nav-number">6.2.</span> <span class="nav-text">2. 定义元类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%B1%BB"><span class="nav-number">6.3.</span> <span class="nav-text">3. 定义模型基类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E5%AE%9E%E4%BE%8B"><span class="nav-number">6.4.</span> <span class="nav-text">4. 操作实例</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sean Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Sean Lee</p>
+  <div class="site-description" itemprop="description">一枚小小的程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/08/23/%E8%B0%88%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%85%83%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84ORM%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          谈谈python中的元类以及实现一个简单的ORM框架
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-23 00:15:27" itemprop="dateCreated datePublished" datetime="2018-08-23T00:15:27+08:00">2018-08-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>大家都说python中的元类(metaclass)在真实场景中99%的几率都用不到，但是最大熵理论告诉我们，面对未知风险，我们不能报侥幸心理，我们应该平权看待所有潜在风险，不应该放过任何一处潜在风险。</p>
+<p>So，本文主要讲讲python的元类，为了不枯燥无味，本文以一个初级ORM框架例子来讲解。</p>
+<h3 id="什么是orm">什么是ORM</h3>
+<p>Object Relational Mapping 即 对象-关系映射，在关系型数据库中就是把关系数据库的一行映射为一个对象，即一个类对应一个表，这样，你就不需要每次都用pymysql去封装每条sql了，把重复的操作交给<code>ORM</code>，如<code>sqlalchemy</code>就是一个 <code>ORM</code>框架</p>
+<p>可能这个解释有点牵强，在此举个例子把，比如说你要向一个数据表<code>user</code>插入数据，你可能会写: <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(name, age) <span class="keyword">values</span>(<span class="string">&#x27;seanlee&#x27;</span>, <span class="number">21</span>)</span><br></pre></td></tr></table></figure> 当插入数据到其他表时比如说<code>course</code>时，你又要: <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> course(name, teacher) <span class="keyword">values</span>(<span class="string">&#x27;computer sicence&#x27;</span>, <span class="string">&#x27;Mr.Gates&#x27;</span>)</span><br></pre></td></tr></table></figure> 这时你发现每次插入数据都要自己写完所有语句，且要处理完整个逻辑过程。这真的很累，于是乎，如果有一个框架能把这些复杂的工作给做了，使用者只需封装好模型类即可自动完成复杂的流程。 你的想法可能是这样的： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">ORM</span>):</span></span><br><span class="line">    <span class="comment"># 定义数据表的字段</span></span><br><span class="line">    name = CharField()</span><br><span class="line">    age = IntField()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    user = User()</span><br><span class="line">    user.name = <span class="string">&quot;seanlee&quot;</span></span><br><span class="line">    user.age = <span class="number">21</span></span><br><span class="line">    user.save()   <span class="comment"># 调用save函数框架自动将数据插入到数据库中</span></span><br></pre></td></tr></table></figure> 好了，上面就是<code>ORM</code>的大致思路了，本文要实现的目标就是完成上面代码的内部逻辑。</p>
+<h3 id="什么是元类">什么是元类</h3>
+<p>元类<code>metaclass</code>是类的类，简单的说就是元类是用来生产类的，可以说元类是<strong>最上层</strong>的类。可能还是很难理解，举几个例子把</p>
+<h4 id="object类">1. object类</h4>
+<p>平时大家定义类时可能会继承<code>object</code>类，大家下意识的认为<code>object</code>就是最上层的类了，其实不是，我们输出<code>object</code>的类型看看 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="built_in">type</span>(<span class="built_in">object</span>)) <span class="comment"># &lt;type &#x27;type&#x27;&gt;</span></span><br></pre></td></tr></table></figure> 可以看到<code>object</code>类的类型是<code>type</code>类型，那么<code>type</code>类型又是什么呢？<code>type</code>类型就是指<code>type</code>类，大家都以为<code>type()</code>是一个函数，其实它是一个<strong>类</strong>，当只传一个参数时它会返回参数的类型。</p>
+<p><strong>其实<code>type</code>就是python的元类</strong>，看下面程序： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>))  <span class="comment"># &lt;type &#x27;type&#x27;&gt;</span></span><br></pre></td></tr></table></figure> 可以看到<code>type</code>的类型就是<code>type</code></p>
+<h4 id="基本数据类型">2. 基本数据类型</h4>
+<p>python中的基本数据类型也可看为对象，它们的直属类型的类就是 <code>type</code>，看下面例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>(<span class="number">97</span>)))   <span class="comment"># 整型</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>(<span class="number">97.0</span>))) <span class="comment"># 浮点</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>(<span class="string">&quot;seanlee&quot;</span>))) <span class="comment"># 字符串</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>((<span class="number">9</span>, <span class="number">7</span>))))    <span class="comment"># 元组</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>([<span class="number">9</span>, <span class="number">7</span>])))    <span class="comment"># 列表</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>(&#123;<span class="string">&quot;key&quot;</span>: <span class="string">&quot;val&quot;</span>&#125;))) <span class="comment"># 字典</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;type &#39;type&#39;&gt;</span><br><span class="line">&lt;type &#39;type&#39;&gt;</span><br><span class="line">&lt;type &#39;type&#39;&gt;</span><br><span class="line">&lt;type &#39;type&#39;&gt;</span><br><span class="line">&lt;type &#39;type&#39;&gt;</span><br></pre></td></tr></table></figure></p>
+<h4 id="元类的作用">元类的作用</h4>
+<p>掌握了元类，你就是"类"的老大了，你可以按照你的方式去修改类，就好比你得到了Linux的root帐号，你可以为所欲为了。也好比你是微信群的群主，拥有直接拉人入群、踢人出群的权力，python中的元类也类似可以用于对类属性的增删操作。</p>
+<p>好啦，到这里你应该理解元类的概念了</p>
+<h3 id="type类">type类</h3>
+<p>从此刻起一定要更正观念<code>type</code>是一个类，它有三个参数： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type(what [, bases, dict])</span><br></pre></td></tr></table></figure> 可见后两个参数是可选的，各参数的意义：</p>
+<ul>
+<li>what: 输入的实例</li>
+<li>bases：类的基类，传入的是元组</li>
+<li>dict：类的属性、方法</li>
+</ul>
+<p>举几个例子说明，type的用法</p>
+<h4 id="直接生产类">直接生产类</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">User = <span class="built_in">type</span>(<span class="string">&#x27;User&#x27;</span>, (<span class="built_in">object</span>, ), &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;seanlee&#x27;</span>, <span class="string">&#x27;age&#x27;</span>: <span class="number">21</span>&#125;)</span><br><span class="line">user = User()</span><br><span class="line">print(user.name)  <span class="comment"># seanlee</span></span><br><span class="line">print(user.age)   <span class="comment"># 21</span></span><br></pre></td></tr></table></figure>
+<h4 id="修改类属性">修改类属性</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    name = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">user = User()</span><br><span class="line">print(user.name) <span class="comment"># None</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_name</span>(<span class="params">self</span>):</span></span><br><span class="line">    <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line">User = <span class="built_in">type</span>(<span class="string">&#x27;User&#x27;</span>, (<span class="built_in">object</span>, ), &#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;seanlee&#x27;</span>, <span class="string">&#x27;get_name&#x27;</span>: get_name&#125;)</span><br><span class="line">user = User()</span><br><span class="line">print(user.name)  <span class="comment"># seanlee</span></span><br><span class="line">print(user.get_name())   <span class="comment"># seanlee</span></span><br></pre></td></tr></table></figure>
+<h3 id="python中类的创建">python中类的创建</h3>
+<ul>
+<li>如果类中没有定义metaclass，那么直接用type创建</li>
+<li>如果用户定义了metaclass那么以metaclass的方式创建</li>
+</ul>
+<h3 id="自定义元类的创建">自定义元类的创建</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Metaclass</span>(<span class="params"><span class="built_in">type</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span>(<span class="params">cls, name, bases, attrs, **kwargs</span>):</span></span><br><span class="line">        <span class="comment"># do something here.</span></span><br><span class="line">        print(<span class="string">&quot;call Metaclass&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>(Metaclass, cls).__new__(cls, name, bases, attrs, **kwargs)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">metaclass=Metaclass</span>):</span></span><br><span class="line">    <span class="comment"># __metaclass__ = Metaclass # python2支持的方式</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;call User&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    User()</span><br></pre></td></tr></table></figure>
+<p>输出： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">call Metaclass</span><br><span class="line">call User</span><br></pre></td></tr></table></figure></p>
+<h3 id="开始打造orm">开始打造ORM</h3>
+<h4 id="使用描述器定义字段属性">1. 使用描述器定义字段属性</h4>
+<p>如果不了解描述器，请阅读<a href="https://seanlee97.github.io/2018/08/21/python%E4%B8%AD%E7%9A%84%E6%8F%8F%E8%BF%B0%E5%99%A8/">python中的描述器</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 定义字段属性的基类Field，它的用处主要用于识别类属性中属于字段的那些属性</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Field</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 整型字段属性</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IntField</span>(<span class="params">Field</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, db_column=<span class="string">&quot;&quot;</span></span>):</span></span><br><span class="line">        self._value = <span class="literal">None</span> <span class="comment"># 表的数据</span></span><br><span class="line">        self.db_column = db_column</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(value, <span class="built_in">int</span>):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;input should be a Integer&quot;</span>)</span><br><span class="line">        self._value = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 字符型字段属性</span></span><br><span class="line"><span class="class"><span class="keyword">class</span>  <span class="title">CharField</span>(<span class="params">Field</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, db_column=<span class="string">&quot;&quot;</span></span>):</span></span><br><span class="line">        self._value  = <span class="literal">None</span> </span><br><span class="line">        self.db_column = db_column</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(value, <span class="built_in">str</span>):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;input should be a String&quot;</span>)</span><br><span class="line">        self._value = value</span><br></pre></td></tr></table></figure>
+<h4 id="定义元类">2. 定义元类</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MetaModel</span>(<span class="params"><span class="built_in">type</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span>(<span class="params">cls, name, bases, attrs, **kwargs</span>):</span></span><br><span class="line">        fields = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> key, val <span class="keyword">in</span> attrs.items():</span><br><span class="line">            <span class="comment"># 把attrs中与数据库表字段有关的列提取出来</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(val, Field):</span><br><span class="line">                fields[key] = val   <span class="comment"># value 直接走描述器__get__()</span></span><br><span class="line"></span><br><span class="line">        _meta = &#123;&#125;</span><br><span class="line">        db_table = name.lower()  <span class="comment"># 数据表名称默认取小写类名称</span></span><br><span class="line">        _meta[<span class="string">&#x27;db_table&#x27;</span>] = db_table</span><br><span class="line">        attrs[<span class="string">&#x27;_meta&#x27;</span>] = _meta</span><br><span class="line">        attrs[<span class="string">&#x27;_fields&#x27;</span>] = fields</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 以上过程相当于对类进行了修改</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>(MetaModel, cls).__new__(cls, name, bases, attrs, **kwargs)</span><br></pre></td></tr></table></figure>
+<h4 id="定义模型基类">3. 定义模型基类</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span>(<span class="params">metaclass=MetaModel</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="keyword">for</span> key, val <span class="keyword">in</span> kwargs.items():</span><br><span class="line">            <span class="built_in">setattr</span>(self, key, val)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>(Model, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span>(<span class="params">self</span>):</span></span><br><span class="line">        fields = []</span><br><span class="line">        values = []</span><br><span class="line">        <span class="keyword">for</span> key, val <span class="keyword">in</span> self._fields.items():</span><br><span class="line">            db_column = val.db_column</span><br><span class="line">            <span class="keyword">if</span> db_column <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                db_column = key.lower()</span><br><span class="line">            fields.append(db_column)</span><br><span class="line">            value = <span class="built_in">getattr</span>(self, key) <span class="comment"># 字段的值</span></span><br><span class="line">            values.append(<span class="built_in">str</span>(value))</span><br><span class="line">        sql = <span class="string">&quot;insert &#123;name&#125; (&#123;field&#125;) values (&#123;value&#125;)&quot;</span>.<span class="built_in">format</span>(name=self._meta[<span class="string">&#x27;db_table&#x27;</span>],</span><br><span class="line">                                                             field=<span class="string">&#x27;,&#x27;</span>.join(fields),</span><br><span class="line">                                                             value=<span class="string">&#x27;,&#x27;</span>.join(values))</span><br><span class="line">        <span class="keyword">return</span> sql</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">select</span>(<span class="params">self</span>):</span></span><br><span class="line">        fields = []</span><br><span class="line">        where = []</span><br><span class="line">        <span class="keyword">for</span> key, val <span class="keyword">in</span> self._fields.items():</span><br><span class="line">            db_column = val.db_column</span><br><span class="line">            <span class="keyword">if</span> db_column <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                db_column = key.lower()</span><br><span class="line">            fields.append(db_column)</span><br><span class="line">            v = <span class="built_in">getattr</span>(self, key, <span class="literal">None</span>)</span><br><span class="line">            <span class="keyword">if</span> v <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                where.append([key, <span class="built_in">str</span>(v)])</span><br><span class="line"></span><br><span class="line">        sql = <span class="string">&#x27;select &#123;fields&#125; from &#123;name&#125; where &#123;where&#125;&#x27;</span>.<span class="built_in">format</span>(name=self._meta[<span class="string">&#x27;db_table&#x27;</span>],</span><br><span class="line">                                                                 fields=<span class="string">&#x27;,&#x27;</span>.join(fields),</span><br><span class="line">                                                                 where=<span class="string">&#x27; and &#x27;</span>.join([<span class="string">&#x27;=&#x27;</span>.join(x) <span class="keyword">for</span> x <span class="keyword">in</span> where]),</span><br><span class="line">                                                                 )</span><br><span class="line">        <span class="keyword">return</span> sql</span><br></pre></td></tr></table></figure>
+<p>上述三步就完成了简单orm的搭建了，为了简单没封装真实的数据库操作，仅返回SQL语句而已。</p>
+<h4 id="操作实例">4. 操作实例</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">Model</span>):</span></span><br><span class="line">    name = CharField(db_column=<span class="string">&quot;name&quot;</span>, max_length=<span class="number">10</span>)</span><br><span class="line">    age = IntField(db_column=<span class="string">&quot;age&quot;</span>, <span class="built_in">min</span>=<span class="number">0</span>, <span class="built_in">max</span>=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span> <span class="comment"># 使用内部类来定义数据表的其他属性</span></span><br><span class="line">        db_table = <span class="string">&quot;db_user&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    user = User(name=<span class="string">&#x27;seanlee&#x27;</span>, age=<span class="number">15</span>)</span><br><span class="line">    user.name = <span class="string">&#x27;sean&#x27;</span></span><br><span class="line">    print(user.save())</span><br><span class="line">    print(user.select())</span><br></pre></td></tr></table></figure>
+<p>输出 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert user (name,age) values (sean,15)</span><br><span class="line">select name,age from user where name&#x3D;sean and age&#x3D;15</span><br></pre></td></tr></table></figure></p>
+<p>上述代码放在了Github中，欢迎查阅<a target="_blank" rel="noopener" href="https://github.com/SeanLee97/python_intermediate/blob/master/metaclass/orm.py">python_intermediate / metaclass / orm</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/21/python%E4%B8%AD%E7%9A%84%E6%8F%8F%E8%BF%B0%E5%99%A8/" rel="prev" title="python中的描述器">
+                  <i class="fa fa-chevron-left"></i> python中的描述器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/08/25/%E4%B8%BA%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%8A%A0%E5%85%A5TF-IDF%E7%89%B9%E5%BE%81/" rel="next" title="为朴素贝叶斯加入tf-idf特征">
+                  为朴素贝叶斯加入tf-idf特征 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">156k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:22</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+    </div>
+</body>
+</html>

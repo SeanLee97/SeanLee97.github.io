@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/xiaoming-48x48.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiaoming-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiaoming-16x16.ico">
+  <link rel="mask-icon" href="/images/xiaoming-48x48.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"seanlee97.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="构造和初始化 __init__(self, args) 构造函数 __new__(cls) 传入的是类实例 __del__(self) 析构函数，调用 del cls 时会被调用 属性访问控制 __getattr__(self, name) 如果属性已经定义了那么不会再执行__getattr__()了，而是直接通过访问实例字典返回结果，__getattr__()只在访问未定义的属性时被触发 __s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python常用魔术方法概览">
+<meta property="og:url" content="https://seanlee97.github.io/2018/08/07/python%E5%B8%B8%E7%94%A8%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%A6%82%E8%A7%88/index.html">
+<meta property="og:site_name" content="明天探索者">
+<meta property="og:description" content="构造和初始化 __init__(self, args) 构造函数 __new__(cls) 传入的是类实例 __del__(self) 析构函数，调用 del cls 时会被调用 属性访问控制 __getattr__(self, name) 如果属性已经定义了那么不会再执行__getattr__()了，而是直接通过访问实例字典返回结果，__getattr__()只在访问未定义的属性时被触发 __s">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-08-07T12:39:34.000Z">
+<meta property="article:modified_time" content="2021-03-07T10:05:36.797Z">
+<meta property="article:author" content="Sean Lee">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://seanlee97.github.io/2018/08/07/python%E5%B8%B8%E7%94%A8%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%A6%82%E8%A7%88/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>python常用魔术方法概览 | 明天探索者</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">明天探索者</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%92%8C%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">构造和初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#init__self-args"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">__init__(self, args)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#new__cls"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">__new__(cls)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#del__self"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">__del__(self)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">属性访问控制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#getattr__self-name"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">__getattr__(self, name)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#setattr__self-name-value"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">__setattr__(self, name, value)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#delattr__self-name"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">__delattr__(self, name)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E5%99%A8%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text">描述器对象</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#set__self-cls-value"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">__set__(self, cls, value)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#get__self-cls"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">__get__(self, cls)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#delete__self-cls"><span class="nav-number">3.0.0.3.</span> <span class="nav-text">__delete__(self, cls)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%BC%E5%90%88%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.0.0.4.</span> <span class="nav-text">综合实例</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%B9%E5%99%A8container"><span class="nav-number">4.</span> <span class="nav-text">自定义容器(Container)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#len__self"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">__len__(self)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#setitem__self-name-value"><span class="nav-number">4.0.0.2.</span> <span class="nav-text">__setitem__(self, name, value)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#getitem__self-name"><span class="nav-number">4.0.0.3.</span> <span class="nav-text">__getitem__(self, name)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#delitem__name"><span class="nav-number">4.0.0.4.</span> <span class="nav-text">__delitem__(name)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#iter__self"><span class="nav-number">4.0.0.5.</span> <span class="nav-text">__iter__(self)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#contains__self-item"><span class="nav-number">4.0.0.6.</span> <span class="nav-text">__contains__(self, item)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#missing__self-name"><span class="nav-number">4.0.0.7.</span> <span class="nav-text">__missing__(self, name)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">上下文管理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#enter__self"><span class="nav-number">5.0.0.1.</span> <span class="nav-text">__enter__(self)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#exit__self-exception_type-exception_value-traceback"><span class="nav-number">5.0.0.2.</span> <span class="nav-text">__exit__(self, exception_type, exception_value, traceback)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="nav-number">6.</span> <span class="nav-text">运算符重载</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#eq__self-other"><span class="nav-number">6.0.0.1.</span> <span class="nav-text">__eq__(self, other)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ne__self-other"><span class="nav-number">6.0.0.2.</span> <span class="nav-text">__ne__(self, other)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#lt__self-other"><span class="nav-number">6.0.0.3.</span> <span class="nav-text">__lt__(self, other)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gt__self-other"><span class="nav-number">6.0.0.4.</span> <span class="nav-text">__gt__(self, other)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#le__self-other"><span class="nav-number">6.0.0.5.</span> <span class="nav-text">__le__(self, other)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ge__self-other"><span class="nav-number">6.0.0.6.</span> <span class="nav-text">__ge__(self, other)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">7.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#str__self"><span class="nav-number">7.0.0.1.</span> <span class="nav-text">__str__(self)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#repr__self"><span class="nav-number">7.0.0.2.</span> <span class="nav-text">__repr__(self)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#call__self-args-kwargs"><span class="nav-number">7.0.0.3.</span> <span class="nav-text">__call__(self, *args, **kwargs)</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#refrence"><span class="nav-number"></span> <span class="nav-text">Refrence</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sean Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Sean Lee</p>
+  <div class="site-description" itemprop="description">一枚小小的程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/08/07/python%E5%B8%B8%E7%94%A8%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%A6%82%E8%A7%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python常用魔术方法概览
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-07 20:39:34" itemprop="dateCreated datePublished" datetime="2018-08-07T20:39:34+08:00">2018-08-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="构造和初始化">构造和初始化</h2>
+<h5 id="init__self-args">__init__(self, args)</h5>
+<p>构造函数</p>
+<h5 id="new__cls">__new__(cls)</h5>
+<p>传入的是类实例</p>
+<h5 id="del__self">__del__(self)</h5>
+<p>析构函数，调用 <code>del cls</code> 时会被调用</p>
+<h2 id="属性访问控制">属性访问控制</h2>
+<h5 id="getattr__self-name">__getattr__(self, name)</h5>
+<p>如果属性已经定义了那么不会再执行__getattr__()了，而是直接通过访问实例字典返回结果，__getattr__()只在访问未定义的属性时被触发</p>
+<h5 id="setattr__self-name-value">__setattr__(self, name, value)</h5>
+<p>直接给属性赋值 <code>cls.name = value</code>, 如果该函数内部内部使用<code>self.name = value</code> 时会产生<strong>"无限递归"</strong>的错误，正确的方式应该是 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span>(<span class="params">self, name, value</span>):</span></span><br><span class="line">    self.__dict__[name] = value</span><br></pre></td></tr></table></figure></p>
+<h5 id="delattr__self-name">__delattr__(self, name)</h5>
+<p><code>del cls.name</code> 时会被调用</p>
+<h2 id="描述器对象">描述器对象</h2>
+<h5 id="set__self-cls-value">__set__(self, cls, value)</h5>
+<p><code>cls.innercls = value</code> 用于类中的其他类对象赋值</p>
+<h5 id="get__self-cls">__get__(self, cls)</h5>
+<p><code>cls.innercls</code> 返回类中其他对象传回的值</p>
+<h5 id="delete__self-cls">__delete__(self, cls)</h5>
+<p><code>del cls.innercls</code></p>
+<h5 id="综合实例">综合实例</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Meter</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a meter.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, value=<span class="number">0.0</span></span>):</span></span><br><span class="line">        self.value = <span class="built_in">float</span>(value)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.value</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        self.value = <span class="built_in">float</span>(value)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foot</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a foot.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> instance.meter * <span class="number">3.2808</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        instance.meter = <span class="built_in">float</span>(value) / <span class="number">3.2808</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Distance</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    meter = Meter()</span><br><span class="line">    foot = Foot()</span><br><span class="line"></span><br><span class="line">d = Distance()</span><br><span class="line"><span class="built_in">print</span> d.meter, d.foot  <span class="comment"># 0.0, 0.0</span></span><br><span class="line">d.meter = <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span> d.meter, d.foot  <span class="comment"># 1.0 3.2808</span></span><br><span class="line">d.meter = <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span> d.meter, d.foot  <span class="comment"># 2.0 6.5616</span></span><br></pre></td></tr></table></figure>
+<h2 id="自定义容器container">自定义容器(Container)</h2>
+<h5 id="len__self">__len__(self)</h5>
+<p><code>len(con)</code> 返回容器长度</p>
+<h5 id="setitem__self-name-value">__setitem__(self, name, value)</h5>
+<p><code>con[name] = value</code> 直接下标赋值</p>
+<h5 id="getitem__self-name">__getitem__(self, name)</h5>
+<p><code>con[name]</code> 直接下标访问</p>
+<h5 id="delitem__name">__delitem__(name)</h5>
+<p><code>del con[name]</code> 删除下标</p>
+<h5 id="iter__self">__iter__(self)</h5>
+<p>使得容器支持迭代器方式访问 <code>for x in con</code></p>
+<h5 id="contains__self-item">__contains__(self, item)</h5>
+<p><code>name in con</code> 可以返回布尔值</p>
+<h5 id="missing__self-name">__missing__(self, name)</h5>
+<p>容器中没有name时会被调用</p>
+<h2 id="上下文管理">上下文管理</h2>
+<p><code>with</code> 关键字可实现上下文(环境)管理</p>
+<h5 id="enter__self">__enter__(self)</h5>
+<p>进入环境时触发</p>
+<h5 id="exit__self-exception_type-exception_value-traceback">__exit__(self, exception_type, exception_value, traceback)</h5>
+<p>退出环境时触发，一般用来关闭资源</p>
+<h2 id="运算符重载">运算符重载</h2>
+<h5 id="eq__self-other">__eq__(self, other)</h5>
+<p>重载 <code>=</code></p>
+<h5 id="ne__self-other">__ne__(self, other)</h5>
+<p>重载 <code>!=</code></p>
+<h5 id="lt__self-other">__lt__(self, other)</h5>
+<p>重载 <code>&lt;</code></p>
+<h5 id="gt__self-other">__gt__(self, other)</h5>
+<p>重载 <code>&gt;</code></p>
+<h5 id="le__self-other">__le__(self, other)</h5>
+<p>重载 <code>&lt;=</code></p>
+<h5 id="ge__self-other">__ge__(self, other)</h5>
+<p>重载 <code>&gt;=</code></p>
+<h2 id="其他">其他</h2>
+<h5 id="str__self">__str__(self)</h5>
+<p><code>print(cls)</code> 和 <code>str(cls)</code> 时被调用，必须返回字符<code>str</code>类型</p>
+<h5 id="repr__self">__repr__(self)</h5>
+<p>对实例使用<code>repr()</code>时调用。<code>str()</code>和<code>repr()</code>都是返回一个代表该实例的字符串，主要区别在于: <code>str()</code>的返回值要方便人来看,而<code>repr()</code>的返回值方便计算机看。</p>
+<h5 id="call__self-args-kwargs">__call__(self, *args, **kwargs)</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">XClass</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, a, b</span>):</span></span><br><span class="line">        <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line">x = XClass()</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;x(1, 2)&#x27;</span>, x(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;callable(x)&#x27;</span>, <span class="built_in">callable</span>(x)  <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;add(1, 2)&#x27;</span>, add(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;callable(add)&#x27;</span>, <span class="built_in">callable</span>(add)  <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+<h1 id="refrence">Refrence</h1>
+<p>https://segmentfault.com/a/1190000007256392#articleHeader3</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/07/21/java%E7%BC%93%E5%86%B2%E6%B1%A0/" rel="prev" title="java缓冲池">
+                  <i class="fa fa-chevron-left"></i> java缓冲池
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/08/20/%E8%B0%88%E8%B0%88%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8%E4%B8%89%E5%A4%A7%E6%A8%A1%E5%9E%8BHMM%E3%80%81MEMM%E3%80%81CRF/" rel="next" title="谈谈序列标注三大模型HMM、MEMM、CRF">
+                  谈谈序列标注三大模型HMM、MEMM、CRF <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">156k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:22</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+    </div>
+</body>
+</html>

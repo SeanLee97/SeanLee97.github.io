@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/xiaoming-48x48.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiaoming-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiaoming-16x16.ico">
+  <link rel="mask-icon" href="/images/xiaoming-48x48.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"seanlee97.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="示例代码 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758public class ConstPool &amp;#123;    static void test() &amp;#123;        String s1 &#x3D; &quot;hell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈java常量池">
+<meta property="og:url" content="https://seanlee97.github.io/2018/07/19/%E6%B5%85%E8%B0%88java%E5%B8%B8%E9%87%8F%E6%B1%A0/index.html">
+<meta property="og:site_name" content="明天探索者">
+<meta property="og:description" content="示例代码 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758public class ConstPool &amp;#123;    static void test() &amp;#123;        String s1 &#x3D; &quot;hell">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://seanlee97.github.io/images/posts/java/string_pool_jdk6.png">
+<meta property="og:image" content="https://seanlee97.github.io/images/posts/java/string_pool_jdk7.png">
+<meta property="article:published_time" content="2018-07-19T14:31:16.000Z">
+<meta property="article:modified_time" content="2021-03-07T10:05:36.807Z">
+<meta property="article:author" content="Sean Lee">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://seanlee97.github.io/images/posts/java/string_pool_jdk6.png">
+
+
+<link rel="canonical" href="https://seanlee97.github.io/2018/07/19/%E6%B5%85%E8%B0%88java%E5%B8%B8%E9%87%8F%E6%B1%A0/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>浅谈java常量池 | 明天探索者</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">明天探索者</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">示例代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">其他常见面试题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">4.</span> <span class="nav-text">reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sean Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Sean Lee</p>
+  <div class="site-description" itemprop="description">一枚小小的程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/07/19/%E6%B5%85%E8%B0%88java%E5%B8%B8%E9%87%8F%E6%B1%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅谈java常量池
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-19 22:31:16" itemprop="dateCreated datePublished" datetime="2018-07-19T22:31:16+08:00">2018-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="示例代码">示例代码</h1>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConstPool</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String s1 = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">        String s2 = <span class="keyword">new</span> String(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">        String s3 = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">        <span class="comment">// 常量直接拼接</span></span><br><span class="line">        String s4 = <span class="string">&quot;hel&quot;</span> + <span class="string">&quot;lo&quot;</span>;    </span><br><span class="line">        String s5 = <span class="string">&quot;hel&quot;</span> + <span class="keyword">new</span> String(<span class="string">&quot;lo&quot;</span>);</span><br><span class="line">        String s6 = <span class="string">&quot;hel&quot;</span>;</span><br><span class="line">        String s7 = <span class="string">&quot;lo&quot;</span>;</span><br><span class="line">        <span class="keyword">final</span> String s8 = <span class="string">&quot;hel&quot;</span>;</span><br><span class="line">        <span class="keyword">final</span> String s9 = <span class="string">&quot;lo&quot;</span>;</span><br><span class="line">        <span class="comment">// s6+s7实际上是使用StringBuilder.append来完成，会生成不同的对象</span></span><br><span class="line">        String s10 = s6 + s7;    </span><br><span class="line">        <span class="comment">// s8 + s9 相当于两个常量拼接 和 s4类似</span></span><br><span class="line">        String s11 = s8 + s9;    </span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建两个对象，生成了常量池中的“world”和堆中的字符串对象，引用是堆中的地址</span></span><br><span class="line">        String s12 = <span class="keyword">new</span> String(<span class="string">&quot;world&quot;</span>);   </span><br><span class="line">        <span class="comment">// 这一行的作用是s12去常量池中寻找但“world”已经存在了,所以s12的引用没有变还是在堆中的地址</span></span><br><span class="line">        s12.intern();  </span><br><span class="line">        <span class="comment">// 先在常量池中寻找“world”，发现已经存在了故直接返回常量池中&quot;world&quot;的对象引用，若不存在则在常量池中生成</span></span><br><span class="line">        String s13 = <span class="string">&quot;world&quot;</span>;  </span><br><span class="line"></span><br><span class="line">        <span class="comment">// new String(&quot;ja&quot;) 会在常量池中生成&quot;ja&quot;对象，以及也在堆中创建对象且指向堆中的引用</span></span><br><span class="line">        <span class="comment">// new String(&quot;va&quot;) 会在常量池中生成&quot;va&quot;对象，以及也在堆中创建对象且指向堆中的引用</span></span><br><span class="line">        <span class="comment">// 因此s14为&quot;java&quot;且引用是来自堆空间的，&quot;ja&quot;, &quot;va&quot;存在于常量池中但是&quot;java&quot;没有存在于常量池中</span></span><br><span class="line">        String s14 = <span class="keyword">new</span> String(<span class="string">&quot;ja&quot;</span>) + <span class="keyword">new</span> String(<span class="string">&quot;va&quot;</span>);</span><br><span class="line">        <span class="comment">// 由于常量池中没有 &quot;java&quot; 而堆中有java，但是在JDK1.7中，常量池中不需要再存储一份对象了，可以直接存储堆中的引用。</span></span><br><span class="line">        <span class="comment">// 故这份引用“java”直接指向 s14 堆空间的引用对象，也就是说s14.intern() == s14会返回true</span></span><br><span class="line">        s14.intern();       </span><br><span class="line">        <span class="comment">// 先寻找常量池发现存在&quot;java&quot;故直接返回会引用（在这里是指向堆空间的）</span></span><br><span class="line">        String s15 = <span class="string">&quot;java&quot;</span>; </span><br><span class="line"></span><br><span class="line">        <span class="comment">// 先寻找常量池，发现没有&quot;python&quot;故生成</span></span><br><span class="line">        String s16 = <span class="string">&quot;python&quot;</span>;  </span><br><span class="line">        <span class="comment">// 和s14差不多</span></span><br><span class="line">        String s17 = <span class="keyword">new</span> String(<span class="string">&quot;pyt&quot;</span>) + <span class="keyword">new</span> String(<span class="string">&quot;hon&quot;</span>);  </span><br><span class="line">        <span class="comment">// 发现常量池中已经有&quot;python&quot;指向的是s16，但是s17依然是指向堆空间的，</span></span><br><span class="line">        s17.intern();  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        System.out.println(s1 == s2);   <span class="comment">// #1 false, s3 还在堆区中</span></span><br><span class="line">        System.out.println(s1 == s3);   <span class="comment">// #2 true s2 从常量池中取得是s1的引用</span></span><br><span class="line">        System.out.println(s1 == s4);   <span class="comment">// #3 true java的优化先处理 &#x27;hel&#x27; + &#x27;lo&#x27; -&gt; &#x27;hello&#x27;</span></span><br><span class="line">        System.out.println(s1 == s5);   <span class="comment">// #4 false  &#x27;hel&#x27; = new String(&#x27;lo&#x27;) 还是会在堆区分配</span></span><br><span class="line">        System.out.println(s1 == s10);  <span class="comment">// #5 false</span></span><br><span class="line">        System.out.println(s1 == s11);  <span class="comment">// #6 true</span></span><br><span class="line">        System.out.println(s12 == s13); <span class="comment">// #7 false</span></span><br><span class="line">        System.out.println(s12.intern() == s13); <span class="comment">// #8 true</span></span><br><span class="line">        System.out.println(s14 == s15);  <span class="comment">// #9 true</span></span><br><span class="line">        System.out.println(s16 == s17);  <span class="comment">// #10 false</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="原理">原理</h1>
+<p>intern() 方法设计的初衷是重用String对象，以节省内存消耗。</p>
+<p>jdk6-（-代表当前及之前的版本） 和 jdk7+ 的常量池存放位置是有区别的。 jdk6- 版本中常量池是放在perm区（方法区中）的 <img src="/images/posts/java/string_pool_jdk6.png" alt="jdk6" /> 也就是和堆区是完全分开的。使用双引号声明的字符串是会直接在字符常量池生成的，而new 出来的String对象是存放在堆区的，故jdk6中两者的内存地址肯定不一样，即使调用了intern()也是不受影响的</p>
+<p>jdk7+中常量池是在堆区中的，和jdk6-会很不一样 <img src="/images/posts/java/string_pool_jdk7.png" alt="jdk7" /> 上面的代码就是jdk7+的效果，具体的注意点都在注释中</p>
+<p>在于JDK 1.7后，对于#19 返回true，但是调换了一下位置返回的结果#10 就变成了false。这个原因主要是从JDK 1.7后的intern方法在实现上发生了比较大的改变，JDK 1.7后，intern方法还是会先去查询常量池中是否有已经存在，<strong>如果存在，则返回常量池中的引用，这一点与之前没有区别，区别在于，如果在常量池找不到对应的字符串，则不会再将字符串拷贝到常量池，而只是在常量池中生成一个对原字符串的引用</strong>,如 #9 中直接返回堆区中的引用</p>
+<h1 id="其他常见面试题">其他常见面试题</h1>
+<p>Q：String s = new String("xyz") 创建了几个String Object? A：两个，常量池中的"xyz"和堆中的对象</p>
+<h1 id="reference">reference</h1>
+<p>[1] https://blog.csdn.net/baidu_31657889/article/details/52315902</p>
+<p>[2] http://www.importnew.com/21024.html</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/06/01/SVM%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/" rel="prev" title="SVM从入门到代码实现">
+                  <i class="fa fa-chevron-left"></i> SVM从入门到代码实现
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/07/21/java%E4%B8%ADequals%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="next" title="java中equals和==的区别">
+                  java中equals和==的区别 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">156k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:22</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+    </div>
+</body>
+</html>

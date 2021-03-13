@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/xiaoming-48x48.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiaoming-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiaoming-16x16.ico">
+  <link rel="mask-icon" href="/images/xiaoming-48x48.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"seanlee97.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="一枚小小的程序员">
+<meta property="og:type" content="website">
+<meta property="og:title" content="明天探索者">
+<meta property="og:url" content="https://seanlee97.github.io/page/2/index.html">
+<meta property="og:site_name" content="明天探索者">
+<meta property="og:description" content="一枚小小的程序员">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Sean Lee">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://seanlee97.github.io/page/2/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>明天探索者</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">明天探索者</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sean Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Sean Lee</p>
+  <div class="site-description" itemprop="description">一枚小小的程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/09/09/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E4%B8%8A%E5%B8%9D%E7%AE%97%E6%B3%95EM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/09/09/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E4%B8%8A%E5%B8%9D%E7%AE%97%E6%B3%95EM/" class="post-title-link" itemprop="url">简单理解"上帝算法"EM</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-09 20:00:07" itemprop="dateCreated datePublished" datetime="2018-09-09T20:00:07+08:00">2018-09-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>EM(Expectation Maximization, 期望最大)算法也称“上帝算法”，能称为“上帝”可见它有多牛掰。</p>
+<p>EM的原理很简单但真正理解起来是挺痛苦的一件事，本文以凡人视角尝试理解上帝本意。</p>
+<h2 id="知识储备">知识储备</h2>
+<h3 id="kl距离">KL距离</h3>
+<p>KL距离又称相对熵(relative entropy)，用来衡量空间上两个概率分布 <span class="math inline">\(P(x)\)</span>，<span class="math inline">\(Q(x)\)</span> 的相对差距的测度（通俗的说就是两个概率分布的距离）</p>
+<p><span class="math display">\[\begin{align*}
+D_{KL}(P||Q) &amp; = \sum_{i} P(i)log\ \frac{P(i)}{Q(i)} \\
+&amp; = \sum_{i} P(i) log\ P(i) - \sum_{i} P(i) log\  Q(i) \\
+&amp; = E_{P}(log\ P(i)) - E_{P}(log\ Q(i))
+\end{align*} \tag{1}\]</span></p>
+<p><span class="math inline">\((1)\)</span> 式便于理解"距离"的概念，因为A, B两点的距离我们一般表示为 <span class="math inline">\(|A-B|\)</span> ，当 <span class="math inline">\(P\)</span> 和 <span class="math inline">\(Q\)</span> 是同概率分布时KL距离为0</p>
+<h3 id="极大似然估计">极大似然估计</h3>
+<p>极大似然估计，是用来估计一个概率模型的参数的一种方法，它一般求解似然函数</p>
+<p><span class="math display">\[L(\theta | x_{1}...x_{m}) = f_{\theta}(x_{1}...x_{m})\]</span></p>
+<p>取最大值时的参数 <span class="math inline">\(\widehat{\theta}\)</span></p>
+<p><span class="math display">\[\widehat{\theta} = \underset{\theta}{argmax} L(\theta | x_{1}...x_{m})\]</span></p>
+<h3 id="隐变量">隐变量</h3>
+<p>在统计学中，隐变量或潜变量指的是不可观测的随机变量,隐变量可以通过使用数学模型依据观测得的数据被推断出来。</p>
+<p>通俗的说隐变量是存在的但是你无法看到。举个例子吧，分类和聚类看起来是差不多的，都是把一堆相似的东西分到一起，但是分类（显式）提供了类别信息，而聚类没有（显式）提供类别信息，聚类之所以能把一堆相似的东西分到一起可以认为它内部定义了一个“隐藏”的类别信息，可以认为是隐变量</p>
+<p>（上述解释系本人捏造的，不一定正确）</p>
+<h3 id="jensen-不等式">Jensen 不等式</h3>
+<p><img src="/images/posts/em/jensen.jpg" /></p>
+<p>如果 <span class="math inline">\(f\)</span> 是凸函数(如上图)， <span class="math inline">\(x\)</span> 是随机变量有</p>
+<p><span class="math display">\[E(f(x)) \geq f(E(x)) \tag{2}\]</span></p>
+<p>凹函数则相反</p>
+<p><span class="math display">\[E(f(x)) \leq f(E(x))\]</span></p>
+<p><strong>当 <span class="math inline">\(x\)</span> 是常量时上式取等</strong>，即上图<span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>两点重合时取等</p>
+<p>Jensen不等式在下述EM算法的推导中很重要</p>
+<h4 id="凹凸函数">凹凸函数</h4>
+<p>可能受中文<code>凹凸</code>字型的影响会对<code>凹凸</code>函数有歧义，凸函数可理解为<code>下凸</code>，凹函数可理解为<code>上凸</code></p>
+<p><img src="/images/posts/em/aotufunc.png" /></p>
+<h2 id="em算法的推导">EM算法的推导</h2>
+<p>EM算法主要分两个求解步骤，称为E步和M步</p>
+<h3 id="e步">E步</h3>
+<p>假设有训练集</p>
+<p><span class="math display">\[{x^{1}, ...., x^{m}}\]</span></p>
+<p>包含 <span class="math inline">\(m\)</span> 个独立样本，我们希望从中找到该组数据的模型 <span class="math inline">\(p(x, z)\)</span> 的参数</p>
+<p>在这里我们先以<strong>极大似然</strong>的思想去建立目标函数，取对数似然函数</p>
+<p><span class="math display">\[L(\theta) = \sum_{i=1}^{m} log\ p(x; \theta) \tag{3}\]</span></p>
+<p>我们给 <span class="math inline">\((3)\)</span> 式加入隐变量 <span class="math inline">\(z\)</span> , 对于联合分布 <span class="math inline">\(p(x, z; \theta)\)</span> 有 <span class="math inline">\(\sum_{z}\ p(x, z; \theta) = p(x; \theta)\)</span>, 故有</p>
+<p><span class="math display">\[
+\begin{align*}
+L(\theta) &amp; = \sum_{i=1}^{m} log\ p(x; \theta) \\
+&amp; = \sum_{i=1}^{m} log\ \sum_{z} p(x, z; \theta)
+\end{align*} \tag{4}
+\]</span></p>
+<p><span class="math inline">\(z\)</span> 是随机的隐变量，直接找到参数的估计是很困难的，我们要做的是建立 <span class="math inline">\(L(\theta)\)</span> 的下界，然后<strong>求该下界的最大值，重复求解直至收敛到局部最大值</strong></p>
+<p>因为假设了样本是独立的，故整体的概率有</p>
+<p><span class="math display">\[P = \prod_{i} p(x^{(i)}; \theta) = \prod_{i} \sum_{z^{(i)}}  p(x^{(i)}, z^{(i)}; \theta)\]</span></p>
+<p>为了方便推导，一般两边取对数，故有</p>
+<p><span class="math display">\[\begin{align*}
+log\ P &amp; = \sum_{i} log\ p(x^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} p(x^{(i)}, z^{(i)}; \theta)
+\end{align*} \tag{5}\]</span></p>
+<p>现在我们假设 <span class="math inline">\(Q_{i}\)</span> 是 <span class="math inline">\(z\)</span> 的某一分布，<span class="math inline">\(Q_{i} \geqslant 0\)</span>， <span class="math inline">\(\sum_{i} Q_{i} = 1\)</span>，此时 <span class="math inline">\((5)\)</span> 有</p>
+<p><span class="math display">\[\begin{align*}
+log\ P &amp; = \sum_{i} log\ p(x^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} p(x^{(i)}, z^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} Q_{i}(z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})}
+\end{align*} \tag{6}\]</span></p>
+<p>对于 <span class="math inline">\((6)\)</span> 有</p>
+<p><span class="math display">\[\sum_{i} log\  \sum_{z^{(i)}} Q_{i}(z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} = \sum_{i} log(E_{Q_{i}} (\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})}) ) \tag{7}\]</span></p>
+<p>因为<code>log(x)</code>是凹函数，根据<strong>Jensen不等式</strong>，对于<span class="math inline">\((7)\)</span> 有</p>
+<p><span class="math display">\[\begin{align*}
+\sum_{i} log(E_{Q_{i}} ( \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})}) )
+\geq \sum_{i} E_{Q_{i}}(log( \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})}) )
+=\sum_{i} \sum_{z^{(i)}} Q_{i}(z^{(i)}) log\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} 
+\end{align*} \tag{8}\]</span></p>
+<p>因此由<span class="math inline">\((8)\)</span>可得</p>
+<p><span class="math display">\[\begin{align*}
+log\ P &amp; = \sum_{i} log\ p(x^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} p(x^{(i)}, z^{(i)}; \theta) \\
+&amp; = \sum_{i} log\  \sum_{z^{(i)}} Q_{i}(z^{(i)}) \frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} \\
+&amp; \geq \sum_{i} \sum_{z^{(i)}} Q_{i}(z^{(i)}) log\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} 
+\end{align*} \tag{9}\]</span></p>
+<p>因为之前已经说了我们要求最大下界，回到Jensen不等式 <span class="math inline">\((2)\)</span> 当x为常量时才能取等号，也就是对于 <span class="math inline">\((8)\)</span> 当</p>
+<p><span class="math display">\[\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} = c \tag{10}\]</span></p>
+<p><span class="math inline">\(c\)</span> 为常数时才能取等，从<strong>KL距离</strong>解释就是当<span class="math inline">\(p\)</span> 和 <span class="math inline">\(Q\)</span> 的KL距离为0时才能取等，也就是说 <span class="math inline">\(p\)</span> 和 <span class="math inline">\(Q\)</span> 是同分布的，而由 <span class="math inline">\((10)\)</span>可知 <strong><span class="math inline">\(p\)</span> 和 <span class="math inline">\(Q\)</span> 是线性关系</strong>，故属于同分布, 对<span class="math inline">\(p\)</span>归一化有</p>
+<p><span class="math display">\[\frac{p(x^{(i)}, z^{(i)}; \theta)}{\sum_{z} p(x^{(i)}, z; \theta)} = 1 \tag{11}\]</span></p>
+<p>此时刚好满足 <span class="math inline">\(\sum_{z} Q_{i}(z^{(i)}) = 1\)</span>，因此我们可以用 <span class="math inline">\(p\)</span> 来表示 <span class="math inline">\(Q\)</span></p>
+<p><span class="math display">\[\begin{align*}
+Q_{i}(z^{(i)}) &amp; = \frac{p(x^{(i)}, z^{(i)}; \theta)}{\sum_{z} p(x^{(i)}, z; \theta)} \\
+&amp; = \frac{p(x^{(i)}, z^{(i)}; \theta)}{p(x^{(i)}; \theta)} \\
+&amp; = p(z^{(i)} | x^{(i)}; \theta)
+\end{align*} \tag{12}\]</span></p>
+<p>由<span class="math inline">\((12)\)</span>可知，<span class="math inline">\(Q_{i}(z^{(i)})\)</span> 的估计就是给定 <span class="math inline">\(x^{(i)}\)</span> 下 <span class="math inline">\(z^{(i)}\)</span> 发生的条件分布，此时可以使得 <span class="math inline">\((9)\)</span> 式取等</p>
+<p>因此<strong>E步可以认为是固定参数 <span class="math inline">\(\theta\)</span> 最大化 <span class="math inline">\(Q_{i}(z^{(i)})\)</span></strong></p>
+<h3 id="m步">M步</h3>
+<p><strong>M步的思想是固定住 <span class="math inline">\(Q_{i}(z^{(i)})\)</span> 最大化 <span class="math inline">\(\theta\)</span></strong>，即</p>
+<p><span class="math display">\[\theta := \underset{\theta}{argmax} \sum_{i} \sum_{z^{(i)}} Q_{i}(z^{(i)}) log\frac{p(x^{(i)}, z^{(i)}; \theta)}{Q_{i}(z^{(i)})} \tag{13}\]</span></p>
+<p>至于M步如何求解就是EM算法计算的难点所在，此文不做详细讨论</p>
+<h3 id="综述">综述</h3>
+<p>由上可知EM算法，就是通过E步和M步来循环更新 <span class="math inline">\(\theta\)</span> 和 <span class="math inline">\(Q\)</span> 使得极值推向设定的收敛值</p>
+<h2 id="gmmgaussian-mixed-model-高斯混合模型与em">GMM(Gaussian Mixed Model) 高斯混合模型与EM</h2>
+<p>高斯混合模型是指多个高斯分布的混合 <img src="/images/posts/em/gmm.png" /></p>
+<h3 id="一个经典的高斯混合模型的例子">一个经典的高斯混合模型的例子</h3>
+<p>随机挑选10000个志愿者，然后测量他们的身高，若样本中存在男性和女性，且他们的身高分别服从 <span class="math inline">\(N(\mu_{1}, \sigma_{1})\)</span> 和 <span class="math inline">\(N(\mu_{2}, \sigma_{2})\)</span> 的分布，在性别未知的情况下试估计参数 <span class="math inline">\(\mu_{1}\)</span>、<span class="math inline">\(\sigma_{1}\)</span>、<span class="math inline">\(\mu_{2}\)</span>、<span class="math inline">\(\sigma_{2}\)</span></p>
+<p>由于性别未知，用常规的方法是无法求得男女身高对应的高斯分布的，一般用EM算法求解</p>
+<p>在将EM算法求解GMM前，先要知道高斯分布的极大似然估计</p>
+<h3 id="高斯分布的极大似然估计">高斯分布的极大似然估计</h3>
+<p>假定给定一组样本 <span class="math inline">\(x_{1}, x_{2}, ..., x_{n}\)</span> ，已知他们来自于高斯分布 <span class="math inline">\(N(\mu, \sigma)\)</span> ，试估计参数 <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma\)</span></p>
+<p>对数似然估计有</p>
+<p><span class="math display">\[\begin{align*}
+L(x) &amp; = \sum_{i} log \frac{1}{\sqrt{2\pi} \sigma} e^{-\frac{(x_{i}-\mu)^{2}}{2\sigma^{2}}} \\
+&amp; = (\sum_{i} log \frac{1}{\sqrt{2\pi} \sigma}) + (\sum_{i} -\frac{(x_{i}-\mu)^{2}}{2\sigma^{2}}) \\
+&amp; = -\frac{n}{2} log\ 2\pi \sigma^{2} - \frac{1}{2\sigma^{2}} \sum_{i}(x_{i} - \mu)^{2}
+\end{align*} \tag{14}\]</span></p>
+<p>对 <span class="math inline">\(L(x)\)</span> 求偏导有</p>
+<p><span class="math display">\[\frac{\partial L(x)}{\partial \mu} \Rightarrow \mu = \frac{1}{n} \sum_{i} x_{i} \tag{15}\]</span></p>
+<p><span class="math display">\[\frac{\partial L(x)}{\partial \sigma^{2}} \Rightarrow \sigma^{2} = \frac{1}{n}\sum_{i} (x_{i}-\mu)^{2} \tag{16}\]</span></p>
+<p>可知极大似然估计使用了样本均值和样本伪方差（样本方差的分母是 <span class="math inline">\(n-1\)</span>, 这里是 <span class="math inline">\(n\)</span>）来估计参数</p>
+<h3 id="gmm">GMM</h3>
+<p>随机变量 <span class="math inline">\(X\)</span> 是由k个高斯分布混合而成，取各个高斯分布的概率为 <span class="math inline">\(\pi_{1}, \pi_{2}, ..., \pi_{k}\)</span> 第 <span class="math inline">\(i\)</span> 个高斯分布的均值为 <span class="math inline">\(\mu_{i}\)</span> ，方差为 <span class="math inline">\(\Sigma_{i}\)</span> 。若观测到随机变量的一系列样本 <span class="math inline">\(x_{1}, x_{2}, ..., x_{n}\)</span> ,试估计参数 <span class="math inline">\(\underset{\pi}{\rightarrow} (\pi_{1}, \pi_{2}, ..., \pi_{k})\)</span> 、<span class="math inline">\(\underset{\mu}{\rightarrow} (\mu_{1}, \mu_{2}, ..., \mu_{k})\)</span> 和 <span class="math inline">\(\underset{\Sigma}{\rightarrow} (\Sigma_{1}, \Sigma_{2}, ..., \Sigma_{k})\)</span></p>
+<p>对上述问题先建立对数似然函数</p>
+<p><span class="math display">\[L_{\pi, \mu, \Sigma} (x) = \sum_{i=1}^{n}log(\sum_{k=1}^{K} \pi_{k} N(x_{i} | \mu_{k}, \Sigma_{k})) \tag{17}\]</span></p>
+<p>由于在对数函数里有加和一般是不以直接求偏导的，故采用EM算法取估计参数</p>
+<h4 id="e步-1">E步</h4>
+<p>E步主要估计数据来自哪个组份(E步假设待估计参数是固定的)：对于每个样本 <span class="math inline">\(x_{i}\)</span> 它由<strong>第k个组份生成的概率</strong>为：</p>
+<p><span class="math display">\[\gamma(i, k) = \frac{\pi_{k} N(x_{i}|\mu_{k}, \Sigma_{k})}{\sum_{j=1}^{k} \pi_{j}N(X_{i} | \mu_{j}, \Sigma_{j})} \tag{18}\]</span></p>
+<p>#### M步 对于所有样本点，对于组份k而言，可看做生成了 { <span class="math inline">\(\gamma(i, k)x_{i} | i=1, 2, ..., N\)</span> } 这些点，组分k是一个标准的高斯分布，由 <span class="math inline">\((15), (16)\)</span> 可得</p>
+<p><span class="math display">\[\left\{\begin{matrix}
+N_{k} = \sum_{i=1}^{n}\gamma (i, k) \\ 
+\mu_{k} = \frac{1}{N_{k}} \sum_{i=1}^{n}\gamma (i, k) x_{i} \\ 
+\Sigma_{k} = \frac{1}{N_{k}} \sum_{i=1}^{n}\gamma (i, k)(x_{i} - \mu_{i})^{2} \\ 
+\pi_{k} = \frac{N_{k}}{n} = \frac{1}{n} \sum_{i}^{n}\gamma (i, k)
+\end{matrix}\right. \tag{19}\]</span></p>
+<h2 id="refrence">Refrence</h2>
+<p>[0] https://zh.wikipedia.org/wiki/%E9%9A%90%E5%8F%98%E9%87%8F</p>
+<p>[1] 李航 《统计学习方法》</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/09/01/SVD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8ALSA%E7%9A%84%E6%B1%82%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/09/01/SVD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8ALSA%E7%9A%84%E6%B1%82%E8%A7%A3/" class="post-title-link" itemprop="url">SVD的原理及LSA的求解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-01 19:41:55" itemprop="dateCreated datePublished" datetime="2018-09-01T19:41:55+08:00">2018-09-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>之前介绍PCA时提到了SVD，本文主要介绍SVD基本概念以及在NLP上的应用。</p>
+<h3 id="svd的定义">SVD的定义</h3>
+<p>SVD(Singular Value Decomposition)即奇异值分解，奇异值分解区别于特征值分解可用来分解非方阵矩阵问题。假设矩阵 <span class="math inline">\(A \in R^{m\times n}\)</span> 是一个 <span class="math inline">\(m\times n\)</span> 的矩阵，则它的奇异值分解可分解为三个矩阵：</p>
+<p><span class="math display">\[A_{m\times n} = U_{m\times m} \Sigma _{m\times n} V^{T}_{n\times n} \tag{1}\]</span></p>
+<p>其中 <span class="math inline">\(U\)</span> 和 <span class="math inline">\(V^{T}\)</span> 称为酉矩阵, <span class="math inline">\(\Sigma\)</span> 称为奇异矩阵，它的形式一般为:</p>
+<p><span class="math display">\[\Sigma = \begin{bmatrix}
+\sigma_{1} &amp; 0 &amp;  ... &amp; 0\\ 
+0 &amp; \sigma_{i} &amp; ... &amp; ...\\ 
+... &amp; 0 &amp; \sigma_{k} &amp; ...\\
+0 &amp; ... &amp; 0 &amp; ...\\
+... &amp; 0 &amp; ... &amp; 0 \\  
+\end{bmatrix}\]</span></p>
+<p><span class="math inline">\(\lambda_{1} ... \lambda _{m}\)</span> 称为奇异值</p>
+<p>更一般的我们更希望奇异矩阵是方阵，因此矩阵<span class="math inline">\(A\)</span>可近似分解为</p>
+<p><span class="math display">\[A_{m\times n} \approx  U_{m\times k} \Sigma _{k \times k} V^{T}_{k\times n} \tag{2}\]</span></p>
+<p>此时奇异矩阵 <span class="math inline">\(\Sigma\)</span> 有</p>
+<p><span class="math display">\[\Sigma = \begin{bmatrix}
+\sigma_{1} &amp; ... &amp;  0\\ 
+0 &amp; \sigma_{i} &amp; ... \\ 
+... &amp; 0 &amp; \sigma_{k} \\
+\end{bmatrix}\]</span></p>
+<p>看起来是不是和特征值分解的对角矩阵很类似，<strong>非方阵的PCA降维原理就是利用这个奇异矩阵进行的</strong></p>
+<p>关于PCA请查阅另一篇文章 <a href="https://seanlee97.github.io/2018/03/29/%E4%BB%8E%E7%89%B9%E5%BE%81%E5%80%BC%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E5%8E%BB%E7%90%86%E8%A7%A3PCA/">从特征值特征向量去理解PCA</a></p>
+<h3 id="svd的求解">SVD的求解</h3>
+<p>SVD的求解还是要回到<strong>方阵</strong>求解上，也就是要回到<strong>特征值特征向量上</strong></p>
+<p>可知 <span class="math inline">\(A\)</span> 是 <span class="math inline">\(m\times n\)</span>矩阵，那么 <span class="math inline">\(A^{T} \in R^{n\times m}\)</span>，则有两种情况可构成方阵：</p>
+<ul>
+<li><span class="math inline">\(AA^{T} \in R^{m\times m}\)</span></li>
+<li><span class="math inline">\(A^{T}A \in R^{n\times n}\)</span></li>
+</ul>
+<p>由 <span class="math inline">\((1)\)</span> 可知, <span class="math inline">\(U \in R^{m\times m}\)</span>，此时我们用 <span class="math inline">\(AA^{T} \in R^{m\times m}\)</span> 来求解，得到特征值特征向量如下：</p>
+<p><span class="math display">\[(AA^{T})u_{i} = \lambda_{i} u_{i} \tag{3}\]</span></p>
+<p>计算可求得m个特征值和m个特征向量<span class="math inline">\(u\)</span>，这些特征向量称为A的左奇异向量,酉矩阵 <span class="math inline">\(U = [u_{1}...u_{m}]\)</span></p>
+<p>同理，<span class="math inline">\(V^{T} \in R^{n\times n}\)</span>，可用 <span class="math inline">\(A^{T}A\)</span> 来求解</p>
+<p><span class="math display">\[(A^{T}A) v_{i} = \lambda_{i} v_{i} \tag{4}\]</span></p>
+<p>计算可求得n个特征值和n个特征向量<span class="math inline">\(v\)</span>，这些特征向量称为A的右奇异向量,酉矩阵 <span class="math inline">\(V = [v_{1}...v_{n}]\)</span></p>
+<p>对于 <span class="math inline">\(\Sigma = [\sigma_{1} ... \sigma_{k}]\)</span> 的求解有</p>
+<p><span class="math display">\[\begin{align*}
+&amp; A = U\Sigma V^{T} \\\\
+&amp; \Rightarrow AV = U\Sigma \\\\
+&amp; \Rightarrow Av_{i} = u_{i}\sigma_{i} \\\\
+&amp; \Rightarrow \sigma_{i} = A(v_{i} / u_{i})
+\end{align*}\]</span></p>
+<p>因此奇异值 <span class="math inline">\(\sigma_{i}\)</span> 是由对应的左右奇异向量 <span class="math inline">\(u_{i}\)</span> 和 <span class="math inline">\(v_{i}\)</span> 求得的</p>
+<h3 id="lsa的原理与示例">LSA的原理与示例</h3>
+<p>NLP中PCA和LSA的原理就是SVD，PCA上面已经做了简要介绍，这里主要说说LSA</p>
+<p>LSA(Latent Semantic Analysis) 潜在语义分析的原理就是 SVD，它可以同时完成三个任务</p>
+<ul>
+<li>近义词分类 (利用的是 <span class="math inline">\(U\)</span> 矩阵)</li>
+<li>主题（文档）分类 (利用的是 <span class="math inline">\(V^{T}\)</span> 矩阵)</li>
+<li>类词和主题的相关性 (利用的是 <span class="math inline">\(\Sigma\)</span>)</li>
+</ul>
+<p><img src="/images/posts/svd/lsa.png" /></p>
+<p>LSA 的核心思想是<strong>将词和文档映射到潜在语义空间</strong>，再比较其相似性。</p>
+<p>下面举个实例讲解，如图有</p>
+<h4 id="矩阵-x">矩阵 <span class="math inline">\(X\)</span></h4>
+<p>矩阵 <span class="math inline">\(X\)</span> 代表词表到文档的矩阵，其中<strong>每行</strong>代表词典中的词，<strong>每一列</strong>代表一篇文档，<span class="math inline">\(X_{ij}=k\)</span> 代表第 <span class="math inline">\(j\)</span> 篇文档中出现了 <span class="math inline">\(k\)</span> 次词 <span class="math inline">\(i\)</span> （也可用TF-IDF代替），可知该矩阵是不包含位置信息的</p>
+<p>假设现在有四个文档： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">doc1 = <span class="string">&quot;&quot;&quot;计算机科学是系统性研究信息与计算的理论基础以及它们在计算机系统中如何实现与应用的实用技术的学科&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">doc2 = <span class="string">&quot;&quot;&quot;自然语言处理是人工智能和语言学领域的分支学科。此领域探讨如何处理及运用自然语言；自然语言认知则是指让电脑“懂”人类的语言。</span></span><br><span class="line"><span class="string">自然语言生成系统把计算机数据转化为自然语言。自然语言理解系统把自然语言转化为计算机程序更易于处理的形式。&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">doc3 = <span class="string">&quot;&quot;&quot;人工智能是计算机科学的一个分支，它企图了解智能的实质，并生产出一种新的能以人类智能相似的方式做出反应的智能机器，</span></span><br><span class="line"><span class="string">该领域的研究包括机器人、语言识别、图像识别、自然语言处理和专家系统等&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">doc4 = <span class="string">&quot;&quot;&quot;《瓦尔登湖》是美国作家梭罗独居瓦尔登湖畔的记录，描绘了他两年多时间里的所见、所闻和所思。</span></span><br><span class="line"><span class="string">该书崇尚简朴生活，热爱大自然的风光，内容丰厚，意义深远，语言生动&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure></p>
+<p>对每个文档进行分词，去停用词</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_vocab</span>(<span class="params">self, docs</span>):</span></span><br><span class="line">    <span class="keyword">for</span> doc <span class="keyword">in</span> docs:</span><br><span class="line">        doc = doc.strip()</span><br><span class="line">        <span class="comment"># 为了简单仅仅保留词的长度大于1的</span></span><br><span class="line">        words = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x: <span class="built_in">len</span>(x) &gt; <span class="number">1</span>, self.tokenizer(doc))) </span><br><span class="line">        self.docs.append(words)</span><br><span class="line">        self.vocabs.update(words)</span><br><span class="line"></span><br><span class="line">    self.vocabs = <span class="built_in">list</span>(self.vocabs)</span><br><span class="line">    self.word2idx = <span class="built_in">dict</span>(<span class="built_in">zip</span>(self.vocabs, <span class="built_in">range</span>(<span class="built_in">len</span>(self.vocabs))))</span><br><span class="line">    </span><br><span class="line">    print(self.vocabs)</span><br></pre></td></tr></table></figure>
+<p>输出词典得到： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;方式&#39;, &#39;基础&#39;, &#39;美国作家&#39;, &#39;生动&#39;, &#39;易于&#39;, &#39;人工智能&#39;, &#39;语言&#39;, &#39;计算机系统&#39;, &#39;语言学&#39;, &#39;实质&#39;, &#39;瓦尔登湖&#39;, &#39;生活&#39;, &#39;计算机&#39;, &#39;机器人&#39;, &#39;独居&#39;, &#39;相似&#39;, &#39;人类&#39;, &#39;内容&#39;, &#39;电脑&#39;, &#39;实现&#39;, &#39;所闻&#39;, &#39;计算机程序&#39;, &#39;系统&#39;, &#39;理解&#39;, &#39;理论&#39;, &#39;探讨&#39;, &#39;该书&#39;, &#39;它们&#39;, &#39;数据&#39;, &#39;了解&#39;, &#39;处理&#39;, &#39;企图&#39;, &#39;以及&#39;, &#39;学科&#39;, &#39;生产&#39;, &#39;包括&#39;, &#39;图像识别&#39;, &#39;两年&#39;, &#39;分支&#39;, &#39;一种&#39;, &#39;机器&#39;, &#39;如何&#39;, &#39;风光&#39;, &#39;丰厚&#39;, &#39;描绘&#39;, &#39;认知&#39;, &#39;记录&#39;, &#39;简朴&#39;, &#39;应用&#39;, &#39;智能&#39;, &#39;做出&#39;, &#39;时间&#39;, &#39;自然语言&#39;, &#39;所思&#39;, &#39;崇尚&#39;, &#39;系统性&#39;, &#39;识别&#39;, &#39;梭罗&#39;, &#39;形式&#39;, &#39;大自然&#39;, &#39;深远&#39;, &#39;计算&#39;, &#39;信息&#39;, &#39;意义&#39;, &#39;专家系统&#39;, &#39;生成&#39;, &#39;所见&#39;, &#39;研究&#39;, &#39;一个&#39;, &#39;运用&#39;, &#39;转化&#39;, &#39;领域&#39;, &#39;实用技术&#39;, &#39;计算机科学&#39;, &#39;热爱&#39;, &#39;反应&#39;</span><br></pre></td></tr></table></figure></p>
+<p>构造词到文档的矩阵,在这里实现了词袋模型和TF-IDF</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用词袋特征来做权值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_bow_matrix</span>(<span class="params">self</span>):</span></span><br><span class="line">    matrix = np.zeros([<span class="built_in">len</span>(self.vocabs), <span class="built_in">len</span>(self.docs)])</span><br><span class="line">    <span class="keyword">for</span> docidx, words <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.docs):</span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">            matrix[self.word2idx[word], docidx] += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> matrix</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用tf-idf来做权值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_tfidf_matrix</span>(<span class="params">self</span>):</span></span><br><span class="line">    tf = self.build_bow_matrix()</span><br><span class="line">    df = np.ones([<span class="built_in">len</span>(self.vocabs), <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> docidx, words <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.docs):</span><br><span class="line">        tf[:, docidx] /= np.<span class="built_in">max</span>(tf[:, docidx])</span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">            df[self.word2idx[word], <span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">    idf = np.log(<span class="built_in">len</span>(self.docs)) - np.log(df)</span><br><span class="line">    <span class="keyword">return</span> tf*idf</span><br></pre></td></tr></table></figure>
+<p>得到的矩阵为</p>
+<p><strong>词袋模型</strong> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[[0. 0. 0. 1.]</span><br><span class="line"> [0. 1. 1. 1.]</span><br><span class="line"> [0. 2. 0. 0.]</span><br><span class="line"> .............</span><br><span class="line"> [0. 0. 0. 1.]</span><br><span class="line"> [0. 0. 1. 0.]</span><br><span class="line"> [1. 0. 0. 0.]]</span><br><span class="line"> </span><br><span class="line"> shape &#x3D; (vocab_size, doc_size)</span><br></pre></td></tr></table></figure></p>
+<p><strong>TF-IDF</strong> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[[ 0.          0.          0.          0.34657359]</span><br><span class="line"> [ 0.          0.          0.          0.        ]</span><br><span class="line"> [ 0.          0.08219488  0.          0.        ]</span><br><span class="line"> .....</span><br><span class="line"> [ 0.          0.          0.          0.34657359]</span><br><span class="line"> [ 0.          0.          0.23104906  0.        ]</span><br><span class="line"> [ 0.69314718  0.          0.          0.        ]]</span><br><span class="line"> </span><br><span class="line"> shape &#x3D; (vocab_size, doc_size)</span><br></pre></td></tr></table></figure></p>
+<h4 id="u-矩阵的应用"><span class="math inline">\(U\)</span> 矩阵的应用</h4>
+<p>分解得到的 <span class="math inline">\(U \in R^{m\times m}\)</span> 矩阵<strong>每一行</strong>代表一类近义词,我们一般对每一行的权值进行逆序排序获得top k个权值最大的下标，这些下标对应的词即为近义词</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sim_words</span>(<span class="params">self, k=<span class="number">3</span></span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.kernel == <span class="string">&#x27;tfidf&#x27;</span>:</span><br><span class="line">            matrix = self.build_tfidf_matrix()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            matrix = self.build_bow_matrix()</span><br><span class="line"></span><br><span class="line">        U, S, Vt = np.linalg.svd(matrix)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 对权值逆序排序</span></span><br><span class="line">        sort_idx = np.argsort(-U)</span><br><span class="line">        <span class="comment"># 一般不取第一列，第一列的词往往是本身</span></span><br><span class="line">        topk = sort_idx[:, <span class="number">1</span>:k+<span class="number">1</span>] </span><br><span class="line">        print(<span class="string">&quot;word \t similarity&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> widx, word <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.vocabs):</span><br><span class="line">            line = word + <span class="string">&quot;:\t&quot;</span></span><br><span class="line">            idxs = topk[widx]</span><br><span class="line">            <span class="keyword">for</span> idx <span class="keyword">in</span> idxs:</span><br><span class="line">                line += <span class="built_in">str</span>(self.vocabs[idx]) + <span class="string">&quot; &quot;</span></span><br><span class="line">            print(line)</span><br></pre></td></tr></table></figure>
+<p>得到的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">计算机系统:	自然语言 领域 如何</span><br><span class="line">数据:	智能 计算机科学 研究</span><br><span class="line">计算机:	智能 计算机科学 研究</span><br><span class="line">语言:	如何 处理 计算</span><br></pre></td></tr></table></figure>
+<p>由于只是作为演示用，文档太少，不能得到较好的效果，可用大文本尝试一下</p>
+<h4 id="vt-矩阵的应用"><span class="math inline">\(V^{T}\)</span> 矩阵的应用</h4>
+<p><span class="math inline">\(V^{T} \in R^{n\times n}\)</span> 矩阵<strong>每一列</strong>代表一个主题，<strong>列中每一行</strong>代表主题相关文档，我们对每一列的权值进行逆序，得到对应下标，这样每一列对应的下标代表同一类别的相关文档下标</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">topic_relate</span>(<span class="params">self, k=<span class="number">2</span></span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.kernel == <span class="string">&#x27;tfidf&#x27;</span>:</span><br><span class="line">            matrix = self.build_tfidf_matrix()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            matrix = self.build_bow_matrix()</span><br><span class="line"></span><br><span class="line">        U, S, Vt = np.linalg.svd(matrix)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 按列逆序排序</span></span><br><span class="line">        sort_idx = np.argsort(-Vt, axis=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 一般不取第一行，第一行是自己本身</span></span><br><span class="line">        topk = sort_idx[<span class="number">1</span>:k+<span class="number">1</span>, :]</span><br><span class="line">        print(topk)</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[2 3 0 1]</span><br><span class="line"> [2 0 1 3]]</span><br></pre></td></tr></table></figure>
+<h4 id="sigma-矩阵的作用"><span class="math inline">\(\Sigma\)</span> 矩阵的作用</h4>
+<p><span class="math inline">\(\Sigma \in R^{m\times n}\)</span> 代表类词和文章类之间的相关性</p>
+<p>由此可见LSA可谓一举三得啊！</p>
+<h4 id="lsa的缺点及改进">LSA的缺点及改进</h4>
+<p>LSA的缺点在于采用暴力SVD矩阵分解，如果维数大了，矩阵大了就难以计算了，加上SVD的分布式计算又是很难实现的，所以在大规模文档中可能不用直接用LSA</p>
+<h5 id="plsa">pLSA</h5>
+<p>即概率LSA，把LSA变成从概率的角度理解，一般采用的是EM的方式学习</p>
+<p>由于pLSA的推导和求解一般涉及到<code>上帝算法</code> — <code>EM</code>（我把它认为是<code>魔鬼算法</code>，因为它原理简单，但是推导要命）在此不做深入讨论</p>
+<h3 id="后记">后记</h3>
+<p>上述例子均为博主本人生造的，因为网上关于LSA的代码示例很多只做到SVD分解部分，没具体到酉矩阵的应用。</p>
+<p>上述实例的完整代码地址: <a target="_blank" rel="noopener" href="https://github.com/SeanLee97/nlp_learning/blob/master/lsa/lsa.py">github/nlp_learning/lsa</a></p>
+<h3 id="refrence">Refrence</h3>
+<p>[1] https://blog.csdn.net/KIDGIN7439/article/details/69831490</p>
+<p>[2] 《数学之美》</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/08/31/%E4%BD%99%E5%BC%A6%E5%AE%9A%E7%90%86%E5%92%8C%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/08/31/%E4%BD%99%E5%BC%A6%E5%AE%9A%E7%90%86%E5%92%8C%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/" class="post-title-link" itemprop="url">余弦定理和文本相似度</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-31 22:02:53" itemprop="dateCreated datePublished" datetime="2018-08-31T22:02:53+08:00">2018-08-31</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>数学中常用余弦定理来计算两条边的夹角，NLP中可以用余弦定理来计算文本相似度。</p>
+<p>计算两个向量的余弦定理，求得的夹角 <span class="math inline">\(\theta\)</span> 越小，说明两个向量越接近，计算公式如下：</p>
+<p><span class="math display">\[\begin{align*}
+cos(\theta) &amp;= \frac{\underset{a}{\rightarrow} \cdot \underset{b}{\rightarrow}}{\left \| \underset{a}{\rightarrow} \right \| \left \| \underset{b}{\rightarrow} \right \|} \\
+&amp;=  \frac{x_{1} \times x_{2} + y_{1} \times y_{2}}{\sqrt{x_{1}^{2} + y_{1}^{2}} \times \sqrt{x_{2}^{2} + y_{2}^{2}}} \\
+&amp; where \underset{a}{\rightarrow} = (x_{1}, y_{1}),\ \underset{b}{\rightarrow} = (x_{2}, y_{2}) 
+\end{align*}\]</span></p>
+<p>同理如果将两篇文档分别表示成向量利用余弦定理计算不就能得到两篇文档的相关性了吗？ 因此我们第一步要做的就是对文档进行向量化表示，表示方法一般有两种：</p>
+<ul>
+<li>词袋模型（文本特征为词频）</li>
+<li>tf-idf（文本特征为tfidf值)</li>
+</ul>
+<p>文档中每一个词对应一个维度，因此文档向量是多维的，因此需要对余弦定理泛化，使其能计算多维空间的距离，扩展公式为:</p>
+<p><span class="math display">\[\begin{align*}
+cos(\theta) &amp;= \frac{\underset{a}{\rightarrow} \cdot \underset{b}{\rightarrow}}{\left \| \underset{a}{\rightarrow} \right \| \left \| \underset{b}{\rightarrow} \right \|} \\
+&amp;=  \frac{x_{1} \times y_{2} + x_{2} \times y_{2} + ... + x_{n} \times y_{n}}{\sqrt{x_{1}^{2} + x_{2}^{2} + ... + x_{n}^{2}} \times \sqrt{y_{1}^{2} + y_{2}^{2} + ... + y_{n}^{2}}} \\
+&amp; where \underset{a}{\rightarrow} = (x_{1}, x_{1}, ..., x_{n}),\ \underset{b}{\rightarrow} = (y_{2}, y_{2}, ..., y_{n}) 
+\end{align*}\]</span></p>
+<h4 id="代码实现">代码实现</h4>
+<p>如果你熟悉<code>numpy</code>那么上面的计算就是小case了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sim</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, kernel=<span class="string">&#x27;tfidf&#x27;</span></span>):</span></span><br><span class="line">        self.word2idx = &#123;&#125;</span><br><span class="line">        self.kernel = kernel</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tokenizer</span>(<span class="params">self, sent</span>):</span></span><br><span class="line">        <span class="keyword">return</span> jieba.lcut(sent)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算词袋向量</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calc_bow</span>(<span class="params">self, docs</span>):</span></span><br><span class="line">        bow = np.zeros([<span class="built_in">len</span>(docs), <span class="built_in">len</span>(self.word2idx)])</span><br><span class="line">        <span class="keyword">for</span> docidx, words <span class="keyword">in</span> <span class="built_in">enumerate</span>(docs):</span><br><span class="line">            <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">                <span class="keyword">if</span> word <span class="keyword">in</span> self.word2idx:</span><br><span class="line">                    bow[docidx, self.word2idx[word]] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> bow</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算tfidf    </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calc_tfidf</span>(<span class="params">self, docs</span>):</span></span><br><span class="line">        tf = self.calc_bow(docs)</span><br><span class="line">        df = np.ones([<span class="number">1</span>, <span class="built_in">len</span>(self.word2idx)])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> docidx, words <span class="keyword">in</span> <span class="built_in">enumerate</span>(docs):</span><br><span class="line">            tf[docidx] /= np.<span class="built_in">max</span>(tf[docidx])</span><br><span class="line">            <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">                <span class="keyword">if</span> word <span class="keyword">in</span> self.word2idx:</span><br><span class="line">                    df[<span class="number">0</span>, self.word2idx[word]] += <span class="number">1</span></span><br><span class="line">        idf = np.log(<span class="built_in">len</span>(docs)) - np.log(df)</span><br><span class="line">        tfidf = tf * idf</span><br><span class="line">        <span class="keyword">return</span> tfidf</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算余弦相似度</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cos</span>(<span class="params">self, vec1, vec2</span>):</span></span><br><span class="line">        cos = np.dot(vec1, vec2) / (np.linalg.norm(vec1)*np.linalg.norm(vec2))</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cos = np.dot(vec1, vec2) / (np.linalg.norm(vec1)*np.linalg.norm(vec2))</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            cos = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> cos</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算文本相似度</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">similarity</span>(<span class="params">self, doc1, doc2</span>):</span></span><br><span class="line">        words1 = self.tokenizer(doc1)</span><br><span class="line">        words2 = self.tokenizer(doc2)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 求并集</span></span><br><span class="line">        words = <span class="built_in">set</span>(words1) | <span class="built_in">set</span>(words2)</span><br><span class="line">        <span class="comment"># word2idx = &#123;word1:0, word2:1, ...&#125;</span></span><br><span class="line">        self.word2idx = <span class="built_in">dict</span>(<span class="built_in">zip</span>(words, <span class="built_in">range</span>(<span class="built_in">len</span>(words))))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.kernel == <span class="string">&#x27;tfidf&#x27;</span>:</span><br><span class="line">            feature = self.calc_tfidf</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            feature = self.calc_bow</span><br><span class="line"></span><br><span class="line">        vec = feature([words1, words2])</span><br><span class="line">        vec1 = vec[<span class="number">0</span>]</span><br><span class="line">        vec2 = vec[<span class="number">1</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.cos(vec1, vec2)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    doc1 = <span class="string">&quot;&quot;&quot;计算机科学（英语：computer science，有时缩写为CS）是系统性研究信息与计算的理论基础以及它们在计算机系统中如何实现与应用的实用技术的学科。</span></span><br><span class="line"><span class="string">    [1] [2]它通常被形容为对那些创造、描述以及转换信息的算法处理的系统研究。</span></span><br><span class="line"><span class="string">    计算机科学包含很多分支领域；有些强调特定结果的计算，比如计算机图形学；</span></span><br><span class="line"><span class="string">    而有些是探讨计算问题的性质，比如计算复杂性理论；还有一些领域专注于怎样实现计算，比如编程语言理论是研究描述计算的方法，</span></span><br><span class="line"><span class="string">    而程序设计是应用特定的编程语言解决特定的计算问题，人机交互则是专注于怎样使计算机和计算变得有用、好用，以及随时随地为人所用。&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    doc2 = <span class="string">&quot;&quot;&quot;自然语言处理（英语：natural language processing，缩写作 NLP）是人工智能和语言学领域的分支学科。此领域探讨如何处理及运用自然语言；自然语言认知则是指让电脑“懂”人类的语言。</span></span><br><span class="line"><span class="string">自然语言生成系统把计算机数据转化为自然语言。自然语言理解系统把自然语言转化为计算机程序更易于处理的形式。&quot;&quot;&quot;</span></span><br><span class="line">    sim = Sim()</span><br><span class="line">    print(sim.similarity(doc1, doc2))</span><br></pre></td></tr></table></figure>
+<h4 id="总结">总结</h4>
+<p>NLP中涉及到计算应该下意识的想到将文本转换成空间向量表示，因为向量是能计算的而文本不能直接计算</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/08/25/%E4%B8%BA%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%8A%A0%E5%85%A5TF-IDF%E7%89%B9%E5%BE%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/08/25/%E4%B8%BA%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%8A%A0%E5%85%A5TF-IDF%E7%89%B9%E5%BE%81/" class="post-title-link" itemprop="url">为朴素贝叶斯加入tf-idf特征</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-25 19:49:59" itemprop="dateCreated datePublished" datetime="2018-08-25T19:49:59+08:00">2018-08-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>平时都说给分类器加入XX特征效果就好了，于是乎就用工具包懒人式操作几下（无外乎改改参数），很快tf-idf就加好了，但是如果让你完全手写实现那么到底怎么加呢？本文就来结合tf-idf和朴素贝叶斯谈谈加特征的方式。</p>
+<h3 id="背景知识">背景知识</h3>
+<h4 id="常用的vsm模型">常用的VSM模型</h4>
+<p>VSM(vector space model)即向量空间模型，是将文档映射到向量空间上，这样文档就可以计算了（总不可能用一堆文字去计算把）</p>
+<ul>
+<li>词集模型(set of word): 文档单词构成的集合，词集中的每个单词如果出现就置1没有就置0（也就是没有词频的概念）</li>
+<li>词袋模型(bag of word)：文档单词构成的集合，但统计词频，也就是说各个单词的权重不一样的，由词频决定</li>
+<li>tf-idf：单词的权重是对应单词的tf-idf值</li>
+</ul>
+<p>以上的概念很难理解的话看了下面的例子应该就能明白个大概：</p>
+<p>假设从语料库中得到一个字典<code>dict</code>: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[I, CS, like, NLP, and]</span><br></pre></td></tr></table></figure></p>
+<p>现在有语料库中有两个文档 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">doc1: [I, like, NLP]</span><br><span class="line"></span><br><span class="line">doc2: [I, like, CS, and, like, NLP]</span><br></pre></td></tr></table></figure></p>
+<h5 id="词集模型">词集模型</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">doc1: [1, 0, 1, 1, 0]</span><br><span class="line">doc2: [1, 1, 1, 1, 1]</span><br></pre></td></tr></table></figure>
+<h5 id="词袋模型">词袋模型</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">doc1: [1, 0, 1, 1, 0]</span><br><span class="line">doc2: [1, 1, 2, 1, 1]  # like出现了两次故词频为2</span><br></pre></td></tr></table></figure>
+<h5 id="tf-idf">tf-idf</h5>
+<p><span class="math display">\[tf_{term} = \frac{该文章中出现词term的次数}{该文章总词数}\]</span></p>
+<p><span class="math display">\[idf_{term} = log(\frac{文档总数}{出现词term的文档数 + 1})\]</span></p>
+<p><span class="math display">\[tf-idf = tf \times idf\]</span></p>
+<p>根据上述公式得到计算<code>doc1</code>的tf-idf</p>
+<p><span class="math display">\[\begin{align*}
+tf &amp;= [\frac{1}{3},\ 0,\ \frac{1}{3},\ \frac{1}{3},\ 0] \\
+idf &amp;= [log(\frac{2}{2+1}),\ 0,\ log(\frac{2}{2+1}),\ log(\frac{2}{2+1}),\ 0] \\
+tf-idf &amp;= [\frac{1}{3} \times log(\frac{2}{2+1}),\ 0,\ \frac{1}{3} \times  log(\frac{2}{2+1}),\ \frac{1}{3} \times log(\frac{2}{2+1}),\ 0]
+\end{align*}\]</span></p>
+<p>同理可得<code>doc2</code>的tf-idf:</p>
+<p><span class="math display">\[\begin{align*}
+tf &amp;= [\frac{1}{6},\ \frac{1}{6},\ \frac{2}{6},\ \frac{1}{6},\ \frac{1}{6}] \\
+idf &amp;= [log(\frac{2}{2+1}),\ log(\frac{2}{1+1}),\ log(\frac{2}{2+1}),\ log(\frac{2}{2+1}),\ log(\frac{2}{1+1})] \\
+tf-idf &amp;= [\frac{1}{6} \times log(\frac{2}{2+1}),\ \frac{1}{6} \times \frac{2}{1+1},\ \frac{2}{6} \times  log(\frac{2}{2+1}),\ \frac{1}{6} \times log(\frac{2}{2+1}),\ \frac{1}{6} \times log(\frac{2}{1+1})]
+\end{align*}\]</span></p>
+<h3 id="朴素贝叶斯nb">朴素贝叶斯(NB)</h3>
+<p><code>NB</code>属于生成模型，生成模型学习的是联合概率<code>p(x, y)</code>, 它是利用先验概率<code>p(y)</code>和<code>p(x|y)</code>来训练的，最后预测时使用贝叶斯定理来预测:</p>
+<p><span class="math display">\[p(y|x_{1}...x_{m}) = \frac{p(y)p(x_{1}...x_{m}|y)}{\sum_{y{}&#39; \epsilon \gamma} p(y{}&#39;)p(x_{1}...p_{m}|y{}&#39;)}\]</span></p>
+<p>为了简化问题，<code>NB</code>做了一个朴素的假设，假设输入之间是独立的，因此可得</p>
+<p><span class="math display">\[p(y|x_{1}...x_{m}) = \frac{p(y)\prod_{i}^{m} p(x_{i}|y)}{\sum_{y{}&#39; \epsilon \gamma} p(y{}&#39;)p(x_{1}...p_{m}|y{}&#39;)}\]</span></p>
+<p>朴素贝叶斯分类器的求解目标为:</p>
+<p><span class="math display">\[\underset{y}{argmax} \sum _{y \epsilon \gamma}p(y|x_{1}...x_{m})\]</span></p>
+<p>最终求得的<code>y</code>即为分类结果</p>
+<h3 id="代码部分">代码部分</h3>
+<p>有前文可知tf-idf是用一个向量来表示的，为了方便添加特征我们只能用BOW的方式去构建输入，放了方便向量运算我们使用<code>numpy</code>来构建</p>
+<p>为了对比，我们实现两种特征<code>词袋</code>和<code>tf-idf</code>作为模型的输入</p>
+<h4 id="语料处理部分">语料处理部分</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Corpus</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, data</span>):</span></span><br><span class="line">        self.tags = defaultdict(<span class="built_in">int</span>)</span><br><span class="line">        self.vocabs = <span class="built_in">set</span>()</span><br><span class="line">        self.docs = []</span><br><span class="line">        </span><br><span class="line">        self.build_vocab(data)</span><br><span class="line">        self.v_l = <span class="built_in">len</span>(self.vocabs) <span class="comment"># 字典的大小</span></span><br><span class="line">        self.d_l = <span class="built_in">len</span>(self.docs)   <span class="comment"># 文档数</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 分词器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tokenizer</span>(<span class="params">self, sent</span>):</span></span><br><span class="line">        <span class="keyword">return</span> jieba.lcut(sent)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 构建字典，获取分类标记集</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">build_vocab</span>(<span class="params">self, data</span>):</span></span><br><span class="line">        <span class="keyword">for</span> (tag, doc) <span class="keyword">in</span> data:</span><br><span class="line">            words = self.tokenizer(doc)</span><br><span class="line">            self.vocabs.update(words)</span><br><span class="line">            self.tags[tag] += <span class="number">1</span></span><br><span class="line">            self.docs.append((tag, words))</span><br><span class="line">        self.vocabs = <span class="built_in">list</span>(self.vocabs)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算词袋模型</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calc_bow</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment"># shape为 [d_l, v_l]，每一行存放文档的词袋向量</span></span><br><span class="line">        self.bow = np.zeros([self.d_l, self.v_l])</span><br><span class="line">        <span class="keyword">for</span> idx <span class="keyword">in</span> <span class="built_in">range</span>(self.d_l):</span><br><span class="line">            <span class="keyword">for</span> word <span class="keyword">in</span> self.docs[idx][<span class="number">1</span>]:</span><br><span class="line">                <span class="keyword">if</span> word <span class="keyword">in</span> self.vocabs:</span><br><span class="line">                    self.bow[idx, self.vocabs.index(word)] += <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算tf-idf</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calc_tfidf</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment"># 先计算bow，再用bow来计算tf</span></span><br><span class="line">        self.calc_bow()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 初始化tf、df、idf</span></span><br><span class="line">        self.tf = np.zeros([self.d_l, self.v_l])</span><br><span class="line">        self.idf = np.ones([<span class="number">1</span>, self.v_l])</span><br><span class="line">        self.tf_idf = np.ones([self.d_l, self.v_l])</span><br><span class="line">        <span class="keyword">for</span> idx <span class="keyword">in</span> <span class="built_in">range</span>(self.d_l):</span><br><span class="line">            self.tf[idx] = self.bow[idx] /np.<span class="built_in">sum</span>(self.bow[idx])</span><br><span class="line">            <span class="keyword">for</span> word <span class="keyword">in</span> self.docs[idx]:</span><br><span class="line">                <span class="keyword">if</span> word <span class="keyword">in</span> self.vocabs:</span><br><span class="line">                    self.idf[<span class="number">0</span>, self.vocabs.index(word)] += <span class="number">1</span></span><br><span class="line">        self.idf = np.log(<span class="built_in">float</span>(self.d_l) / self.idf)</span><br><span class="line">        self.tfidf = self.tf * self.idf</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 计算输入的bow向量，words代表输入序列（已分词）</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_idx</span>(<span class="params">self, words</span>):</span></span><br><span class="line">        bow = np.zeros([<span class="number">1</span>, self.v_l])</span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">            <span class="keyword">if</span> word <span class="keyword">in</span> self.vocabs:</span><br><span class="line">                bow[<span class="number">0</span>, self.vocabs.index(word)] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> bow</span><br></pre></td></tr></table></figure>
+<p>上述代码主要计算了<code>tf-idf</code>，词袋模型<code>bow</code></p>
+<h4 id="实现nb">实现NB</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># NB继承了语料类Corpus</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NBayes</span>(<span class="params">Corpus</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, data, kernel=<span class="string">&quot;tfidf&quot;</span></span>):</span></span><br><span class="line">        <span class="built_in">super</span>(NBayes, self).__init__(data)</span><br><span class="line">    </span><br><span class="line">        <span class="comment"># kernel 代表使用哪种特征，默认是tfidf，赋其他值代表使用bow</span></span><br><span class="line">        self.kernel = kernel</span><br><span class="line">        self.y_prob = &#123;&#125; <span class="comment"># p(y_i)</span></span><br><span class="line">        self.c_prob = <span class="literal">None</span> <span class="comment"># p(x|y_i) , 计算条件概率</span></span><br><span class="line">        self.feature = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 训练，主要计算 p(y_i)和条件概率 p(x|y_i)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.kernel == <span class="string">&quot;tfidf&quot;</span>:</span><br><span class="line">            self.calc_tfidf()</span><br><span class="line">            self.feature = self.tfidf</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.calc_bow()</span><br><span class="line">            self.feature = self.bow</span><br><span class="line">    </span><br><span class="line">        <span class="comment"># 采用极大似然估计计算p(y)</span></span><br><span class="line">        <span class="keyword">for</span> tag <span class="keyword">in</span> self.tags:</span><br><span class="line">            self.y_prob[tag] = <span class="built_in">float</span>(self.tags[tag])/ self.d_l</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算条件概率 p(x|y_i)</span></span><br><span class="line">        self.c_prob = np.zeros([<span class="built_in">len</span>(self.tags), self.v_l])</span><br><span class="line">        Z = np.zeros([<span class="built_in">len</span>(self.tags), <span class="number">1</span>]) <span class="comment"># 归一化参数</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> idx <span class="keyword">in</span> <span class="built_in">range</span>(self.d_l):</span><br><span class="line">            <span class="comment"># 获得类别标签id</span></span><br><span class="line">            tid = <span class="built_in">list</span>(self.tags.keys()).index(self.docs[idx][<span class="number">0</span>])</span><br><span class="line">            self.c_prob[tid] += self.feature[idx]</span><br><span class="line">            Z[tid] = np.<span class="built_in">sum</span>(self.c_prob[tid])</span><br><span class="line"></span><br><span class="line">        self.c_prob /= Z  <span class="comment"># 归一化</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 解码部分，返回使得概率值最大的类别y</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, inp</span>):</span></span><br><span class="line">        words = self.tokenizer(inp)</span><br><span class="line">        idx = self.get_idx(words)</span><br><span class="line"></span><br><span class="line">        tag, score = <span class="literal">None</span>, -<span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> (p_c, y) <span class="keyword">in</span> <span class="built_in">zip</span>(self.c_prob, self.y_prob):</span><br><span class="line">            tmp = np.<span class="built_in">sum</span>(idx * p_c * self.y_prob[y])</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> tmp &gt; score:</span><br><span class="line">                tag = y</span><br><span class="line">                score = tmp</span><br><span class="line">        <span class="keyword">return</span> tag, <span class="number">1.0</span> - score</span><br></pre></td></tr></table></figure>
+<h4 id="测试">测试</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">trainSet = [(<span class="string">&quot;pos&quot;</span>, <span class="string">&quot;good job !&quot;</span>),</span><br><span class="line">                (<span class="string">&quot;pos&quot;</span>, <span class="string">&quot;表现不错哦&quot;</span>), </span><br><span class="line">                (<span class="string">&quot;pos&quot;</span>, <span class="string">&quot;厉害咯&quot;</span>), </span><br><span class="line">                (<span class="string">&quot;pos&quot;</span>, <span class="string">&quot;做的很好啊&quot;</span>), </span><br><span class="line">                (<span class="string">&quot;pos&quot;</span>, <span class="string">&quot;做得不错继续努力&quot;</span>),</span><br><span class="line">                (<span class="string">&quot;pos&quot;</span>, <span class="string">&quot;不错！点赞&quot;</span>),</span><br><span class="line">                (<span class="string">&quot;neg&quot;</span>, <span class="string">&quot;太差了&quot;</span>), </span><br><span class="line">                (<span class="string">&quot;neg&quot;</span>, <span class="string">&quot;太糟糕了&quot;</span>), </span><br><span class="line">                (<span class="string">&quot;neg&quot;</span>, <span class="string">&quot;你做的一点都不好&quot;</span>), </span><br><span class="line">                (<span class="string">&quot;neg&quot;</span>, <span class="string">&quot;不行，重做&quot;</span>),</span><br><span class="line">                (<span class="string">&quot;neg&quot;</span>, <span class="string">&quot;so bad&quot;</span>),</span><br><span class="line">                (<span class="string">&quot;non&quot;</span>, <span class="string">&quot;一般般吧，还过的去&quot;</span>), </span><br><span class="line">                (<span class="string">&quot;non&quot;</span>, <span class="string">&quot;不算太好，也不算太差&quot;</span>), </span><br><span class="line">                (<span class="string">&quot;non&quot;</span>, <span class="string">&quot;继续努力吧&quot;</span>)</span><br><span class="line">               ]</span><br><span class="line">               </span><br><span class="line">    nb = NBayes(trainSet)</span><br><span class="line">    nb.train()</span><br><span class="line">    print(nb.predict(<span class="string">&quot;不错哦&quot;</span>)) <span class="comment"># (&#x27;pos&#x27;, 0.9142857142857143)</span></span><br></pre></td></tr></table></figure>
+<h3 id="扩展">扩展</h3>
+<p>神经网络分类器模型一般如何添加特征呢？笔者一般使用两种方式：</p>
+<ul>
+<li>在词嵌入层 (Word Embedding)进行拼接</li>
+<li>通过Attention计算引入</li>
+</ul>
+<p>本文完整代码放在 <a target="_blank" rel="noopener" href="https://github.com/SeanLee97/nlp_learning/tree/master/nbayes">github/nlp_learning/nbayes</a> 欢迎查阅</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/08/23/%E8%B0%88%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%85%83%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84ORM%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/08/23/%E8%B0%88%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%85%83%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84ORM%E6%A1%86%E6%9E%B6/" class="post-title-link" itemprop="url">谈谈python中的元类以及实现一个简单的ORM框架</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-23 00:15:27" itemprop="dateCreated datePublished" datetime="2018-08-23T00:15:27+08:00">2018-08-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>大家都说python中的元类(metaclass)在真实场景中99%的几率都用不到，但是最大熵理论告诉我们，面对未知风险，我们不能报侥幸心理，我们应该平权看待所有潜在风险，不应该放过任何一处潜在风险。</p>
+<p>So，本文主要讲讲python的元类，为了不枯燥无味，本文以一个初级ORM框架例子来讲解。</p>
+<h3 id="什么是orm">什么是ORM</h3>
+<p>Object Relational Mapping 即 对象-关系映射，在关系型数据库中就是把关系数据库的一行映射为一个对象，即一个类对应一个表，这样，你就不需要每次都用pymysql去封装每条sql了，把重复的操作交给<code>ORM</code>，如<code>sqlalchemy</code>就是一个 <code>ORM</code>框架</p>
+<p>可能这个解释有点牵强，在此举个例子把，比如说你要向一个数据表<code>user</code>插入数据，你可能会写: <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(name, age) <span class="keyword">values</span>(<span class="string">&#x27;seanlee&#x27;</span>, <span class="number">21</span>)</span><br></pre></td></tr></table></figure> 当插入数据到其他表时比如说<code>course</code>时，你又要: <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> course(name, teacher) <span class="keyword">values</span>(<span class="string">&#x27;computer sicence&#x27;</span>, <span class="string">&#x27;Mr.Gates&#x27;</span>)</span><br></pre></td></tr></table></figure> 这时你发现每次插入数据都要自己写完所有语句，且要处理完整个逻辑过程。这真的很累，于是乎，如果有一个框架能把这些复杂的工作给做了，使用者只需封装好模型类即可自动完成复杂的流程。 你的想法可能是这样的： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">ORM</span>):</span></span><br><span class="line">    <span class="comment"># 定义数据表的字段</span></span><br><span class="line">    name = CharField()</span><br><span class="line">    age = IntField()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    user = User()</span><br><span class="line">    user.name = <span class="string">&quot;seanlee&quot;</span></span><br><span class="line">    user.age = <span class="number">21</span></span><br><span class="line">    user.save()   <span class="comment"># 调用save函数框架自动将数据插入到数据库中</span></span><br></pre></td></tr></table></figure> 好了，上面就是<code>ORM</code>的大致思路了，本文要实现的目标就是完成上面代码的内部逻辑。</p>
+<h3 id="什么是元类">什么是元类</h3>
+<p>元类<code>metaclass</code>是类的类，简单的说就是元类是用来生产类的，可以说元类是<strong>最上层</strong>的类。可能还是很难理解，举几个例子把</p>
+<h4 id="object类">1. object类</h4>
+<p>平时大家定义类时可能会继承<code>object</code>类，大家下意识的认为<code>object</code>就是最上层的类了，其实不是，我们输出<code>object</code>的类型看看 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="built_in">type</span>(<span class="built_in">object</span>)) <span class="comment"># &lt;type &#x27;type&#x27;&gt;</span></span><br></pre></td></tr></table></figure> 可以看到<code>object</code>类的类型是<code>type</code>类型，那么<code>type</code>类型又是什么呢？<code>type</code>类型就是指<code>type</code>类，大家都以为<code>type()</code>是一个函数，其实它是一个<strong>类</strong>，当只传一个参数时它会返回参数的类型。</p>
+<p><strong>其实<code>type</code>就是python的元类</strong>，看下面程序： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>))  <span class="comment"># &lt;type &#x27;type&#x27;&gt;</span></span><br></pre></td></tr></table></figure> 可以看到<code>type</code>的类型就是<code>type</code></p>
+<h4 id="基本数据类型">2. 基本数据类型</h4>
+<p>python中的基本数据类型也可看为对象，它们的直属类型的类就是 <code>type</code>，看下面例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>(<span class="number">97</span>)))   <span class="comment"># 整型</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>(<span class="number">97.0</span>))) <span class="comment"># 浮点</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>(<span class="string">&quot;seanlee&quot;</span>))) <span class="comment"># 字符串</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>((<span class="number">9</span>, <span class="number">7</span>))))    <span class="comment"># 元组</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>([<span class="number">9</span>, <span class="number">7</span>])))    <span class="comment"># 列表</span></span><br><span class="line">print(<span class="built_in">type</span>(<span class="built_in">type</span>(&#123;<span class="string">&quot;key&quot;</span>: <span class="string">&quot;val&quot;</span>&#125;))) <span class="comment"># 字典</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;type &#39;type&#39;&gt;</span><br><span class="line">&lt;type &#39;type&#39;&gt;</span><br><span class="line">&lt;type &#39;type&#39;&gt;</span><br><span class="line">&lt;type &#39;type&#39;&gt;</span><br><span class="line">&lt;type &#39;type&#39;&gt;</span><br></pre></td></tr></table></figure></p>
+<h4 id="元类的作用">元类的作用</h4>
+<p>掌握了元类，你就是"类"的老大了，你可以按照你的方式去修改类，就好比你得到了Linux的root帐号，你可以为所欲为了。也好比你是微信群的群主，拥有直接拉人入群、踢人出群的权力，python中的元类也类似可以用于对类属性的增删操作。</p>
+<p>好啦，到这里你应该理解元类的概念了</p>
+<h3 id="type类">type类</h3>
+<p>从此刻起一定要更正观念<code>type</code>是一个类，它有三个参数： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type(what [, bases, dict])</span><br></pre></td></tr></table></figure> 可见后两个参数是可选的，各参数的意义：</p>
+<ul>
+<li>what: 输入的实例</li>
+<li>bases：类的基类，传入的是元组</li>
+<li>dict：类的属性、方法</li>
+</ul>
+<p>举几个例子说明，type的用法</p>
+<h4 id="直接生产类">直接生产类</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">User = <span class="built_in">type</span>(<span class="string">&#x27;User&#x27;</span>, (<span class="built_in">object</span>, ), &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;seanlee&#x27;</span>, <span class="string">&#x27;age&#x27;</span>: <span class="number">21</span>&#125;)</span><br><span class="line">user = User()</span><br><span class="line">print(user.name)  <span class="comment"># seanlee</span></span><br><span class="line">print(user.age)   <span class="comment"># 21</span></span><br></pre></td></tr></table></figure>
+<h4 id="修改类属性">修改类属性</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    name = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">user = User()</span><br><span class="line">print(user.name) <span class="comment"># None</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_name</span>(<span class="params">self</span>):</span></span><br><span class="line">    <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line">User = <span class="built_in">type</span>(<span class="string">&#x27;User&#x27;</span>, (<span class="built_in">object</span>, ), &#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;seanlee&#x27;</span>, <span class="string">&#x27;get_name&#x27;</span>: get_name&#125;)</span><br><span class="line">user = User()</span><br><span class="line">print(user.name)  <span class="comment"># seanlee</span></span><br><span class="line">print(user.get_name())   <span class="comment"># seanlee</span></span><br></pre></td></tr></table></figure>
+<h3 id="python中类的创建">python中类的创建</h3>
+<ul>
+<li>如果类中没有定义metaclass，那么直接用type创建</li>
+<li>如果用户定义了metaclass那么以metaclass的方式创建</li>
+</ul>
+<h3 id="自定义元类的创建">自定义元类的创建</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Metaclass</span>(<span class="params"><span class="built_in">type</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span>(<span class="params">cls, name, bases, attrs, **kwargs</span>):</span></span><br><span class="line">        <span class="comment"># do something here.</span></span><br><span class="line">        print(<span class="string">&quot;call Metaclass&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>(Metaclass, cls).__new__(cls, name, bases, attrs, **kwargs)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">metaclass=Metaclass</span>):</span></span><br><span class="line">    <span class="comment"># __metaclass__ = Metaclass # python2支持的方式</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;call User&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    User()</span><br></pre></td></tr></table></figure>
+<p>输出： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">call Metaclass</span><br><span class="line">call User</span><br></pre></td></tr></table></figure></p>
+<h3 id="开始打造orm">开始打造ORM</h3>
+<h4 id="使用描述器定义字段属性">1. 使用描述器定义字段属性</h4>
+<p>如果不了解描述器，请阅读<a href="https://seanlee97.github.io/2018/08/21/python%E4%B8%AD%E7%9A%84%E6%8F%8F%E8%BF%B0%E5%99%A8/">python中的描述器</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 定义字段属性的基类Field，它的用处主要用于识别类属性中属于字段的那些属性</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Field</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 整型字段属性</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IntField</span>(<span class="params">Field</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, db_column=<span class="string">&quot;&quot;</span></span>):</span></span><br><span class="line">        self._value = <span class="literal">None</span> <span class="comment"># 表的数据</span></span><br><span class="line">        self.db_column = db_column</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(value, <span class="built_in">int</span>):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;input should be a Integer&quot;</span>)</span><br><span class="line">        self._value = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 字符型字段属性</span></span><br><span class="line"><span class="class"><span class="keyword">class</span>  <span class="title">CharField</span>(<span class="params">Field</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, db_column=<span class="string">&quot;&quot;</span></span>):</span></span><br><span class="line">        self._value  = <span class="literal">None</span> </span><br><span class="line">        self.db_column = db_column</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(value, <span class="built_in">str</span>):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;input should be a String&quot;</span>)</span><br><span class="line">        self._value = value</span><br></pre></td></tr></table></figure>
+<h4 id="定义元类">2. 定义元类</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MetaModel</span>(<span class="params"><span class="built_in">type</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span>(<span class="params">cls, name, bases, attrs, **kwargs</span>):</span></span><br><span class="line">        fields = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> key, val <span class="keyword">in</span> attrs.items():</span><br><span class="line">            <span class="comment"># 把attrs中与数据库表字段有关的列提取出来</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(val, Field):</span><br><span class="line">                fields[key] = val   <span class="comment"># value 直接走描述器__get__()</span></span><br><span class="line"></span><br><span class="line">        _meta = &#123;&#125;</span><br><span class="line">        db_table = name.lower()  <span class="comment"># 数据表名称默认取小写类名称</span></span><br><span class="line">        _meta[<span class="string">&#x27;db_table&#x27;</span>] = db_table</span><br><span class="line">        attrs[<span class="string">&#x27;_meta&#x27;</span>] = _meta</span><br><span class="line">        attrs[<span class="string">&#x27;_fields&#x27;</span>] = fields</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 以上过程相当于对类进行了修改</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>(MetaModel, cls).__new__(cls, name, bases, attrs, **kwargs)</span><br></pre></td></tr></table></figure>
+<h4 id="定义模型基类">3. 定义模型基类</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span>(<span class="params">metaclass=MetaModel</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="keyword">for</span> key, val <span class="keyword">in</span> kwargs.items():</span><br><span class="line">            <span class="built_in">setattr</span>(self, key, val)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>(Model, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span>(<span class="params">self</span>):</span></span><br><span class="line">        fields = []</span><br><span class="line">        values = []</span><br><span class="line">        <span class="keyword">for</span> key, val <span class="keyword">in</span> self._fields.items():</span><br><span class="line">            db_column = val.db_column</span><br><span class="line">            <span class="keyword">if</span> db_column <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                db_column = key.lower()</span><br><span class="line">            fields.append(db_column)</span><br><span class="line">            value = <span class="built_in">getattr</span>(self, key) <span class="comment"># 字段的值</span></span><br><span class="line">            values.append(<span class="built_in">str</span>(value))</span><br><span class="line">        sql = <span class="string">&quot;insert &#123;name&#125; (&#123;field&#125;) values (&#123;value&#125;)&quot;</span>.<span class="built_in">format</span>(name=self._meta[<span class="string">&#x27;db_table&#x27;</span>],</span><br><span class="line">                                                             field=<span class="string">&#x27;,&#x27;</span>.join(fields),</span><br><span class="line">                                                             value=<span class="string">&#x27;,&#x27;</span>.join(values))</span><br><span class="line">        <span class="keyword">return</span> sql</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">select</span>(<span class="params">self</span>):</span></span><br><span class="line">        fields = []</span><br><span class="line">        where = []</span><br><span class="line">        <span class="keyword">for</span> key, val <span class="keyword">in</span> self._fields.items():</span><br><span class="line">            db_column = val.db_column</span><br><span class="line">            <span class="keyword">if</span> db_column <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                db_column = key.lower()</span><br><span class="line">            fields.append(db_column)</span><br><span class="line">            v = <span class="built_in">getattr</span>(self, key, <span class="literal">None</span>)</span><br><span class="line">            <span class="keyword">if</span> v <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                where.append([key, <span class="built_in">str</span>(v)])</span><br><span class="line"></span><br><span class="line">        sql = <span class="string">&#x27;select &#123;fields&#125; from &#123;name&#125; where &#123;where&#125;&#x27;</span>.<span class="built_in">format</span>(name=self._meta[<span class="string">&#x27;db_table&#x27;</span>],</span><br><span class="line">                                                                 fields=<span class="string">&#x27;,&#x27;</span>.join(fields),</span><br><span class="line">                                                                 where=<span class="string">&#x27; and &#x27;</span>.join([<span class="string">&#x27;=&#x27;</span>.join(x) <span class="keyword">for</span> x <span class="keyword">in</span> where]),</span><br><span class="line">                                                                 )</span><br><span class="line">        <span class="keyword">return</span> sql</span><br></pre></td></tr></table></figure>
+<p>上述三步就完成了简单orm的搭建了，为了简单没封装真实的数据库操作，仅返回SQL语句而已。</p>
+<h4 id="操作实例">4. 操作实例</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">Model</span>):</span></span><br><span class="line">    name = CharField(db_column=<span class="string">&quot;name&quot;</span>, max_length=<span class="number">10</span>)</span><br><span class="line">    age = IntField(db_column=<span class="string">&quot;age&quot;</span>, <span class="built_in">min</span>=<span class="number">0</span>, <span class="built_in">max</span>=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span> <span class="comment"># 使用内部类来定义数据表的其他属性</span></span><br><span class="line">        db_table = <span class="string">&quot;db_user&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    user = User(name=<span class="string">&#x27;seanlee&#x27;</span>, age=<span class="number">15</span>)</span><br><span class="line">    user.name = <span class="string">&#x27;sean&#x27;</span></span><br><span class="line">    print(user.save())</span><br><span class="line">    print(user.select())</span><br></pre></td></tr></table></figure>
+<p>输出 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert user (name,age) values (sean,15)</span><br><span class="line">select name,age from user where name&#x3D;sean and age&#x3D;15</span><br></pre></td></tr></table></figure></p>
+<p>上述代码放在了Github中，欢迎查阅<a target="_blank" rel="noopener" href="https://github.com/SeanLee97/python_intermediate/blob/master/metaclass/orm.py">python_intermediate / metaclass / orm</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/08/21/python%E4%B8%AD%E7%9A%84%E6%8F%8F%E8%BF%B0%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/08/21/python%E4%B8%AD%E7%9A%84%E6%8F%8F%E8%BF%B0%E5%99%A8/" class="post-title-link" itemprop="url">python中的描述器</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-21 20:32:24" itemprop="dateCreated datePublished" datetime="2018-08-21T20:32:24+08:00">2018-08-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>描述器和装饰器是两个不同的东西，描述器是类中封装了__set__(), __get__(), __delete__()等魔术方法。</p>
+<p>python中的属性、实例方法、静态方法、类方法、<code>super</code>都是基于描述器实现的</p>
+<p>python中默认的对属性的访问控制是从对象字典__dict__中进行封装的，以obj.x举例，它的默认查找顺序是</p>
+<ul>
+<li>先查找实例的__dict__即obj.__dict__['x']</li>
+<li>若查找不到，再查找type(obj).__dict__['x']</li>
+<li>若查找不到，最后查找type(obj)的父类(不包括__metaclass__)</li>
+</ul>
+<p>但是当定义了描述器时，python就会调用描述器的方法来重写默认的控制行为</p>
+<h3 id="描述器的分类">描述器的分类</h3>
+<ul>
+<li>资料描述器：同时定义了__set__()，和__get__()方法</li>
+<li>非资料描述器：仅定义了__get__()方法</li>
+</ul>
+<p>它们的区别在于：主要区别在于实例字典的优先级上。如果访问的属性在字典实例中且是资料描述器那么以资料描述器的为主，否则若是非资料描述器则以实例字典的为主。</p>
+<h3 id="与__setattr____getattr____getattribute__的关系">与__setattr__()，__getattr__()，__getattribute__()的关系</h3>
+<ul>
+<li>__setattr__()的优先级高于描述器的__set__()的方法</li>
+<li>如果属性已经定义了那么不会再执行__getattr__()了，而是直接通过访问实例字典返回结果，但如果存在描述器则走描述器的__get__()方法，__getattr__()只在访问未定义的属性时被触发</li>
+<li>__getattribute__()：在调用类方法，字典__dict__属性时会通过访问此魔术方法实现，如果同一个类中也封装了__setattr__()且操作了self.__dict__那么将会陷入无限循环</li>
+<li>描述器的调用也是因为__getattribute__()，当重写了__getattribute__()时会阻止描述器的调用</li>
+</ul>
+<h3 id="实例">实例</h3>
+<h4 id="描述器的基本使用">描述器的基本使用</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Meter</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a meter.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, value=<span class="number">0.0</span></span>):</span></span><br><span class="line">        self.value = <span class="built_in">float</span>(value)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.value</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        self.value = <span class="built_in">float</span>(value)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foot</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a foot.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> instance.meter * <span class="number">3.2808</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        instance.meter = <span class="built_in">float</span>(value) / <span class="number">3.2808</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Distance</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    meter = Meter()</span><br><span class="line">    foot = Foot()</span><br><span class="line"></span><br><span class="line">d = Distance()</span><br><span class="line">print(d.meter, d.foot)  <span class="comment"># 0.0, 0.0</span></span><br><span class="line">d.meter = <span class="number">1</span></span><br><span class="line">print(d.meter, d.foot)  <span class="comment"># 1.0 3.2808</span></span><br><span class="line">d.meter = <span class="number">2</span></span><br><span class="line">print(d.meter, d.foot)  <span class="comment"># 2.0 6.5616</span></span><br></pre></td></tr></table></figure>
+<h4 id="存在__setattr__时的资料描述器">存在__setattr__()时的资料描述器</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Meter</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a meter.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, value=<span class="number">0.0</span></span>):</span></span><br><span class="line">        self.value = <span class="built_in">float</span>(value)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.value</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        self.value = <span class="built_in">float</span>(value)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foot</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a foot.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> instance.meter * <span class="number">3.2808</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        instance.meter = <span class="built_in">float</span>(value) / <span class="number">3.2808</span></span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Distance</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    meter = Meter()</span><br><span class="line">    foot = Foot()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span>(<span class="params">self, name, value</span>):</span></span><br><span class="line">        print(<span class="string">&quot;__setattr__&quot;</span>)</span><br><span class="line">        self.__dict__[name] = value</span><br><span class="line"></span><br><span class="line">d = Distance()</span><br><span class="line">print(d.meter, d.foot) </span><br><span class="line">d.meter = <span class="number">1</span></span><br><span class="line">print(d.meter, d.foot) </span><br><span class="line">d.meter = <span class="number">2</span></span><br><span class="line">print(d.meter, d.foot) </span><br></pre></td></tr></table></figure>
+<p>输出： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0.0 0.0</span><br><span class="line">__setattr__</span><br><span class="line">0.0 0.0</span><br><span class="line">__setattr__</span><br><span class="line">0.0 0.0</span><br></pre></td></tr></table></figure> 由于资料描述器的__get__()优先级高于实例字典，故会一致访问资料描述器的值，__setattr__()的优先级高于描述器的__set__()所以更新的是实例字典的值</p>
+<h4 id="存在__setattr__时的非资料描述器">存在__setattr__()时的非资料描述器</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Meter</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a meter.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, value=<span class="number">0.0</span></span>):</span></span><br><span class="line">        self.value = <span class="built_in">float</span>(value)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.value</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foot</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a foot.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> instance.meter * <span class="number">3.2808</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Distance</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    meter = Meter()</span><br><span class="line">    foot = Foot()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span>(<span class="params">self, name, value</span>):</span></span><br><span class="line">        print(<span class="string">&quot;__setattr__&quot;</span>)</span><br><span class="line">        self.__dict__[name] = value</span><br><span class="line"></span><br><span class="line">d = Distance()</span><br><span class="line">print(d.meter, d.foot)</span><br><span class="line">d.meter = <span class="number">1</span></span><br><span class="line">print(d.meter, d.foot)</span><br><span class="line">d.meter = <span class="number">2</span></span><br><span class="line">print(d.meter, d.foot)</span><br></pre></td></tr></table></figure>
+<p>输出 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0.0 0.0</span><br><span class="line">__setattr__</span><br><span class="line">1 3.2808</span><br><span class="line">__setattr__</span><br><span class="line">2 6.5616</span><br></pre></td></tr></table></figure> 实例字典的优先级高于非资料描述器</p>
+<h2 id="refrence">Refrence</h2>
+<p>[1] https://pyzh.readthedocs.io/en/latest/Descriptor-HOW-TO-Guide.html#id11</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/08/20/%E8%B0%88%E8%B0%88%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8%E4%B8%89%E5%A4%A7%E6%A8%A1%E5%9E%8BHMM%E3%80%81MEMM%E3%80%81CRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/08/20/%E8%B0%88%E8%B0%88%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8%E4%B8%89%E5%A4%A7%E6%A8%A1%E5%9E%8BHMM%E3%80%81MEMM%E3%80%81CRF/" class="post-title-link" itemprop="url">谈谈序列标注三大模型HMM、MEMM、CRF</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-20 21:19:05" itemprop="dateCreated datePublished" datetime="2018-08-20T21:19:05+08:00">2018-08-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-09 22:31:49" itemprop="dateModified" datetime="2021-03-09T22:31:49+08:00">2021-03-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>很久之前曾经接触过CRF，但是觉得这东西太晦涩难懂了，看了很多科普博客但很多都是从概率图的层面上解释的，虽然图形能让你很快了解个大概，但是有些地方疑惑时是很难从图形中得到答案的，所以我更喜欢从公式出发。最近重拾CRF，顺便也回顾了<code>HMM</code> <code>MEMM</code>，这几个模型主要用在了序列标注上，故在此形成一个小型知识体系便于以后复习。</p>
+<h1 id="前情知识">前情知识</h1>
+<h2 id="生成模型-判别模型">生成模型 &amp; 判别模型</h2>
+<h3 id="生成模型">生成模型</h3>
+<p>生成模型学习的是联合概率 <span class="math inline">\(p(x, y)= p(x|y) p(y)\)</span>，然后利用贝叶斯定理来求解后验概率 <span class="math inline">\(p(y|x)\)</span></p>
+<p><span class="math display">\[p(y|x) = \frac{p(x|y)p(y)}{\sum_{y{}&#39; \epsilon \gamma} p(x|y{}&#39;)p(y{}&#39;)}\]</span></p>
+<p>常见的生成模型有：朴素贝叶斯（NB），HMM</p>
+<h3 id="判别式模型">判别式模型</h3>
+<p>直接学习 <span class="math inline">\(p(y|x;w)\)</span>, <span class="math inline">\(w\)</span> 为学习参数，判别式模型根据所提供的 feature 直接学习一个分类边界</p>
+<p>常见的判别式模型：神经网络，SVM，CRF</p>
+<p><img src="/images/posts/crf/models.png" /></p>
+<h4 id="对数线性模型log-linear-model">对数线性模型（log-linear model）</h4>
+<p>对于有一系列输入数据 <span class="math inline">\(\chi\)</span> ，和一系列标签数据 <span class="math inline">\(\gamma\)</span> ，如何通过这些标注数据来求解 <span class="math inline">\(p(y|x)\)</span> 呢？判别式模型建模：</p>
+<p><span class="math display">\[p(y|x), \forall (x, y) \in \chi \times \gamma\]</span> </p>
+<p>对于上述建模一般可以用对数线性模型来求解，常见的最大熵模型、softmax、<strong>MEMM、CRF都使用了对数线性模型</strong>。</p>
+<p><strong>对数线性模型一般包含：</strong></p>
+<ul>
+<li>输入集合 <span class="math inline">\(\chi\)</span></li>
+<li>标签集合 <span class="math inline">\(\gamma\)</span>，是有限的集合</li>
+<li><span class="math inline">\(w \in \mathbb{R}^{d}\)</span> 是模型的参数，<span class="math inline">\(d\)</span> 为正整数，表示参数/特征个数</li>
+<li>特征函数 <span class="math inline">\(f:\chi \times \gamma \rightarrow \mathbb{R}^{d}\)</span>，将 $(x,y) $ 映射到一个特征向量 <span class="math inline">\(f(x, y) \in \mathbb{R}^d\)</span></li>
+</ul>
+<p>特征函数是需要定义的，比如可以这么定义特征函数：</p>
+<p><span class="math display">\[f_{k}(x, y) = \left\{\begin{matrix}
+1, 满足条件 \\
+0, otherwise
+\end{matrix}\right.\]</span> </p>
+<p>其中，特征函数 <span class="math inline">\(f_{k}(x, y)\)</span> 个数可任意制定 <span class="math inline">\((k = 1,...,d)\)</span></p>
+<p>那<strong>啥是特征</strong>呢？</p>
+<p>按照刚刚的描述，特征用向量来表示。特征向量 <span class="math inline">\(f(x,y)\)</span> 的每一维 <span class="math inline">\(f_{k} (x, y), ( k = 1, ..., d)\)</span> 都是一个特征。特征可以表达 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 的各种性质。每个特征有一个权重参数 <span class="math inline">\(w_{k}\)</span> ，权重的值通过训练数据估计。训练数据由样例   <span class="math inline">\((x^{(i)}, y^{(i)}), i=1,..,n\)</span> 组成。</p>
+<p>对于任意的 <span class="math inline">\((x, y) \in \chi \times \gamma\)</span>，判别式模型定义了如下的条件概率：</p>
+<p><span class="math display">\[p(y|x;w) = \frac{exp(w\cdot f(x, y))}{\sum _{y{}&#39;\epsilon \gamma} exp(w\cdot f(x, y{}&#39;))}\]</span></p>
+<p>分母 <span class="math inline">\(Z = \sum _{y{}&#39;\epsilon \gamma} exp(w\cdot f(x, y{}&#39;))\)</span> 为归一化项，可以保证 <span class="math inline">\(\sum_{y \in \gamma} p(y|x; w) = 1\)</span>，对上式两边同时取对数，得到：</p>
+<p>$$<span class="math display">\[\begin{align*}
+
+log\ p(y|x;w) &amp; = log\ \frac{exp(w\cdot f(x, y))}{\sum _{y{}&#39;\epsilon \gamma} exp(w\cdot f(x, y{}&#39;))} \\\\
+
+&amp; = w\cdot f(x, y) - log Z
+
+\end{align*}\]</span>$$</p>
+<p>可见第一项 <span class="math inline">\(w\cdot f(x, y)\)</span> 是线性的，而第二项当 <span class="math inline">\(x\)</span> 固定时，<span class="math inline">\(log Z\)</span> 也是固定的。所以当 <span class="math inline">\(x\)</span> 固定时， <span class="math inline">\(log p(y|x; w)\)</span> 是<strong>特征</strong>的线性函数，因此叫对数线性模型。</p>
+<p>对于训练集 <span class="math inline">\((x^{(i)}, y^{(i)}), i=1,..,n\)</span> 样本的损失函数如下：</p>
+<p><span class="math display">\[L(w) = \sum_i^n log\ p(y^{i}|x^{i};w)\]</span></p>
+<p>为了防止过拟合，一般会加上 L2 正则</p>
+<p><span class="math display">\[L&#39;(w) = \sum_i^n log\ p(y^{i}|x^{i};w) - \frac{\lambda}{2} \sum _{k} w_k^2\]</span></p>
+<p>可用梯度上升法来优化损失更新参数。</p>
+<p>一般用极大似然估计来估计参数</p>
+<p><span class="math display">\[v_w = argmax_{w\in \mathbb{R}^d} L&#39;(w)\]</span></p>
+<h2 id="分类问题和序列标注问题">分类问题和序列标注问题</h2>
+<h3 id="分类问题">分类问题</h3>
+<p>分类问题一般是对输入进行建模得到语义编码（如可以使用RNN，CNN进行编码）然后经过分类器将空间映射到分类空间上，最后可通过softmax将权重归一化得到映射到各个分类空间的概率，取概率最大的作为分类。</p>
+<h3 id="序列标注问题">序列标注问题</h3>
+<p>序列标注问题的重点在于学习序列位置之间的关系，然后解码出最大概率标签路径，比如有<span class="math inline">\(K\)</span>个标签，当输入序列长度为<span class="math inline">\(m\)</span>时，那么就有<span class="math inline">\(K^{m}\)</span>条概率路径，序列标注问题是要从<span class="math inline">\(K^m\)</span>条概率路径中寻找到概率最大的那条路径。NLP中常见的任务，如分词，词性标注，命名体识别都属于序列标注问题。</p>
+<h2 id="hmm">HMM</h2>
+<p>之前已经说了HMM是<strong>生成模型</strong>，它引入了<strong>一阶马尔科夫假设</strong>：当前状态只与上一状态有关。结合这两点可以得到联合概率</p>
+<p><span class="math display">\[p(x_{1}...x_{m}, s_{1}...s_{n}) = \prod_{t}p(s_{t}|s_{t-1})p(x_{t}|s_{t})\]</span></p>
+<p><span class="math inline">\(p(s_{t}|s_{t-1})\)</span>称为状态间的转移概率，<span class="math inline">\(p(x_{t}|s_{t})\)</span>称为发射概率（由隐状态发射成显状态的概率）</p>
+<p><img src="/images/posts/crf/hmm.png" /></p>
+<p>由图可知HMM是一个有向图。</p>
+<p>HMM的解码部分是求解：<span class="math inline">\(arg \underset{s_{1}...s_{m}}{max}\ p(x_{1}...x_{m}, s_{1}...s_{m})\)</span>, 通常采用 Viterbi 算法解码</p>
+<h3 id="hmm的特点">HMM的特点</h3>
+<p>HMM有两个独立性假设：</p>
+<ul>
+<li>观测序列之间是独立的 (A B 独立 有P(A, B) = P(A)P(B)，所以计算联合概率的时候才能用叠乘 )</li>
+<li>当前状态仅依赖于先前的状态</li>
+</ul>
+<h2 id="memm">MEMM</h2>
+<p>Max Entropy Markov Model 最大熵马尔可夫模型，在最大熵的基础上引入了一阶马尔科夫假设。 MEMM 属于<strong>判别式模型</strong>，它要学习条件概率</p>
+<p><span class="math display">\[p(s_{1}...s_{m}|x_{1}...x_{m}) = \prod_{i=1}^{m}p(s_{i}|s_{1}...s_{i-1}, x_{1}...x_{m})
+\]</span></p>
+<p>由于引入了一阶马尔科夫假设，故当前状态仅于前一状态有关</p>
+<p><span class="math display">\[p(s_{1}...s_{m}|x_{1}...x_{m}) = \prod_{i=1}^{m}p(s_{i}|s_{i-1}, x_{1}...x_{m})
+\]</span></p>
+<p>而最大熵模型是对数线性模型，由上文可得到 MEMM 的条件概率表达式</p>
+<p><span class="math display">\[\begin{align*}
+p(s_{i}|s_{i-1}, x_{1}...x_{m}; w) &amp;= \frac{exp(w \cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s_{i}))}{ \sum _{s{}&#39; \epsilon S} exp(w \cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s{}&#39;) ) } \\\\
+&amp; = \frac{1}{Z} exp(w \cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s_{i}))
+\end{align*}
+\]</span></p>
+<p><span class="math inline">\(\phi (x_{1}...x_{m}, i, s_{i-1}, s{}&#39;)\)</span> 是一个特征函数，其中有：</p>
+<ul>
+<li><span class="math inline">\(i\)</span> 代表当前被标记的位置</li>
+<li><span class="math inline">\(s\)</span> 先前的状态</li>
+<li><span class="math inline">\(s{}&#39;\)</span> 当前的状态</li>
+</ul>
+<p>故有</p>
+<p><span class="math display">\[\begin{align*}
+p(s_{1}...s_{m}|x_{1}...x_{m}) &amp;= \prod_{i=1}^{m} p(s_{i}|s_{i-1}, x_{1}...x_{m}) \\\\
+&amp;= \prod_{i=1}^{m}\frac{exp(w\cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s_{i}))}{Z} \\\\
+&amp;= \frac{exp(\sum _{i} w\cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s_{i}))}{Z} \tag{1}
+\end{align*}\]</span></p>
+<p>MEMM 解码用的是极大似然估计 <span class="math inline">\(arg \underset{s_{1}...s_{m}}{max}\ p( s_{1}...s_{m}|x_{1}...x_{m})\)</span>，为了好理解我做了一步步简化</p>
+<p><span class="math display">\[\begin{align*}
+arg \underset{s_{1}...s_{m}}{max}\ p( s_{1}...s_{m}|x_{1}...x_{m}) &amp;= arg \underset{s_{1}...s_{m}}{max}\ \prod_{i=1}^{m}p( s_{i}|s_{i-1} ,x_{1}...x_{m}) \\\\
+&amp;= arg \underset{s_{1}...s_{m}}{max}\ p( s_{i}|s_{i-1}, x_{1}...x_{m} ) \\\\
+&amp;= arg \underset{s_{1}...s_{m}}{max}\frac{exp(w\cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s_{i}))}{\sum _{s{}&#39;\epsilon S}exp(w\cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s{}&#39;))} \\\\
+&amp;= arg \underset{s_{1}...s_{m}}{max}\ exp(w\cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s_{i})) \\\\
+&amp;= arg \underset{s_{1}...s_{m}}{max}\ w\cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s_{i}) \tag{2}
+\end{align*}\]</span></p>
+<p>也即是编码等价于求解公式<span class="math inline">\((2)\)</span>，通常用 viterbi 算法求解，如果不采用 viterbi 求解它的算法复杂度是 <span class="math inline">\(O(K^{m})\)</span> ，采用了 viterbi 算法可以降到 <span class="math inline">\(O(mK^{2})\)</span>，(<span class="math inline">\(K\)</span> 为隐状态数目, <span class="math inline">\(m\)</span>为观测序列长度)</p>
+<p><img src="/images/posts/crf/memm.png" /></p>
+<p>如图，MEMM也是有向图模型。</p>
+<h3 id="memm的优点">MEMM的优点</h3>
+<p>克服了 HMM 输出独立性问题，通过引入特征函数使得模型比 HMM “拥有更多信息” （上下文信息），而且最大熵则从全局角度来建模，它“保留尽可能多的不确定性，在没有更多的信息时，不擅自做假设”。</p>
+<p>举个例子：</p>
+<p>HMM中，观测节点 <span class="math inline">\(x_{i}\)</span> 仅依赖隐藏状态节点 <span class="math inline">\(y_{i}\)</span> （没有上下文信息）,也就意味着我的观测节点只依赖当前时刻的隐藏状态。但在更多的实际场景下，观测序列是需要很多的特征来刻画的，比如说，在做 NER 时，标注 <span class="math inline">\(y_{i}\)</span> 不仅跟当前状态 <span class="math inline">\(x_{i}\)</span> 相关，而且还跟前后标注 <span class="math inline">\(y_{j, (j \neq i)}\)</span> 相关，比如字母大小写、词性等等。</p>
+<h3 id="memm的缺点">MEMM的缺点</h3>
+<p>标签偏置(labeling bias)问题，由于MEMM的当前状态只与当前观测以及上一状态有关，导致隐状态中有更少转移的状态拥有的转移概率普遍偏高，简单的说就是MEMM中概率最大路径更容易出现在转移少的状态中。</p>
+<p>举个例子：</p>
+<p><img src="/images/posts/crf/memm-label-bias.png" /></p>
+<p>用 Viterbi 算法解码 MEMM，可见状态 1 倾向于转换到状态 2，同时状态 2 倾向于保留在状态 2，按照这个规律去猜可能会产生最优转换路径就是在状态 1 和 2 之间转换。 解码过程细节（需要会 Viterbi 算法这个前提）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">P(1-&gt;1-&gt;1-&gt;1) &#x3D; 0.4 x 0.45 x 0.5 &#x3D; 0.09</span><br><span class="line">P(2-&gt;2-&gt;2-&gt;2) &#x3D; 0.2 X 0.3 X 0.3 &#x3D; 0.018</span><br><span class="line">P(1-&gt;2-&gt;1-&gt;2) &#x3D; 0.6 X 0.2 X 0.5 &#x3D; 0.06</span><br><span class="line">P(1-&gt;1-&gt;2-&gt;2) &#x3D; 0.4 X 0.55 X 0.3 &#x3D; 0.066</span><br></pre></td></tr></table></figure>
+<p>但是得到的最优的状态转换路径却是 1-&gt;1-&gt;1-&gt;1，不存在 1 和 2 之间的转换，为什么呢？<strong>因为状态 2 可以转换的状态比状态 1 要多（因为转换出去的概率和为1 ，如果转换的状态多了，那么各个转换出去状态分摊的概率可能就小了），从而使转移概率降低</strong>, 即 MEMM 倾向于选择拥有更少转移的状态。本例中虽然 1 -&gt; 2 的转换概率比较高，但是 2 -&gt; 1 的就不一定了。</p>
+<p>为什么出现这个问题呢？因为 MEMM 当前的状态仅与上一状态和当前的观测状态有关，没有考虑到更多的观测信息，因而可能会存在偏置。</p>
+<p>公式 (1) 中 <span class="math inline">\(\sum\)</span> 求和的作用在概率中是归一化，但是这里归一化放在了指数内部，管这叫局部归一化。 问题来了，viterbi 求解过程，是用动态规划的状态转移公式，因为是局部归一化，所以 MEMM 的 viterbi 的状态转移会出现局部最优的情况，导致 dp 无法正确的递归到全局的最优。</p>
+<p>如何解决这个问题呢？引入全局化特征可以解决标签偏置问题，下文的 CRF 其实就在MEMM上加入全局化特征从而解决标签偏置问题。</p>
+<h2 id="crf">CRF</h2>
+<p>Conditional Random Forest条件随机场，这里主要讲解线性链（linear-chain）,这里不会牵扯太多概率图的东西（因为我也不会啊:&lt;）还是从对数线性模型出发。 首先要明确的一点是CRF也属于判别模型，所以和MEMM一样需要进行条件概率建模</p>
+<p><span class="math display">\[p(s_{1}...s_{m}|x_{1}...x_{m})\]</span></p>
+<p>CRF 也和 MEMM 一样做了一阶马尔科夫假设，即当前状态只与上一状态有关，但是区别在于CRF的特征采用了全局特征，它把观测序列当做整体来看所以它的特征函数是全局的，它的特征函数为：</p>
+<p><span class="math display">\[\varphi (x_{1}...x_{m}, s_{1}...s_{m}) = \sum _{j=1}^{m} \phi (x_{1}...x_{m}, i, s_{i-1}, s_{i})
+\]</span></p>
+<p>其中 <span class="math inline">\(\phi\)</span> 和 MEMM 的特征函数是一致的，和 MEMM 的区别是，MEMM 的当前状态与上一状态和当前的输入有关，而 CRF 当前的状态与上一状态和所有的输入有关，这可以缓解标签偏置的问题。接下来的步骤和MEMM差不多了，只是特征函数变为了<span class="math inline">\(\varphi\)</span>，为了连续性在此再走一遍流程。</p>
+<p>CRF的条件概率表达式为：</p>
+<p><span class="math display">\[p(s_{i}|s_{i-1}, x_{1}...x_{m}; w) = \frac{exp(w\cdot \varphi (x_{1}...x_{m}, i, s_{i-1}, s_{i}))}{\sum _{s{}&#39;\epsilon S}exp(w\cdot \varphi (x_{1}...x_{m}, i, s_{i-1}, s{}&#39;))}
+\]</span></p>
+<p>对所有状态由：</p>
+<p><span class="math display">\[\begin{align*}
+p(s_{1}...s_{m}|x_{1}...x_{m}) &amp;= \prod_{i=1}^{m} p(s_{i}|s_{i-1}, x_{1}...x_{m}) \\\\
+&amp;= \prod_{i=1}^{m}\frac{exp(w\cdot \varphi (x_{1}...x_{m}, i, s_{i-1}, s_{i}))}{Z} \\\\
+&amp;= \frac{exp(\sum _{i} w\cdot \varphi (x_{1}...x_{m}, i, s_{i-1}, s_{i}))}{Z} \\\\
+&amp;= \frac{exp(\sum _{i} \sum_j w_{j} \cdot \phi_{j} (x_{1}...x_{m}, i, s_{i-1}, s_{i}))}{Z} \tag{3}
+\end{align*}\]</span></p>
+<p>CRF的解码部分是计算 <span class="math inline">\(arg \underset{s_{1}...s_{m}}{max}\ p( s_{1}...s_{m}|x_{1}...x_{m})\)</span>，一步步进行简化</p>
+<p><span class="math display">\[\begin{align*}
+arg \underset{s_{1}...s_{m}}{max}\ p( s_{1}...s_{m}|x_{1}...x_{m}) &amp;= arg \underset{s_{1}...s_{m}}{max}\prod_{i=1}^{m}p( s_{i}|s_{i-1} ,x_{1}...x_{m}) \\\\
+&amp;= arg \underset{s_{1}...s_{m}}{max}\ p( s_{i}|s_{i-1}, x_{1}...x_{m} ) \\\\
+&amp;= arg \underset{s_{1}...s_{m}}{max}\frac{exp(w\cdot \varphi (x_{1}...x_{m}, i, s_{i-1}, s_{i}))}{\sum _{s{}&#39;\epsilon S}exp(w\cdot \varphi (x_{1}...x_{m}, i, s_{i-1}, s{}&#39;))} \\\\
+&amp;= arg \underset{s_{1}...s_{m}}{max}\ exp(w\cdot \varphi (x_{1}...x_{m}, i, s_{i-1}, s_{i})) \\\\
+&amp;= arg \underset{s_{1}...s_{m}}{max}\ w\cdot \varphi (x_{1}...x_{m}, i, s_{i-1}, s_{i}) \\\\
+&amp;= arg \underset{s_{1}...s_{m}}{max}\ \sum _{j}^{m} w\cdot \phi (x_{1}...x_{m}, i, s_{i-1}, s_{i}) \tag{4}
+\end{align*}\]</span></p>
+<p>对比一下(2)和(3)可知道 CRF 和 MEMM 的区别。和 MEMM 一样，一般采用 viterbi 算法来进行解码。</p>
+<p><img src="/images/posts/crf/crf.png" /></p>
+<p>由图可知线性链CRF是无向图模型。</p>
+<h3 id="crf的优点">CRF的优点</h3>
+<p>克服了HMM的输出独立性假设问题以及MEMM的标注偏置问题。</p>
+<h2 id="后记">后记</h2>
+<p>HMM、MEMM属于有向图模型，贝叶斯网络一般属于有向图。而CRF属于马尔科夫网络属于无向图。所以它们本身属于统计概率图（PGM）的一部分，要想真正弄懂之间的原理和区别还需要系统的学习PGM。</p>
+<p>另，由Refrence中可知本文大量引用了Michael Collins教授的tutorial,MC的tutorial通俗易懂，但是有些地方做了简化，如果不详细说明有时也会一头雾水，所以本文主要做了些翻译和修补工作。</p>
+<h2 id="refrence">Refrence</h2>
+<p>[1] <a target="_blank" rel="noopener" href="http://www.cs.columbia.edu/~mcollins/hmms-spring2013.pdf">http://www.cs.columbia.edu/~mcollins/hmms-spring2013.pdf</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="http://www.cs.columbia.edu/~mcollins/loglinear.pdf">http://www.cs.columbia.edu/~mcollins/loglinear.pdf</a></p>
+<p>[3] <a target="_blank" rel="noopener" href="http://www.cs.columbia.edu/~mcollins/crf.pdf">http://www.cs.columbia.edu/~mcollins/crf.pdf</a></p>
+<p>[4] <a target="_blank" rel="noopener" href="https://repository.upenn.edu/cgi/viewcontent.cgi?article=1162&amp;context=cis_papers">https://repository.upenn.edu/cgi/viewcontent.cgi?article=1162&amp;context=cis_papers</a></p>
+<p>[5] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33397147">https://zhuanlan.zhihu.com/p/33397147</a></p>
+<p>[6] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/112816694">https://zhuanlan.zhihu.com/p/112816694</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/08/07/python%E5%B8%B8%E7%94%A8%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%A6%82%E8%A7%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/08/07/python%E5%B8%B8%E7%94%A8%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%A6%82%E8%A7%88/" class="post-title-link" itemprop="url">python常用魔术方法概览</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-07 20:39:34" itemprop="dateCreated datePublished" datetime="2018-08-07T20:39:34+08:00">2018-08-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="构造和初始化">构造和初始化</h2>
+<h5 id="init__self-args">__init__(self, args)</h5>
+<p>构造函数</p>
+<h5 id="new__cls">__new__(cls)</h5>
+<p>传入的是类实例</p>
+<h5 id="del__self">__del__(self)</h5>
+<p>析构函数，调用 <code>del cls</code> 时会被调用</p>
+<h2 id="属性访问控制">属性访问控制</h2>
+<h5 id="getattr__self-name">__getattr__(self, name)</h5>
+<p>如果属性已经定义了那么不会再执行__getattr__()了，而是直接通过访问实例字典返回结果，__getattr__()只在访问未定义的属性时被触发</p>
+<h5 id="setattr__self-name-value">__setattr__(self, name, value)</h5>
+<p>直接给属性赋值 <code>cls.name = value</code>, 如果该函数内部内部使用<code>self.name = value</code> 时会产生<strong>"无限递归"</strong>的错误，正确的方式应该是 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span>(<span class="params">self, name, value</span>):</span></span><br><span class="line">    self.__dict__[name] = value</span><br></pre></td></tr></table></figure></p>
+<h5 id="delattr__self-name">__delattr__(self, name)</h5>
+<p><code>del cls.name</code> 时会被调用</p>
+<h2 id="描述器对象">描述器对象</h2>
+<h5 id="set__self-cls-value">__set__(self, cls, value)</h5>
+<p><code>cls.innercls = value</code> 用于类中的其他类对象赋值</p>
+<h5 id="get__self-cls">__get__(self, cls)</h5>
+<p><code>cls.innercls</code> 返回类中其他对象传回的值</p>
+<h5 id="delete__self-cls">__delete__(self, cls)</h5>
+<p><code>del cls.innercls</code></p>
+<h5 id="综合实例">综合实例</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Meter</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a meter.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, value=<span class="number">0.0</span></span>):</span></span><br><span class="line">        self.value = <span class="built_in">float</span>(value)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.value</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        self.value = <span class="built_in">float</span>(value)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foot</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Descriptor for a foot.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self, instance, owner</span>):</span></span><br><span class="line">        <span class="keyword">return</span> instance.meter * <span class="number">3.2808</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self, instance, value</span>):</span></span><br><span class="line">        instance.meter = <span class="built_in">float</span>(value) / <span class="number">3.2808</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Distance</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    meter = Meter()</span><br><span class="line">    foot = Foot()</span><br><span class="line"></span><br><span class="line">d = Distance()</span><br><span class="line"><span class="built_in">print</span> d.meter, d.foot  <span class="comment"># 0.0, 0.0</span></span><br><span class="line">d.meter = <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span> d.meter, d.foot  <span class="comment"># 1.0 3.2808</span></span><br><span class="line">d.meter = <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span> d.meter, d.foot  <span class="comment"># 2.0 6.5616</span></span><br></pre></td></tr></table></figure>
+<h2 id="自定义容器container">自定义容器(Container)</h2>
+<h5 id="len__self">__len__(self)</h5>
+<p><code>len(con)</code> 返回容器长度</p>
+<h5 id="setitem__self-name-value">__setitem__(self, name, value)</h5>
+<p><code>con[name] = value</code> 直接下标赋值</p>
+<h5 id="getitem__self-name">__getitem__(self, name)</h5>
+<p><code>con[name]</code> 直接下标访问</p>
+<h5 id="delitem__name">__delitem__(name)</h5>
+<p><code>del con[name]</code> 删除下标</p>
+<h5 id="iter__self">__iter__(self)</h5>
+<p>使得容器支持迭代器方式访问 <code>for x in con</code></p>
+<h5 id="contains__self-item">__contains__(self, item)</h5>
+<p><code>name in con</code> 可以返回布尔值</p>
+<h5 id="missing__self-name">__missing__(self, name)</h5>
+<p>容器中没有name时会被调用</p>
+<h2 id="上下文管理">上下文管理</h2>
+<p><code>with</code> 关键字可实现上下文(环境)管理</p>
+<h5 id="enter__self">__enter__(self)</h5>
+<p>进入环境时触发</p>
+<h5 id="exit__self-exception_type-exception_value-traceback">__exit__(self, exception_type, exception_value, traceback)</h5>
+<p>退出环境时触发，一般用来关闭资源</p>
+<h2 id="运算符重载">运算符重载</h2>
+<h5 id="eq__self-other">__eq__(self, other)</h5>
+<p>重载 <code>=</code></p>
+<h5 id="ne__self-other">__ne__(self, other)</h5>
+<p>重载 <code>!=</code></p>
+<h5 id="lt__self-other">__lt__(self, other)</h5>
+<p>重载 <code>&lt;</code></p>
+<h5 id="gt__self-other">__gt__(self, other)</h5>
+<p>重载 <code>&gt;</code></p>
+<h5 id="le__self-other">__le__(self, other)</h5>
+<p>重载 <code>&lt;=</code></p>
+<h5 id="ge__self-other">__ge__(self, other)</h5>
+<p>重载 <code>&gt;=</code></p>
+<h2 id="其他">其他</h2>
+<h5 id="str__self">__str__(self)</h5>
+<p><code>print(cls)</code> 和 <code>str(cls)</code> 时被调用，必须返回字符<code>str</code>类型</p>
+<h5 id="repr__self">__repr__(self)</h5>
+<p>对实例使用<code>repr()</code>时调用。<code>str()</code>和<code>repr()</code>都是返回一个代表该实例的字符串，主要区别在于: <code>str()</code>的返回值要方便人来看,而<code>repr()</code>的返回值方便计算机看。</p>
+<h5 id="call__self-args-kwargs">__call__(self, *args, **kwargs)</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">XClass</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, a, b</span>):</span></span><br><span class="line">        <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line">x = XClass()</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;x(1, 2)&#x27;</span>, x(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;callable(x)&#x27;</span>, <span class="built_in">callable</span>(x)  <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;add(1, 2)&#x27;</span>, add(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;callable(add)&#x27;</span>, <span class="built_in">callable</span>(add)  <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+<h1 id="refrence">Refrence</h1>
+<p>https://segmentfault.com/a/1190000007256392#articleHeader3</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/07/21/java%E7%BC%93%E5%86%B2%E6%B1%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/07/21/java%E7%BC%93%E5%86%B2%E6%B1%A0/" class="post-title-link" itemprop="url">java缓冲池</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-21 10:28:25" itemprop="dateCreated datePublished" datetime="2018-07-21T10:28:25+08:00">2018-07-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>562</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="自动装箱拆箱">自动装箱、拆箱</h1>
+<p>基本类型都有其对应的包装类型，基本类型与其对应的包装类型间的转换是靠自动装箱 与拆箱完成的</p>
+<ul>
+<li>基本类型 / 包装类</li>
+<li>boolean / Boolean</li>
+<li>char / Character</li>
+<li>int / Integer</li>
+<li>byte / Byte</li>
+<li>short / Short</li>
+<li>long / Long</li>
+<li>float / Float</li>
+<li>double / Double</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Integer i = <span class="number">12</span>;   <span class="comment">// 自动装箱，12是基本类型，赋给包装类后自动装箱，相当于掉用了Integer.valueOf(12)</span></span><br><span class="line"><span class="keyword">int</span> j = i; <span class="comment">// 自动拆箱，将Integer转为基本类型int，实际掉用了i.intValue()</span></span><br></pre></td></tr></table></figure>
+<h1 id="缓冲池">缓冲池</h1>
+<p>new Integer(123) 与 Integer.valueOf(123) 的区别在于， new Integer(123) 每次都会新建一个对象，而 Integer.valueOf(123) 可能会使用缓存对象，因此多次使用 Integer.valueOf(123) 会取得同一个对象的引用。</p>
+<p>在 Java 8 中，Integer 缓存池的大小默认为 -128~127。如 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer x = <span class="number">127</span>;</span><br><span class="line">Integer y = <span class="number">127</span>;</span><br><span class="line">System.out.println(x == y);  <span class="comment">// True</span></span><br><span class="line"></span><br><span class="line">Integer i = <span class="number">128</span>;</span><br><span class="line">Integer j = <span class="number">128</span>;</span><br><span class="line">System.out.println(i == j);  <span class="comment">// False</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/07/21/java%E4%B8%ADequals%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/07/21/java%E4%B8%ADequals%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">java中equals和==的区别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-21 09:06:13" itemprop="dateCreated datePublished" datetime="2018-07-21T09:06:13+08:00">2018-07-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>238</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="区别">区别</h1>
+<ul>
+<li>euqals只能用于对象、数组等复合类型，不能用于基本类型</li>
+<li>== 用于基本类型时比较的是值，其他类型时比较的是内存中的地址</li>
+<li>除了对equals重写过的类，如String Integer Date等重写了equals使它们只比较值， 要不equals和 == 的作用都是一样的，默认都是比较内存中的地址</li>
+</ul>
+<h1 id="补充">补充</h1>
+<p>java中的基本类型只有八个它们是</p>
+<ul>
+<li>byte / 8</li>
+<li>short / 16</li>
+<li>char / 16</li>
+<li>int / 32</li>
+<li>long / 64</li>
+<li>float / 32</li>
+<li>double / 64</li>
+<li>boolean / 1</li>
+</ul>
+<p><strong>注意：String不是基本类型</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">156k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:22</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/xiaoming-48x48.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiaoming-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiaoming-16x16.ico">
+  <link rel="mask-icon" href="/images/xiaoming-48x48.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"seanlee97.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="pLSA 原理 pLSA 和 LDA 一样都是主题模型，主要区别在于 pLSA 采用的是频率学派的思想，而 LDA 采用的是贝叶斯学派的思想。 假设有 M 篇文档（文档集合用 \(\mathbb{D}\) 表示），有 N 个词（词集合用 \(\mathbb{W}\) 表示），文档和词都是可观察的，pLSA 基于文档-词共现矩阵（不考虑词序）引入了主题（topic） \(z\) 这个隐变量去关联文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈 pLSA 主题模型">
+<meta property="og:url" content="https://seanlee97.github.io/2018/12/28/%E6%B5%85%E8%B0%88%20pLSA%20%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="明天探索者">
+<meta property="og:description" content="pLSA 原理 pLSA 和 LDA 一样都是主题模型，主要区别在于 pLSA 采用的是频率学派的思想，而 LDA 采用的是贝叶斯学派的思想。 假设有 M 篇文档（文档集合用 \(\mathbb{D}\) 表示），有 N 个词（词集合用 \(\mathbb{W}\) 表示），文档和词都是可观察的，pLSA 基于文档-词共现矩阵（不考虑词序）引入了主题（topic） \(z\) 这个隐变量去关联文档">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://seanlee97.github.io/images/posts/plsa/graph_model.png">
+<meta property="article:published_time" content="2018-12-28T14:18:13.000Z">
+<meta property="article:modified_time" content="2021-03-13T02:18:45.527Z">
+<meta property="article:author" content="Sean Lee">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://seanlee97.github.io/images/posts/plsa/graph_model.png">
+
+
+<link rel="canonical" href="https://seanlee97.github.io/2018/12/28/%E6%B5%85%E8%B0%88%20pLSA%20%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>浅谈 pLSA 主题模型 | 明天探索者</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">明天探索者</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#plsa-%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">pLSA 原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">似然估计</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sean Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Sean Lee</p>
+  <div class="site-description" itemprop="description">一枚小小的程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/12/28/%E6%B5%85%E8%B0%88%20pLSA%20%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅谈 pLSA 主题模型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-28 22:18:13" itemprop="dateCreated datePublished" datetime="2018-12-28T22:18:13+08:00">2018-12-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-13 10:18:45" itemprop="dateModified" datetime="2021-03-13T10:18:45+08:00">2021-03-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="plsa-原理">pLSA 原理</h1>
+<p>pLSA 和 LDA 一样都是主题模型，主要区别在于 pLSA 采用的是频率学派的思想，而 LDA 采用的是贝叶斯学派的思想。</p>
+<p>假设有 M 篇文档（文档集合用 <span class="math inline">\(\mathbb{D}\)</span> 表示），有 N 个词（词集合用 <span class="math inline">\(\mathbb{W}\)</span> 表示），文档和词都是可观察的，pLSA 基于文档-词共现矩阵（不考虑词序）引入了主题（topic） <span class="math inline">\(z\)</span> 这个隐变量去关联文档和词，假设有 K 个主题（主题集合用 <span class="math inline">\(\mathbb{Z}\)</span> 表示）</p>
+<p>pLSA 中一篇文档是怎么生成的呢？它的生成过程描述如下：</p>
+<ul>
+<li>首先以概率 <span class="math inline">\(p(d_m)\)</span> 去选择一篇文档</li>
+<li>每篇文档都隐含有主题，在文档 <span class="math inline">\(d_m\)</span> 中主题 <span class="math inline">\(z_k\)</span> 发生的概率为 <span class="math inline">\(p(z_k | d_m)\)</span></li>
+<li>而主题会包含主题词，在主题 <span class="math inline">\(z_k\)</span> 中主题词是 <span class="math inline">\(w_n\)</span> 的概率为 <span class="math inline">\(p(w_n | z_k)\)</span></li>
+</ul>
+<p>假设每个词之间相互独立，在没有引入隐变量前对一篇文档我们可以得到</p>
+<p><span class="math display">\[p(\underset{w}{\rightarrow} | d_m) = \prod _{n=1}^N p(w_n | d_m) \tag{1}\]</span></p>
+<p>现在引入主题这个隐变量，有：</p>
+<p><span class="math display">\[p(w_n | d_m) = \sum _{k=1}^K p(z_k | d_m)\ p(w_n | z_k, d_m) \tag{2}\]</span></p>
+<p><span class="math inline">\(z\)</span> 已知时 pLSA 假设 <span class="math inline">\(d\)</span> 和 <span class="math inline">\(w\)</span> 独立，也就是说 <span class="math inline">\(w\)</span> 不直接受 <span class="math inline">\(d\)</span> 影响而是直接受 <span class="math inline">\(z\)</span> 影响，此时有</p>
+<p><span class="math display">\[p(w_n | d_m) = \sum _{k=1}^K p(z_k | d_m)\ p(w_n|z_k) \tag{3}\]</span></p>
+<p>因此可得到联合分布表达式为：</p>
+<p><span class="math display">\[p(d_m, w_n) = p(d_m) \sum _{k=1}^K p(z_k | d_m)\ p(w_n | z_k) \tag{4}\]</span></p>
+<p>pLSA 的概率图是</p>
+<p><img src="/images/posts/plsa/graph_model.png" /></p>
+<h1 id="似然估计">似然估计</h1>
+<p>似然估计是频率学派用得较多的估计方法，似然估计对参数 <span class="math inline">\(\theta\)</span> 的常见形式是：</p>
+<p><span class="math display">\[L(\theta) = p(x| \theta)\]</span></p>
+<p>但是实际建模中我们往往需要计算一些经验值（如词频）等，对于一些任务我们可以用似然估计的一般形式：</p>
+<p><span class="math display">\[L_{p(x)&#39;} = \prod _x p(x)^{p(x)&#39;}\]</span></p>
+<p>其中 <span class="math inline">\(p(x)\)</span> 为对模型参数进行估计的概率分布，<span class="math inline">\(p(x)&#39;\)</span> 为实验得到的经验概率分布</p>
+<p>在此使用一般形式的似然估计，假设 <span class="math inline">\(n(d_m, w_n)\)</span> 代表词 <span class="math inline">\(w_n\)</span> 在 <span class="math inline">\(d_m\)</span> 中的词频，此时似然函数为</p>
+<p><span class="math display">\[\begin{align*}
+L(\theta) &amp;= log \prod _{m=1}^M \prod _{n=1}^N p(d_m, w_n)^{n(d_m, w_n)}\\
+&amp;= \sum _{m=1}^M \sum _{n=1}^N n(d_m, w_n)\ log p(d_m, w_n)\\
+&amp;= \sum _{m=1}^M \sum _{n=1}^N n(d_m, w_n)(log\ p(d_m) + log\ p(w_n|d_m))\\
+&amp;= \sum _{m=1}^M \sum _{n=1}^N n(d_m, w_n) log\ p(d_m) + \sum _{m=1}^M \sum _{n=1}^N n(d_m, w_n) log\ p(w_n | d_m)\\
+&amp;\Rightarrow \sum _{m=1}^M \sum _{n=1}^N n(d_m, w_n)log\ p(w_n|d_m) \tag{5}
+\end{align*}\]</span></p>
+<p>将 <span class="math inline">\((3)\)</span> 带入 <span class="math inline">\((5)\)</span> 式最终得到</p>
+<p><span class="math display">\[\begin{align*}
+L(\theta) &amp;= \sum _{m=1}^M \sum _{n=1}^N n(d_m, w_n) log\ p(w_n | d_m)\\
+&amp;= \sum _{m=1}^M \sum _{n=1}^N n(d_m, w_n) log(\sum_ {k=1}^K p(z_k| d_m) p(w_n|z_k)) \tag{6}
+\end{align*}
+\]</span></p>
+<p>对 <span class="math inline">\((6)\)</span> 的求解一般用 EM 算法，在此不做详述</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/30/numpy%E7%BB%8F%E9%AA%8C%E5%8F%8A%E6%8A%80%E5%B7%A7/" rel="prev" title="numpy经验及技巧">
+                  <i class="fa fa-chevron-left"></i> numpy经验及技巧
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/24/NLP%E4%B8%AD%E7%9A%84%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%E5%8F%8A%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" rel="next" title="NLP中的特征提取及特征选择">
+                  NLP中的特征提取及特征选择 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">156k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:22</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+    </div>
+</body>
+</html>

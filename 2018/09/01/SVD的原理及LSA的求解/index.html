@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/xiaoming-48x48.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiaoming-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiaoming-16x16.ico">
+  <link rel="mask-icon" href="/images/xiaoming-48x48.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"seanlee97.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="之前介绍PCA时提到了SVD，本文主要介绍SVD基本概念以及在NLP上的应用。 SVD的定义 SVD(Singular Value Decomposition)即奇异值分解，奇异值分解区别于特征值分解可用来分解非方阵矩阵问题。假设矩阵 \(A \in R^{m\times n}\) 是一个 \(m\times n\) 的矩阵，则它的奇异值分解可分解为三个矩阵： \[A_{m\times n} &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVD的原理及LSA的求解">
+<meta property="og:url" content="https://seanlee97.github.io/2018/09/01/SVD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8ALSA%E7%9A%84%E6%B1%82%E8%A7%A3/index.html">
+<meta property="og:site_name" content="明天探索者">
+<meta property="og:description" content="之前介绍PCA时提到了SVD，本文主要介绍SVD基本概念以及在NLP上的应用。 SVD的定义 SVD(Singular Value Decomposition)即奇异值分解，奇异值分解区别于特征值分解可用来分解非方阵矩阵问题。假设矩阵 \(A \in R^{m\times n}\) 是一个 \(m\times n\) 的矩阵，则它的奇异值分解可分解为三个矩阵： \[A_{m\times n} &#x3D;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://seanlee97.github.io/images/posts/svd/lsa.png">
+<meta property="article:published_time" content="2018-09-01T11:41:55.000Z">
+<meta property="article:modified_time" content="2021-03-07T10:05:36.793Z">
+<meta property="article:author" content="Sean Lee">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://seanlee97.github.io/images/posts/svd/lsa.png">
+
+
+<link rel="canonical" href="https://seanlee97.github.io/2018/09/01/SVD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8ALSA%E7%9A%84%E6%B1%82%E8%A7%A3/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>SVD的原理及LSA的求解 | 明天探索者</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">明天探索者</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#svd%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">SVD的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#svd%E7%9A%84%E6%B1%82%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">SVD的求解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lsa%E7%9A%84%E5%8E%9F%E7%90%86%E4%B8%8E%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">LSA的原理与示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5-x"><span class="nav-number">3.1.</span> <span class="nav-text">矩阵 \(X\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u-%E7%9F%A9%E9%98%B5%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">\(U\) 矩阵的应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vt-%E7%9F%A9%E9%98%B5%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">3.3.</span> <span class="nav-text">\(V^{T}\) 矩阵的应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sigma-%E7%9F%A9%E9%98%B5%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">3.4.</span> <span class="nav-text">\(\Sigma\) 矩阵的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lsa%E7%9A%84%E7%BC%BA%E7%82%B9%E5%8F%8A%E6%94%B9%E8%BF%9B"><span class="nav-number">3.5.</span> <span class="nav-text">LSA的缺点及改进</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#plsa"><span class="nav-number">3.5.1.</span> <span class="nav-text">pLSA</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#refrence"><span class="nav-number">5.</span> <span class="nav-text">Refrence</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sean Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Sean Lee</p>
+  <div class="site-description" itemprop="description">一枚小小的程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://seanlee97.github.io/2018/09/01/SVD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8ALSA%E7%9A%84%E6%B1%82%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Sean Lee">
+      <meta itemprop="description" content="一枚小小的程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明天探索者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SVD的原理及LSA的求解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-01 19:41:55" itemprop="dateCreated datePublished" datetime="2018-09-01T19:41:55+08:00">2018-09-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-07 18:05:36" itemprop="dateModified" datetime="2021-03-07T18:05:36+08:00">2021-03-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">技术日志</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>之前介绍PCA时提到了SVD，本文主要介绍SVD基本概念以及在NLP上的应用。</p>
+<h3 id="svd的定义">SVD的定义</h3>
+<p>SVD(Singular Value Decomposition)即奇异值分解，奇异值分解区别于特征值分解可用来分解非方阵矩阵问题。假设矩阵 <span class="math inline">\(A \in R^{m\times n}\)</span> 是一个 <span class="math inline">\(m\times n\)</span> 的矩阵，则它的奇异值分解可分解为三个矩阵：</p>
+<p><span class="math display">\[A_{m\times n} = U_{m\times m} \Sigma _{m\times n} V^{T}_{n\times n} \tag{1}\]</span></p>
+<p>其中 <span class="math inline">\(U\)</span> 和 <span class="math inline">\(V^{T}\)</span> 称为酉矩阵, <span class="math inline">\(\Sigma\)</span> 称为奇异矩阵，它的形式一般为:</p>
+<p><span class="math display">\[\Sigma = \begin{bmatrix}
+\sigma_{1} &amp; 0 &amp;  ... &amp; 0\\ 
+0 &amp; \sigma_{i} &amp; ... &amp; ...\\ 
+... &amp; 0 &amp; \sigma_{k} &amp; ...\\
+0 &amp; ... &amp; 0 &amp; ...\\
+... &amp; 0 &amp; ... &amp; 0 \\  
+\end{bmatrix}\]</span></p>
+<p><span class="math inline">\(\lambda_{1} ... \lambda _{m}\)</span> 称为奇异值</p>
+<p>更一般的我们更希望奇异矩阵是方阵，因此矩阵<span class="math inline">\(A\)</span>可近似分解为</p>
+<p><span class="math display">\[A_{m\times n} \approx  U_{m\times k} \Sigma _{k \times k} V^{T}_{k\times n} \tag{2}\]</span></p>
+<p>此时奇异矩阵 <span class="math inline">\(\Sigma\)</span> 有</p>
+<p><span class="math display">\[\Sigma = \begin{bmatrix}
+\sigma_{1} &amp; ... &amp;  0\\ 
+0 &amp; \sigma_{i} &amp; ... \\ 
+... &amp; 0 &amp; \sigma_{k} \\
+\end{bmatrix}\]</span></p>
+<p>看起来是不是和特征值分解的对角矩阵很类似，<strong>非方阵的PCA降维原理就是利用这个奇异矩阵进行的</strong></p>
+<p>关于PCA请查阅另一篇文章 <a href="https://seanlee97.github.io/2018/03/29/%E4%BB%8E%E7%89%B9%E5%BE%81%E5%80%BC%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E5%8E%BB%E7%90%86%E8%A7%A3PCA/">从特征值特征向量去理解PCA</a></p>
+<h3 id="svd的求解">SVD的求解</h3>
+<p>SVD的求解还是要回到<strong>方阵</strong>求解上，也就是要回到<strong>特征值特征向量上</strong></p>
+<p>可知 <span class="math inline">\(A\)</span> 是 <span class="math inline">\(m\times n\)</span>矩阵，那么 <span class="math inline">\(A^{T} \in R^{n\times m}\)</span>，则有两种情况可构成方阵：</p>
+<ul>
+<li><span class="math inline">\(AA^{T} \in R^{m\times m}\)</span></li>
+<li><span class="math inline">\(A^{T}A \in R^{n\times n}\)</span></li>
+</ul>
+<p>由 <span class="math inline">\((1)\)</span> 可知, <span class="math inline">\(U \in R^{m\times m}\)</span>，此时我们用 <span class="math inline">\(AA^{T} \in R^{m\times m}\)</span> 来求解，得到特征值特征向量如下：</p>
+<p><span class="math display">\[(AA^{T})u_{i} = \lambda_{i} u_{i} \tag{3}\]</span></p>
+<p>计算可求得m个特征值和m个特征向量<span class="math inline">\(u\)</span>，这些特征向量称为A的左奇异向量,酉矩阵 <span class="math inline">\(U = [u_{1}...u_{m}]\)</span></p>
+<p>同理，<span class="math inline">\(V^{T} \in R^{n\times n}\)</span>，可用 <span class="math inline">\(A^{T}A\)</span> 来求解</p>
+<p><span class="math display">\[(A^{T}A) v_{i} = \lambda_{i} v_{i} \tag{4}\]</span></p>
+<p>计算可求得n个特征值和n个特征向量<span class="math inline">\(v\)</span>，这些特征向量称为A的右奇异向量,酉矩阵 <span class="math inline">\(V = [v_{1}...v_{n}]\)</span></p>
+<p>对于 <span class="math inline">\(\Sigma = [\sigma_{1} ... \sigma_{k}]\)</span> 的求解有</p>
+<p><span class="math display">\[\begin{align*}
+&amp; A = U\Sigma V^{T} \\\\
+&amp; \Rightarrow AV = U\Sigma \\\\
+&amp; \Rightarrow Av_{i} = u_{i}\sigma_{i} \\\\
+&amp; \Rightarrow \sigma_{i} = A(v_{i} / u_{i})
+\end{align*}\]</span></p>
+<p>因此奇异值 <span class="math inline">\(\sigma_{i}\)</span> 是由对应的左右奇异向量 <span class="math inline">\(u_{i}\)</span> 和 <span class="math inline">\(v_{i}\)</span> 求得的</p>
+<h3 id="lsa的原理与示例">LSA的原理与示例</h3>
+<p>NLP中PCA和LSA的原理就是SVD，PCA上面已经做了简要介绍，这里主要说说LSA</p>
+<p>LSA(Latent Semantic Analysis) 潜在语义分析的原理就是 SVD，它可以同时完成三个任务</p>
+<ul>
+<li>近义词分类 (利用的是 <span class="math inline">\(U\)</span> 矩阵)</li>
+<li>主题（文档）分类 (利用的是 <span class="math inline">\(V^{T}\)</span> 矩阵)</li>
+<li>类词和主题的相关性 (利用的是 <span class="math inline">\(\Sigma\)</span>)</li>
+</ul>
+<p><img src="/images/posts/svd/lsa.png" /></p>
+<p>LSA 的核心思想是<strong>将词和文档映射到潜在语义空间</strong>，再比较其相似性。</p>
+<p>下面举个实例讲解，如图有</p>
+<h4 id="矩阵-x">矩阵 <span class="math inline">\(X\)</span></h4>
+<p>矩阵 <span class="math inline">\(X\)</span> 代表词表到文档的矩阵，其中<strong>每行</strong>代表词典中的词，<strong>每一列</strong>代表一篇文档，<span class="math inline">\(X_{ij}=k\)</span> 代表第 <span class="math inline">\(j\)</span> 篇文档中出现了 <span class="math inline">\(k\)</span> 次词 <span class="math inline">\(i\)</span> （也可用TF-IDF代替），可知该矩阵是不包含位置信息的</p>
+<p>假设现在有四个文档： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">doc1 = <span class="string">&quot;&quot;&quot;计算机科学是系统性研究信息与计算的理论基础以及它们在计算机系统中如何实现与应用的实用技术的学科&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">doc2 = <span class="string">&quot;&quot;&quot;自然语言处理是人工智能和语言学领域的分支学科。此领域探讨如何处理及运用自然语言；自然语言认知则是指让电脑“懂”人类的语言。</span></span><br><span class="line"><span class="string">自然语言生成系统把计算机数据转化为自然语言。自然语言理解系统把自然语言转化为计算机程序更易于处理的形式。&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">doc3 = <span class="string">&quot;&quot;&quot;人工智能是计算机科学的一个分支，它企图了解智能的实质，并生产出一种新的能以人类智能相似的方式做出反应的智能机器，</span></span><br><span class="line"><span class="string">该领域的研究包括机器人、语言识别、图像识别、自然语言处理和专家系统等&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">doc4 = <span class="string">&quot;&quot;&quot;《瓦尔登湖》是美国作家梭罗独居瓦尔登湖畔的记录，描绘了他两年多时间里的所见、所闻和所思。</span></span><br><span class="line"><span class="string">该书崇尚简朴生活，热爱大自然的风光，内容丰厚，意义深远，语言生动&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure></p>
+<p>对每个文档进行分词，去停用词</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_vocab</span>(<span class="params">self, docs</span>):</span></span><br><span class="line">    <span class="keyword">for</span> doc <span class="keyword">in</span> docs:</span><br><span class="line">        doc = doc.strip()</span><br><span class="line">        <span class="comment"># 为了简单仅仅保留词的长度大于1的</span></span><br><span class="line">        words = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x: <span class="built_in">len</span>(x) &gt; <span class="number">1</span>, self.tokenizer(doc))) </span><br><span class="line">        self.docs.append(words)</span><br><span class="line">        self.vocabs.update(words)</span><br><span class="line"></span><br><span class="line">    self.vocabs = <span class="built_in">list</span>(self.vocabs)</span><br><span class="line">    self.word2idx = <span class="built_in">dict</span>(<span class="built_in">zip</span>(self.vocabs, <span class="built_in">range</span>(<span class="built_in">len</span>(self.vocabs))))</span><br><span class="line">    </span><br><span class="line">    print(self.vocabs)</span><br></pre></td></tr></table></figure>
+<p>输出词典得到： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;方式&#39;, &#39;基础&#39;, &#39;美国作家&#39;, &#39;生动&#39;, &#39;易于&#39;, &#39;人工智能&#39;, &#39;语言&#39;, &#39;计算机系统&#39;, &#39;语言学&#39;, &#39;实质&#39;, &#39;瓦尔登湖&#39;, &#39;生活&#39;, &#39;计算机&#39;, &#39;机器人&#39;, &#39;独居&#39;, &#39;相似&#39;, &#39;人类&#39;, &#39;内容&#39;, &#39;电脑&#39;, &#39;实现&#39;, &#39;所闻&#39;, &#39;计算机程序&#39;, &#39;系统&#39;, &#39;理解&#39;, &#39;理论&#39;, &#39;探讨&#39;, &#39;该书&#39;, &#39;它们&#39;, &#39;数据&#39;, &#39;了解&#39;, &#39;处理&#39;, &#39;企图&#39;, &#39;以及&#39;, &#39;学科&#39;, &#39;生产&#39;, &#39;包括&#39;, &#39;图像识别&#39;, &#39;两年&#39;, &#39;分支&#39;, &#39;一种&#39;, &#39;机器&#39;, &#39;如何&#39;, &#39;风光&#39;, &#39;丰厚&#39;, &#39;描绘&#39;, &#39;认知&#39;, &#39;记录&#39;, &#39;简朴&#39;, &#39;应用&#39;, &#39;智能&#39;, &#39;做出&#39;, &#39;时间&#39;, &#39;自然语言&#39;, &#39;所思&#39;, &#39;崇尚&#39;, &#39;系统性&#39;, &#39;识别&#39;, &#39;梭罗&#39;, &#39;形式&#39;, &#39;大自然&#39;, &#39;深远&#39;, &#39;计算&#39;, &#39;信息&#39;, &#39;意义&#39;, &#39;专家系统&#39;, &#39;生成&#39;, &#39;所见&#39;, &#39;研究&#39;, &#39;一个&#39;, &#39;运用&#39;, &#39;转化&#39;, &#39;领域&#39;, &#39;实用技术&#39;, &#39;计算机科学&#39;, &#39;热爱&#39;, &#39;反应&#39;</span><br></pre></td></tr></table></figure></p>
+<p>构造词到文档的矩阵,在这里实现了词袋模型和TF-IDF</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用词袋特征来做权值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_bow_matrix</span>(<span class="params">self</span>):</span></span><br><span class="line">    matrix = np.zeros([<span class="built_in">len</span>(self.vocabs), <span class="built_in">len</span>(self.docs)])</span><br><span class="line">    <span class="keyword">for</span> docidx, words <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.docs):</span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">            matrix[self.word2idx[word], docidx] += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> matrix</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用tf-idf来做权值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_tfidf_matrix</span>(<span class="params">self</span>):</span></span><br><span class="line">    tf = self.build_bow_matrix()</span><br><span class="line">    df = np.ones([<span class="built_in">len</span>(self.vocabs), <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> docidx, words <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.docs):</span><br><span class="line">        tf[:, docidx] /= np.<span class="built_in">max</span>(tf[:, docidx])</span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">            df[self.word2idx[word], <span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">    idf = np.log(<span class="built_in">len</span>(self.docs)) - np.log(df)</span><br><span class="line">    <span class="keyword">return</span> tf*idf</span><br></pre></td></tr></table></figure>
+<p>得到的矩阵为</p>
+<p><strong>词袋模型</strong> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[[0. 0. 0. 1.]</span><br><span class="line"> [0. 1. 1. 1.]</span><br><span class="line"> [0. 2. 0. 0.]</span><br><span class="line"> .............</span><br><span class="line"> [0. 0. 0. 1.]</span><br><span class="line"> [0. 0. 1. 0.]</span><br><span class="line"> [1. 0. 0. 0.]]</span><br><span class="line"> </span><br><span class="line"> shape &#x3D; (vocab_size, doc_size)</span><br></pre></td></tr></table></figure></p>
+<p><strong>TF-IDF</strong> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[[ 0.          0.          0.          0.34657359]</span><br><span class="line"> [ 0.          0.          0.          0.        ]</span><br><span class="line"> [ 0.          0.08219488  0.          0.        ]</span><br><span class="line"> .....</span><br><span class="line"> [ 0.          0.          0.          0.34657359]</span><br><span class="line"> [ 0.          0.          0.23104906  0.        ]</span><br><span class="line"> [ 0.69314718  0.          0.          0.        ]]</span><br><span class="line"> </span><br><span class="line"> shape &#x3D; (vocab_size, doc_size)</span><br></pre></td></tr></table></figure></p>
+<h4 id="u-矩阵的应用"><span class="math inline">\(U\)</span> 矩阵的应用</h4>
+<p>分解得到的 <span class="math inline">\(U \in R^{m\times m}\)</span> 矩阵<strong>每一行</strong>代表一类近义词,我们一般对每一行的权值进行逆序排序获得top k个权值最大的下标，这些下标对应的词即为近义词</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sim_words</span>(<span class="params">self, k=<span class="number">3</span></span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.kernel == <span class="string">&#x27;tfidf&#x27;</span>:</span><br><span class="line">            matrix = self.build_tfidf_matrix()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            matrix = self.build_bow_matrix()</span><br><span class="line"></span><br><span class="line">        U, S, Vt = np.linalg.svd(matrix)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 对权值逆序排序</span></span><br><span class="line">        sort_idx = np.argsort(-U)</span><br><span class="line">        <span class="comment"># 一般不取第一列，第一列的词往往是本身</span></span><br><span class="line">        topk = sort_idx[:, <span class="number">1</span>:k+<span class="number">1</span>] </span><br><span class="line">        print(<span class="string">&quot;word \t similarity&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> widx, word <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.vocabs):</span><br><span class="line">            line = word + <span class="string">&quot;:\t&quot;</span></span><br><span class="line">            idxs = topk[widx]</span><br><span class="line">            <span class="keyword">for</span> idx <span class="keyword">in</span> idxs:</span><br><span class="line">                line += <span class="built_in">str</span>(self.vocabs[idx]) + <span class="string">&quot; &quot;</span></span><br><span class="line">            print(line)</span><br></pre></td></tr></table></figure>
+<p>得到的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">计算机系统:	自然语言 领域 如何</span><br><span class="line">数据:	智能 计算机科学 研究</span><br><span class="line">计算机:	智能 计算机科学 研究</span><br><span class="line">语言:	如何 处理 计算</span><br></pre></td></tr></table></figure>
+<p>由于只是作为演示用，文档太少，不能得到较好的效果，可用大文本尝试一下</p>
+<h4 id="vt-矩阵的应用"><span class="math inline">\(V^{T}\)</span> 矩阵的应用</h4>
+<p><span class="math inline">\(V^{T} \in R^{n\times n}\)</span> 矩阵<strong>每一列</strong>代表一个主题，<strong>列中每一行</strong>代表主题相关文档，我们对每一列的权值进行逆序，得到对应下标，这样每一列对应的下标代表同一类别的相关文档下标</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">topic_relate</span>(<span class="params">self, k=<span class="number">2</span></span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.kernel == <span class="string">&#x27;tfidf&#x27;</span>:</span><br><span class="line">            matrix = self.build_tfidf_matrix()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            matrix = self.build_bow_matrix()</span><br><span class="line"></span><br><span class="line">        U, S, Vt = np.linalg.svd(matrix)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 按列逆序排序</span></span><br><span class="line">        sort_idx = np.argsort(-Vt, axis=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 一般不取第一行，第一行是自己本身</span></span><br><span class="line">        topk = sort_idx[<span class="number">1</span>:k+<span class="number">1</span>, :]</span><br><span class="line">        print(topk)</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[2 3 0 1]</span><br><span class="line"> [2 0 1 3]]</span><br></pre></td></tr></table></figure>
+<h4 id="sigma-矩阵的作用"><span class="math inline">\(\Sigma\)</span> 矩阵的作用</h4>
+<p><span class="math inline">\(\Sigma \in R^{m\times n}\)</span> 代表类词和文章类之间的相关性</p>
+<p>由此可见LSA可谓一举三得啊！</p>
+<h4 id="lsa的缺点及改进">LSA的缺点及改进</h4>
+<p>LSA的缺点在于采用暴力SVD矩阵分解，如果维数大了，矩阵大了就难以计算了，加上SVD的分布式计算又是很难实现的，所以在大规模文档中可能不用直接用LSA</p>
+<h5 id="plsa">pLSA</h5>
+<p>即概率LSA，把LSA变成从概率的角度理解，一般采用的是EM的方式学习</p>
+<p>由于pLSA的推导和求解一般涉及到<code>上帝算法</code> — <code>EM</code>（我把它认为是<code>魔鬼算法</code>，因为它原理简单，但是推导要命）在此不做深入讨论</p>
+<h3 id="后记">后记</h3>
+<p>上述例子均为博主本人生造的，因为网上关于LSA的代码示例很多只做到SVD分解部分，没具体到酉矩阵的应用。</p>
+<p>上述实例的完整代码地址: <a target="_blank" rel="noopener" href="https://github.com/SeanLee97/nlp_learning/blob/master/lsa/lsa.py">github/nlp_learning/lsa</a></p>
+<h3 id="refrence">Refrence</h3>
+<p>[1] https://blog.csdn.net/KIDGIN7439/article/details/69831490</p>
+<p>[2] 《数学之美》</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/31/%E4%BD%99%E5%BC%A6%E5%AE%9A%E7%90%86%E5%92%8C%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/" rel="prev" title="余弦定理和文本相似度">
+                  <i class="fa fa-chevron-left"></i> 余弦定理和文本相似度
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/09/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E4%B8%8A%E5%B8%9D%E7%AE%97%E6%B3%95EM/" rel="next" title="简单理解"上帝算法"EM">
+                  简单理解"上帝算法"EM <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sean Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">156k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:22</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+    </div>
+</body>
+</html>
